@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LumiOS</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="os" role="application" aria-label="LumiOS Desktop">
+
+  <!-- ── Desktop Background ── -->
+  <div id="osbg">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"
+         viewBox="0 0 1920 1080" aria-hidden="true">
+      <g fill="white" opacity="0.38">
+        <circle cx="88"  cy="60"  r="1.2"/><circle cx="240"  cy="110" r="0.9"/>
+        <circle cx="420" cy="48"  r="1.5"/><circle cx="640"  cy="28"  r="0.8"/>
+        <circle cx="900" cy="75"  r="1.1"/><circle cx="1160" cy="40"  r="0.9"/>
+        <circle cx="1380" cy="90" r="1.3"/><circle cx="1600" cy="55"  r="0.8"/>
+        <circle cx="1840" cy="30" r="1.0"/><circle cx="60"   cy="260" r="1.1"/>
+        <circle cx="190" cy="370" r="0.9"/><circle cx="720"  cy="180" r="1.4"/>
+        <circle cx="1020" cy="228" r="0.8"/><circle cx="1240" cy="160" r="1.1"/>
+        <circle cx="1480" cy="330" r="0.9"/><circle cx="1700" cy="270" r="1.2"/>
+        <circle cx="320" cy="480" r="0.9"/><circle cx="580"  cy="540" r="1.3"/>
+        <circle cx="850" cy="420" r="0.8"/><circle cx="1100" cy="500" r="1.0"/>
+        <circle cx="1340" cy="460" r="0.9"/><circle cx="1560" cy="520" r="1.1"/>
+        <circle cx="140" cy="620" r="1.2"/><circle cx="400"  cy="700" r="0.8"/>
+        <circle cx="660" cy="660" r="1.0"/><circle cx="920"  cy="740" r="0.9"/>
+        <circle cx="1180" cy="680" r="1.3"/><circle cx="1420" cy="720" r="0.8"/>
+        <circle cx="1700" cy="660" r="1.1"/><circle cx="1870" cy="800" r="0.9"/>
+        <circle cx="260" cy="860" r="1.0"/><circle cx="510"  cy="900" r="0.8"/>
+        <circle cx="780" cy="840" r="1.2"/><circle cx="1040" cy="920" r="0.9"/>
+      </g>
+    </svg>
+    <!-- Drifting particles -->
+      <canvas id="particle-canvas"
+        style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"
+        aria-hidden="true"></canvas>
+
+    <!-- Desktop Clock -->
+    <div id="desktop-clock" aria-live="polite">
+      <div id="big-time">--:--</div>
+      <div id="big-date">Loading&hellip;</div>
+    </div>
+
+    <!-- Desktop Icons -->
+    <div id="dkicons" role="list" aria-label="Desktop icons"></div>
+  </div>
+
+  <!-- ── Brightness Overlay ── -->
+  <div id="brightness-overlay"></div>
+
+  <!-- ── Widget Layer ── -->
+  <div id="widget-layer"></div>
+
+  <!-- ── Windows Layer ── -->
+  <div id="wlayer"></div>
+
+  <!-- ── Notification Toast ── -->
+  <div id="notif" role="status" aria-live="polite">
+    <div class="notif-title">LumiOS</div>
+    <div id="nmsg"></div>
+  </div>
+
+  <!-- ── Volume Popup ── -->
+  <div id="volume-popup">
+    <div class="vol-header">
+      <i id="vol-popup-icon" class="ti ti-volume"></i>
+      <span>System Volume</span>
+    </div>
+    <input type="range" id="vol-slider" class="vol-slider" min="0" max="100" value="80"
+           oninput="setVolume(this.value)" onmousedown="event.stopPropagation()">
+    <div class="vol-footer">
+      <span class="vol-side"><i class="ti ti-volume-off"></i></span>
+      <span id="vol-pct">80%</span>
+      <span class="vol-side"><i class="ti ti-volume"></i></span>
+    </div>
+    <div class="vol-presets">
+      <button class="vol-preset" onclick="setVolume(0)">Mute</button>
+      <button class="vol-preset" onclick="setVolume(25)">25%</button>
+      <button class="vol-preset" onclick="setVolume(50)">50%</button>
+      <button class="vol-preset" onclick="setVolume(100)">Max</button>
+    </div>
+  </div>
+
+  <!-- ── Calendar Popup ── -->
+  <div id="calendar-popup"></div>
+
+  <!-- ── Taskbar ── -->
+  <nav id="tbar" aria-label="Taskbar">
+
+    <!-- Start button -->
+    <button class="tbb" id="smbtn" onclick="toggleStartMenu()"
+            aria-label="Open Start Menu" aria-expanded="false" aria-controls="smenu"
+            style="width:40px;padding:0;justify-content:center;flex-shrink:0;border-radius:10px">
+      <img src="assets/icons/lumiIcon.png" alt="LumiOS"
+           style="width:24px;height:24px;object-fit:contain"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <i class="ti ti-layout-grid" style="font-size:17px;display:none" aria-hidden="true"></i>
+    </button>
+
+    <div class="tbar-sep"></div>
+
+    <!-- Pinned app dock -->
+    <div id="tb-dock" aria-label="Pinned apps"></div>
+
+    <div class="tbar-sep"></div>
+
+    <!-- Running app buttons -->
+    <div id="tbapps" role="list" aria-label="Open windows"></div>
+
+    <!-- System tray -->
+    <div class="tbar-tray">
+      <button class="tray-btn" id="wifi-btn" onclick="toggleWifi()" title="Wi-Fi">
+        <i id="wifi-icon" class="ti ti-wifi"></i>
+      </button>
+      <button class="tray-btn" id="vol-btn" onclick="toggleVolume()" title="Volume">
+        <i id="volume-icon" class="ti ti-volume"></i>
+      </button>
+      <button class="tray-btn tray-clock-btn" onclick="showCalendar()" title="Calendar">
+        <span id="tclk">--:--</span>
+        <span id="tdate" class="tray-date">-- --- ----</span>
+      </button>
+    </div>
+
+  </nav>
+
+  <!-- ── Start Menu ── -->
+  <div id="smenu" role="dialog" aria-label="Start Menu" aria-modal="true">
+    <div class="smenu-header">
+      <i class="ti ti-layout-grid" aria-hidden="true"></i>
+      LumiOS
+    </div>
+    <input id="srch" type="search" placeholder="Search apps&hellip;"
+           aria-label="Search apps" oninput="filterStartMenu(this.value)" autocomplete="off"/>
+    <div class="smenu-section-label">ALL APPS</div>
+    <div id="smgrid" role="list"></div>
+    <div class="smenu-footer">
+      <span class="smenu-user">
+        <i class="ti ti-user" aria-hidden="true"></i> lumi-user
+      </span>
+      <button class="smenu-signout" onclick="notify('Sign-out is a demo feature')">
+        <i class="ti ti-power" aria-hidden="true"></i> Sign out
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Context Menu ── -->
+<div id="ctx-menu" role="menu" aria-label="Desktop context menu">
+  
+  <div class="ctx-section">
+    <div class="ctx-item" role="menuitem" onclick="ctxAction('wallpaper')">
+      <i class="ti ti-photo" aria-hidden="true"></i> Change Wallpaper
+    </div>
+    <div class="ctx-item" role="menuitem" onclick="ctxAction('sort')">
+      <i class="ti ti-arrows-sort" aria-hidden="true"></i> Sort Icons
+    </div>
+  </div>
+  <div class="ctx-divider"></div>
+  <div class="ctx-section">
+    <div class="ctx-item" role="menuitem" onclick="ctxAction('new-note')">
+      <i class="ti ti-notebook" aria-hidden="true"></i> New Note
+    </div>
+    <div class="ctx-item" role="menuitem" onclick="ctxAction('new-folder')">
+      <i class="ti ti-folder-plus" aria-hidden="true"></i> New Folder
+    </div>
+  </div>
+  <div class="ctx-divider"></div>
+  <div class="ctx-section">
+    <div class="ctx-item" role="menuitem" onclick="ctxAction('settings')">
+      <i class="ti ti-settings" aria-hidden="true"></i> Settings
+    </div>
+    <div class="ctx-item" role="menuitem" onclick="ctxAction('refresh')">
+      <i class="ti ti-refresh" aria-hidden="true"></i> Refresh Desktop
+    </div>
+  </div>
+  <div class="ctx-item" role="menuitem" onclick="ctxAction('widgets')">
+  <i class="ti ti-layout-dashboard" aria-hidden="true"></i> Desktop Widgets
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
