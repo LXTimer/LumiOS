@@ -9,6 +9,7 @@
 const APPS = [
   { id:'welcome',    name:'Welcome',    ic:'ti-sparkles',  gr:'linear-gradient(135deg,#9333ea,#e11d9c)', w:472, h:328 },
   { id:'clock',      name:'Clock',      ic:'ti-clock',     gr:'linear-gradient(135deg,#f59e0b,#f97316)', w:380, h:420 },
+  { id:'calendar',   name:'Calendar',   ic:'ti-calendar',  gr:'linear-gradient(135deg,#06b6d4,#3b82f6)', w:580, h:460 },
   { id:'calculator', name:'Calculator', ic:'ti-calculator', gr:'linear-gradient(135deg,#0077ff,#00c2ff)', w:252, h:382 },
   { id:'notes',      name:'Notes',      ic:'ti-notebook',   gr:'linear-gradient(135deg,#f59e0b,#fbbf24)', w:374, h:308 },
   { id:'terminal',   name:'Terminal',   ic:'ti-terminal-2', gr:'linear-gradient(135deg,#059669,#34d399)', w:442, h:286 },
@@ -40,7 +41,7 @@ const OS_SETTINGS = {
 // ─────────────────────────────────────────────
 //  Particle System
 // ─────────────────────────────────────────────
-const PARTICLE_COUNT = 55;
+const PARTICLE_COUNT = 100;
 let particles = [];
 let particleRaf = null;
 let particleCanvas = null;
@@ -79,10 +80,8 @@ function makeParticle(randomY = false) {
   const H = window.innerHeight;
   return {
     x:       Math.random() * W,
-    // randomY = true on init so they're spread across the screen,
-    // false on respawn so they always enter from the bottom
     y:       randomY ? Math.random() * H : H + 4,
-    r:       0.6 + Math.random() * 1.2,      // radius 0.6–1.8px
+    r:       0.8 + Math.random() * 2.2,      // radius
     opacity: 0.1 + Math.random() * 0.45,     // subtle range
     speed:   0.12 + Math.random() * 0.28,    // very slow upward drift
     drift:   (Math.random() - 0.5) * 0.08,  // gentle horizontal wander
@@ -185,16 +184,43 @@ function init() {
 //  Clock
 // ─────────────────────────────────────────────
 function updateClock() {
-  const now      = new Date();
-  const time     = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const trayDate = now.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
-  const bigDate  = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  const now = new Date();
+
+  const time = now.toLocaleTimeString('en-CA', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  const trayDate = now.toLocaleDateString('en-CA', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+
+  const bigDate = now.toLocaleDateString('en-CA', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  });
 
   const el = id => document.getElementById(id);
-  if (el('tclk'))    el('tclk').textContent    = time;
-  if (el('tdate'))   el('tdate').textContent   = trayDate;
-  if (el('big-time')) el('big-time').textContent = time;
-  if (el('big-date')) el('big-date').textContent = bigDate;
+
+  if (el('tclk')) {
+    el('tclk').textContent = time;
+  }
+
+  if (el('tdate')) {
+    el('tdate').textContent = trayDate;
+  }
+
+  if (el('big-time')) {
+    el('big-time').textContent = time;
+  }
+
+  if (el('big-date')) {
+    el('big-date').textContent = bigDate;
+  }
 }
 
 // ─────────────────────────────────────────────
@@ -406,37 +432,6 @@ function openApp(id) {
   spawnWindow('w' + Date.now(), app, 40 + Math.random() * 160, 20 + Math.random() * 80);
 }
 
-function spawnWindow(wid, app, x, y) {
-  const el = document.createElement('div');
-  el.id = wid; el.className = 'win foc';
-  el.style.cssText = `width:${app.w}px;height:${app.h}px;left:${Math.round(x)}px;top:${Math.round(y)}px;z-index:${++zz}`;
-  el.innerHTML = `
-    <div class="wtb" onmousedown="beginDrag(event,'${wid}')" style="--app-gr:${app.gr}">
-      <div class="wbtns">
-        <button class="wb wbc" onclick="closeWindow('${wid}')"    title="Close"></button>
-        <button class="wb wbm" onclick="minimizeWindow('${wid}')" title="Minimize"></button>
-        <button class="wb wbx" onclick="maximizeWindow('${wid}')" title="Maximize"></button>
-      </div>
-      <div class="wtb-meta">
-        <div class="wtb-app-icon" style="background:${app.gr}">
-          <i class="ti ${app.ic}" style="font-size:10px;color:white" aria-hidden="true"></i>
-        </div>
-        <span class="wtb-title">${app.name}</span>
-      </div>
-    </div>
-    <div class="wc">${buildAppContent(app.id)}</div>
-    ${['e','w','s','n','se','sw','ne','nw'].map(d =>
-      `<div class="rh ${d}" onmousedown="beginResize(event,'${wid}','${d}')"></div>`
-    ).join('')}
-  `;
-  el.addEventListener('mousedown', () => focusWindow(wid));
-  document.getElementById('wlayer').appendChild(el);
-  wins[wid] = { id: wid, el, aid: app.id, min: false, max: false, sv: null };
-  addTaskbarButton(wid, app);
-  focusWindow(wid);
-  setTimeout(() => postInitApp(app.id, wid), 90);
-}
-
 function focusWindow(wid) {
   if (aw === wid) return;
   if (aw && wins[aw]) wins[aw].el.classList.remove('foc');
@@ -509,9 +504,17 @@ function maximizeWindow(wid) {
     w.el.style.width = s.w+'px'; w.el.style.height = s.h+'px';
     w.max = false;
   } else {
-    w.sv = { l:parseInt(w.el.style.left)||0, t:parseInt(w.el.style.top)||0,
-             w:w.el.offsetWidth, h:w.el.offsetHeight };
-    w.el.style.left='0'; w.el.style.top='0';
+    // Capture geometry from actual rendered position, relative to the layer —
+    // not from parsing inline style strings, which can be stale or unitless.
+    const layerRect = lyr.getBoundingClientRect();
+    const winRect   = w.el.getBoundingClientRect();
+    w.sv = {
+      l: winRect.left - layerRect.left,
+      t: winRect.top  - layerRect.top,
+      w: w.el.offsetWidth,
+      h: w.el.offsetHeight,
+    };
+    w.el.style.left = '0px'; w.el.style.top = '0px';
     w.el.style.width = lyr.clientWidth+'px'; w.el.style.height = lyr.clientHeight+'px';
     w.max = true;
   }
@@ -546,7 +549,16 @@ function beginDrag(e, wid) {
   if (e.button !== 0 || e.target.closest('.wbtns')) return;
   e.preventDefault();
   const w = wins[wid]; if (!w || w.max) return;
-  drag = { t:'drag', wid, ox:e.clientX-parseInt(w.el.style.left||0), oy:e.clientY-parseInt(w.el.style.top||0) };
+  const lyr = document.getElementById('wlayer');
+  const layerRect = lyr.getBoundingClientRect();
+  const winRect   = w.el.getBoundingClientRect();
+  // Offset captured from real rendered position, not parsed inline style strings
+  drag = {
+    t: 'drag',
+    wid,
+    ox: e.clientX - (winRect.left - layerRect.left),
+    oy: e.clientY - (winRect.top  - layerRect.top),
+  };
 }
 
 function beginResize(e, wid, dir) {
@@ -586,6 +598,7 @@ function buildAppContent(id) {
   switch (id) {
     case 'welcome':    return buildWelcome();
     case 'clock':      return buildClock();
+    case 'calendar':   return buildCalendarApp();
     case 'calculator': return buildCalculator();
     case 'notes':      return buildNotes();
     case 'terminal':   return buildTerminal();
@@ -603,6 +616,7 @@ function postInitApp(aid, wid) {
   }
   if (aid === 'settings') startUptimeTicker();
   if (aid === 'clock')    startClockApp(wid);
+  if (aid === 'calendar') initCalendarApp(wid);
   if (aid === 'files')    filesInit(wid);
   if (aid === 'widgets') refreshWidgetsApp();
 }
@@ -954,6 +968,272 @@ function renderAlarmsList() {
   `).join('');
 }
 
+
+// ─────────────────────────────────────────────
+//  APP: Calendar  (Month view + Agenda, with events)
+// ─────────────────────────────────────────────
+
+// Event store: { 'YYYY-MM-DD': [{id, title, time, color}, ...] }
+let CAL_EVENTS = {};
+let calEventsSeeded = false;
+const CAL_COLORS = ['#6366f1','#ec4899','#10b981','#f97316','#0ea5e9','#f59e0b'];
+
+// Per-window-instance view state (single Calendar window at a time, like Clock/Settings)
+let capp = { year: 0, month: 0, selectedDate: null, tab: 'month' };
+
+function calKey(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+function calParse(key) {
+  const [y, m, d] = key.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+function cappEsc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function cappFormatTime(t) {
+  const [h, m] = (t || '09:00').split(':').map(Number);
+  const period = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 === 0 ? 12 : h % 12;
+  return `${h12}:${String(m).padStart(2,'0')} ${period}`;
+}
+
+function calSeedEvents() {
+  if (calEventsSeeded) return;
+  calEventsSeeded = true;
+  const now = new Date();
+  const addDays = n => { const d = new Date(now); d.setDate(d.getDate() + n); return d; };
+  CAL_EVENTS[calKey(now)] = [
+    { id: 1, title: 'Team Standup',  time: '09:00', color: CAL_COLORS[0] },
+    { id: 2, title: 'Design Review', time: '14:30', color: CAL_COLORS[2] },
+  ];
+  CAL_EVENTS[calKey(addDays(2))]  = [{ id: 3, title: 'Dentist Appointment', time: '11:00', color: CAL_COLORS[1] }];
+  CAL_EVENTS[calKey(addDays(5))]  = [{ id: 4, title: 'Project Deadline',   time: '17:00', color: CAL_COLORS[3] }];
+  CAL_EVENTS[calKey(addDays(-3))] = [{ id: 5, title: 'Budget Review',      time: '10:00', color: CAL_COLORS[4] }];
+}
+
+function buildCalendarApp() {
+  return `
+    <div class="capp-wrap">
+      <div class="capp-tabs">
+        <button class="capp-tab active" data-tab="month" onclick="cappSwitchTab('month',this)">
+          <i class="ti ti-calendar"></i> Month
+        </button>
+        <button class="capp-tab" data-tab="agenda" onclick="cappSwitchTab('agenda',this)">
+          <i class="ti ti-list-details"></i> Agenda
+        </button>
+      </div>
+      <div class="capp-content">
+        <div id="capp-month-panel" class="capp-panel active"></div>
+        <div id="capp-agenda-panel" class="capp-panel"></div>
+      </div>
+    </div>`;
+}
+
+function initCalendarApp(wid) {
+  calSeedEvents();
+  const now = new Date();
+  capp.year = now.getFullYear();
+  capp.month = now.getMonth();
+  capp.selectedDate = calKey(now);
+  capp.tab = 'month';
+  cappRenderMonth();
+  cappRenderAgenda();
+}
+
+function cappSwitchTab(tab, el) {
+  capp.tab = tab;
+  el.closest('.capp-tabs').querySelectorAll('.capp-tab').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  el.closest('.capp-wrap').querySelectorAll('.capp-panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById(`capp-${tab}-panel`);
+  if (panel) panel.classList.add('active');
+  if (tab === 'agenda') cappRenderAgenda();
+}
+
+// ── Month view ──
+function cappRenderMonth() {
+  const panel = document.getElementById('capp-month-panel');
+  if (!panel) return;
+
+  const now = new Date();
+  const firstDay    = new Date(capp.year, capp.month, 1).getDay();
+  const daysInMonth = new Date(capp.year, capp.month + 1, 0).getDate();
+
+  let cells = '';
+  for (let i = 0; i < firstDay; i++) cells += '<div class="capp-cell capp-cell-empty"></div>';
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateObj    = new Date(capp.year, capp.month, d);
+    const key        = calKey(dateObj);
+    const isToday    = d === now.getDate() && capp.month === now.getMonth() && capp.year === now.getFullYear();
+    const isSelected = key === capp.selectedDate;
+    const evts       = CAL_EVENTS[key] || [];
+    const dots       = evts.slice(0, 3).map(e => `<span class="capp-dot" style="background:${e.color}"></span>`).join('');
+    cells += `
+      <div class="capp-cell${isToday ? ' capp-today' : ''}${isSelected ? ' capp-selected' : ''}" onclick="cappSelectDay('${key}')">
+        <span class="capp-cell-num">${d}</span>
+        ${evts.length ? `<div class="capp-dots">${dots}</div>` : ''}
+      </div>`;
+  }
+
+  panel.innerHTML = `
+    <div class="capp-month-layout">
+      <div class="capp-grid-col">
+        <div class="capp-grid-header">
+          <button class="app-btn" onclick="cappNavMonth(-1)" title="Previous month"><i class="ti ti-chevron-left"></i></button>
+          <span class="capp-grid-title">${MONTH_NAMES[capp.month]} ${capp.year}</span>
+          <button class="app-btn" onclick="cappNavMonth(1)" title="Next month"><i class="ti ti-chevron-right"></i></button>
+          <button class="app-btn capp-today-btn" onclick="cappGoToday()">Today</button>
+        </div>
+        <div class="capp-day-names">${DAY_NAMES.map(d => `<div>${d}</div>`).join('')}</div>
+        <div class="capp-grid">${cells}</div>
+      </div>
+      <div class="capp-detail-col" id="capp-detail-col"></div>
+    </div>`;
+
+  cappRenderDetail();
+}
+
+function cappRenderDetail() {
+  const col = document.getElementById('capp-detail-col');
+  if (!col) return;
+
+  const key     = capp.selectedDate;
+  const dateObj = calParse(key);
+  const label   = dateObj.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
+  const evts    = (CAL_EVENTS[key] || []).slice().sort((a, b) => a.time.localeCompare(b.time));
+
+  col.innerHTML = `
+    <div class="capp-detail-date">${label}</div>
+    <div class="capp-detail-list">
+      ${evts.length ? evts.map(e => `
+        <div class="capp-event-item">
+          <span class="capp-event-dot" style="background:${e.color}"></span>
+          <div class="capp-event-info">
+            <div class="capp-event-title">${cappEsc(e.title)}</div>
+            <div class="capp-event-time">${cappFormatTime(e.time)}</div>
+          </div>
+          <button class="capp-event-del" onclick="cappDeleteEvent('${key}',${e.id})" title="Delete">
+            <i class="ti ti-x"></i>
+          </button>
+        </div>`).join('') : '<div class="capp-no-events">No events on this day</div>'}
+    </div>
+    <div class="capp-add-form">
+      <input type="text" class="capp-input" id="capp-new-title" placeholder="Event title…"
+             onmousedown="event.stopPropagation()" onkeydown="if(event.key==='Enter')cappAddEvent()">
+      <div class="capp-add-row">
+        <input type="time" class="capp-input capp-input-time" id="capp-new-time" value="09:00"
+               onmousedown="event.stopPropagation()">
+        <div class="capp-color-picker" id="capp-new-color-picker">
+          ${CAL_COLORS.map((c, i) => `<div class="capp-color-dot${i === 0 ? ' capp-color-active' : ''}" style="background:${c}" data-color="${c}" onclick="cappPickColor(this)"></div>`).join('')}
+        </div>
+      </div>
+      <button class="settings-btn" style="width:100%;justify-content:center;margin-top:4px" onclick="cappAddEvent()">
+        <i class="ti ti-plus" style="font-size:12px"></i> Add Event
+      </button>
+    </div>`;
+}
+
+function cappSelectDay(key) {
+  capp.selectedDate = key;
+  cappRenderMonth();
+}
+
+function cappNavMonth(dir) {
+  capp.month += dir;
+  if (capp.month < 0)  { capp.month = 11; capp.year--; }
+  if (capp.month > 11) { capp.month = 0;  capp.year++; }
+  cappRenderMonth();
+}
+
+function cappGoToday() {
+  const now = new Date();
+  capp.year = now.getFullYear();
+  capp.month = now.getMonth();
+  capp.selectedDate = calKey(now);
+  cappRenderMonth();
+}
+
+function cappPickColor(el) {
+  el.parentElement.querySelectorAll('.capp-color-dot').forEach(d => d.classList.remove('capp-color-active'));
+  el.classList.add('capp-color-active');
+}
+
+function cappAddEvent() {
+  const titleInput = document.getElementById('capp-new-title');
+  const timeInput  = document.getElementById('capp-new-time');
+  const colorEl    = document.querySelector('#capp-new-color-picker .capp-color-active');
+  const title = (titleInput?.value || '').trim();
+  if (!title) { titleInput?.focus(); return; }
+
+  const key = capp.selectedDate;
+  if (!CAL_EVENTS[key]) CAL_EVENTS[key] = [];
+  CAL_EVENTS[key].push({
+    id: Date.now(),
+    title,
+    time: timeInput?.value || '09:00',
+    color: colorEl?.dataset.color || CAL_COLORS[0],
+  });
+
+  notify(`Added "${title}"`);
+  cappRenderMonth();
+  cappRenderAgenda();
+}
+
+function cappDeleteEvent(key, id) {
+  if (!CAL_EVENTS[key]) return;
+  CAL_EVENTS[key] = CAL_EVENTS[key].filter(e => e.id !== id);
+  if (CAL_EVENTS[key].length === 0) delete CAL_EVENTS[key];
+  notify('Event deleted');
+  cappRenderMonth();
+  cappRenderAgenda();
+}
+
+// ── Agenda view ──
+function cappRenderAgenda() {
+  const panel = document.getElementById('capp-agenda-panel');
+  if (!panel) return;
+
+  const keys = Object.keys(CAL_EVENTS).sort(); // 'YYYY-MM-DD' sorts chronologically as text
+  if (keys.length === 0) {
+    panel.innerHTML = `<div class="capp-agenda-empty"><i class="ti ti-calendar-off"></i><div>No upcoming events</div></div>`;
+    return;
+  }
+
+  const todayKey = calKey(new Date());
+  panel.innerHTML = keys.map(key => {
+    const dateObj = calParse(key);
+    const label   = dateObj.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
+    const isToday = key === todayKey;
+    const evts    = CAL_EVENTS[key].slice().sort((a, b) => a.time.localeCompare(b.time));
+    return `
+      <div class="capp-agenda-group">
+        <div class="capp-agenda-date${isToday ? ' capp-agenda-today' : ''}">${label}${isToday ? ' · Today' : ''}</div>
+        ${evts.map(e => `
+          <div class="capp-agenda-item" onclick="cappJumpTo('${key}')">
+            <span class="capp-event-dot" style="background:${e.color}"></span>
+            <div class="capp-event-info">
+              <div class="capp-event-title">${cappEsc(e.title)}</div>
+              <div class="capp-event-time">${cappFormatTime(e.time)}</div>
+            </div>
+          </div>`).join('')}
+      </div>`;
+  }).join('');
+}
+
+function cappJumpTo(key) {
+  const d = calParse(key);
+  capp.year = d.getFullYear();
+  capp.month = d.getMonth();
+  capp.selectedDate = key;
+
+  const wrap = document.querySelector('.capp-wrap');
+  if (wrap) {
+    wrap.querySelectorAll('.capp-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === 'month'));
+    wrap.querySelectorAll('.capp-panel').forEach(p => p.classList.toggle('active', p.id === 'capp-month-panel'));
+  }
+  cappRenderMonth();
+}
 
 // ─────────────────────────────────────────────
 //  APP: Calculator
@@ -1910,7 +2190,7 @@ function spawnWindow(wid, app, x, y) {
   el.id = wid; el.className = 'win foc';
   el.style.cssText = `width:${app.w}px;height:${app.h}px;left:${Math.round(x)}px;top:${Math.round(y)}px;z-index:${++zz}`;
   el.innerHTML = `
-    <div class="wtb" onmousedown="beginDrag(event,'${wid}')">
+    <div class="wtb" onmousedown="beginDrag(event,'${wid}')" style="--app-gr:${app.gr}">
       <div class="wbtns">
         <button class="wb wbc" onclick="closeWindow('${wid}')"    title="Close"></button>
         <button class="wb wbm" onclick="minimizeWindow('${wid}')" title="Minimize"></button>
@@ -1939,27 +2219,6 @@ function spawnWindow(wid, app, x, y) {
   addTaskbarButton(wid, app);
   focusWindow(wid);
   setTimeout(() => postInitApp(app.id, wid), 90);
-}
-
-function closeWindow(wid) {
-  const w = wins[wid]; if (!w) return;
-
-  // Remove from state immediately so it can't be interacted with
-  delete wins[wid];
-  if (aw === wid) aw = null;
-  const btn = document.getElementById('tba-' + wid);
-  if (btn) btn.remove();
-
-  const animationsOff = document.getElementById('os').classList.contains('no-animations');
-
-  if (animationsOff) {
-    w.el.remove();
-    return;
-  }
-
-  // ── Animate out, then remove element ──
-  w.el.classList.add('win-closing');
-  w.el.addEventListener('animationend', () => w.el.remove(), { once: true });
 }
 
 // ─────────────────────────────────────────────
@@ -2028,25 +2287,6 @@ function ctxAction(action) {
 }
 
 // ─────────────────────────────────────────────
-//  Notifications
-// ─────────────────────────────────────────────
-function notify(msg) {
-  if (!OS_SETTINGS.notifications) return;
-  const container = document.getElementById('notif-container');
-  const notif = document.createElement('div');
-  notif.className = 'notification';
-  notif.textContent = msg;
-  container.appendChild(notif);
-  setTimeout(() => {
-    notif.classList.add('visible');
-    setTimeout(() => {
-      notif.classList.remove('visible');
-      setTimeout(() => notif.remove(), 300);
-    }, OS_SETTINGS.notifDuration);
-  }, 100);
-}
-
-// ─────────────────────────────────────────────
 // Particles
 // ─────────────────────────────────────────────
 function applyParticles(on) {
@@ -2060,7 +2300,7 @@ function applyParticles(on) {
 const WIDGET_DEFS = [
   { id:'clock-digital', label:'Digital Clock', ic:'ti-clock',    gr:'linear-gradient(135deg,#f59e0b,#f97316)', relatedApp:'clock'    },
   { id:'clock-analog',  label:'Analog Clock',  ic:'ti-clock-2',  gr:'linear-gradient(135deg,#f59e0b,#f97316)', relatedApp:'clock'    },
-  { id:'calendar',      label:'Calendar',      ic:'ti-calendar',  gr:'linear-gradient(135deg,#0ea5e9,#6366f1)', relatedApp:null       },
+  { id:'calendar',      label:'Calendar',      ic:'ti-calendar',  gr:'linear-gradient(135deg,#0ea5e9,#6366f1)', relatedApp:'calendar' },
   { id:'weather',       label:'Weather',       ic:'ti-cloud',     gr:'linear-gradient(135deg,#0ea5e9,#34d399)', relatedApp:null       },
   { id:'notes-peek',    label:'Notes Peek',    ic:'ti-notebook',  gr:'linear-gradient(135deg,#f59e0b,#fbbf24)', relatedApp:'notes'    },
   { id:'system-stats',  label:'System Stats',  ic:'ti-cpu',       gr:'linear-gradient(135deg,#059669,#34d399)', relatedApp:'settings' },
