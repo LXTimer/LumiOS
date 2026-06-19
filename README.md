@@ -19,8 +19,7 @@ LumiOS creates a web desktop just works the same as a normal desktop: draggable 
 + Desktop widgets
 
 ## Apps
-| App | Descript
-ion |
+| App | Description |
 |---|---|
 | **Clock** | Analog/digital clock, stopwatch, and alarms |
 | **Calendar** | Month view, event creation, and agenda list |
