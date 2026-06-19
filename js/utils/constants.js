@@ -11,7 +11,7 @@ const APPS = [
   { id:'notes',      name:'Notes',      ic:'ti-notebook',   gr:'linear-gradient(135deg,#f59e0b,#fbbf24)', w:374, h:308 },
   { id:'terminal',   name:'Terminal',   ic:'ti-terminal-2', gr:'linear-gradient(135deg,#059669,#34d399)', w:442, h:286 },
   { id:'files',      name:'Files',      ic:'ti-folder',     gr:'linear-gradient(135deg,#e11d48,#f97316)', w:420, h:325 },
-  { id:'settings',   name:'Settings',   ic:'ti-settings',   gr:'linear-gradient(135deg,#0ea5e9,#6366f1)', w:420, h:390 },
+  { id:'settings',   name:'Settings',   ic:'ti-settings',   gr:'linear-gradient(135deg,#0ea5e9,#6366f1)', w:825, h:488 },
   { id:'widgets', name:'Widgets', ic:'ti-layout-dashboard', gr:'linear-gradient(135deg,#7c3aed,#0ea5e9)', w:460, h:400 },
 ];
 
@@ -20,18 +20,19 @@ const APPS = [
 // ─────────────────────────────────────────────
 const OS_SETTINGS = {
   particles: true,
-  transparency:  true,
-  darkMode:      true,
-  animations:    true,
-  accent:        '#6366f1',
-  accentRgb:     '99,102,241',
-  brightness:    100,
+  transparency: true,
+  darkMode: true,
+  animations: true,
+  accent: '#6366f1',
+  accentRgb: '99,102,241',
+  brightness: 100,
+  taskbarOpacity: 80,   // ← Add this (default 80%)
   notifications: true,
   notifDuration: 3200,
-  autoLock:      false,
-  screensaver:   5,
+  autoLock: false,
+  screensaver: 5,
   widgets: true,
-  wallpaper:     'default',
+  wallpaper: 'default',
 };
 
 // ─────────────────────────────────────────────
@@ -77,7 +78,7 @@ const WALLPAPERS = [
     id: 'ember',
     label: 'Ember',
     css: `
-      radial-gradient(ellipse 55% 55% at 15% 85%, rgba(220,60,10,0.5), transparent),
+      radial-gradient(ellipse 36% 48% at 15% 85%, rgba(220,60,10,0.5), transparent),
       radial-gradient(ellipse 45% 45% at 85% 20%, rgba(200,120,0,0.35), transparent),
       linear-gradient(148deg, #0e0500, #1a0800 45%, #0a0300)
     `,
@@ -99,5 +100,20 @@ const WALLPAPERS = [
       radial-gradient(ellipse 45% 45% at 75% 70%, rgba(120,0,180,0.35), transparent),
       linear-gradient(148deg, #100008, #1a000e 45%, #0d0008)
     `,
+  },
+  {
+    id: 'wallpaper_nature_1',
+    label: 'Nature 1',
+    css: `url('assets/wallpaper/wallpaper_nature_1.jpg') center/cover no-repeat`,
+  },
+  {
+    id: 'wallpaper_nature_2',
+    label: 'Nature 2',
+    css: `url('assets/wallpaper/wallpaper_nature_2.jpg') center/cover no-repeat`,
+  },
+  {
+    id: 'wallpaper_nature_3',
+    label: 'Nature 3',
+    css: `url('assets/wallpaper/wallpaper_nature_3.jpg') center/cover no-repeat`,
   },
 ];

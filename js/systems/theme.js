@@ -51,3 +51,12 @@ function applyWallpaper(id, customUrl) {
   osbg.style.background = wp.css;
   notify(`Wallpaper set to ${wp.label}`);
 }
+
+//────────────────────────────────────────────
+//  Taskbar Opacity
+//────────────────────────────────────────────
+function applyTaskbarOpacity(value) {
+  OS_SETTINGS.taskbarOpacity = parseInt(value, 10);
+  document.documentElement.style.setProperty('--tbar-opacity', OS_SETTINGS.taskbarOpacity / 100);
+}
+

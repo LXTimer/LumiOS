@@ -139,6 +139,19 @@ function panelDisplay() {
         <div class="settings-row-label">Brightness</div>
         <div class="settings-row-desc">Screen brightness level</div>
       </div>
+      <div class="settings-row">
+      <div class="settings-row-info">
+        <div class="settings-row-label">Taskbar Opacity</div>
+        <div class="settings-row-desc">Adjust taskbar transparency</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <i class="ti ti-eye-off" style="font-size:13px;color:rgba(255,255,255,.4)"></i>
+        <input type="range" class="settings-slider" min="10" max="100" value="${OS_SETTINGS.taskbarOpacity}"
+               oninput="applyTaskbarOpacity(this.value);document.getElementById('tbo-val').textContent=this.value+'%'">
+        <i class="ti ti-eye" style="font-size:13px;color:rgba(255,255,255,.6)"></i>
+        <span id="tbo-val" style="font-size:11px;color:rgba(255,255,255,.5);width:32px">${OS_SETTINGS.taskbarOpacity}%</span>
+      </div>
+    </div>
       <div style="display:flex;align-items:center;gap:8px">
         <i class="ti ti-sun-low" style="font-size:13px;color:rgba(255,255,255,.4)"></i>
         <input type="range" class="settings-slider" min="20" max="100" value="${brt}"

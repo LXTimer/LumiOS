@@ -37,6 +37,7 @@ function init() {
   applyAccent(OS_SETTINGS.accent, false);
   renderDesktopIcons();
   renderStartMenuApps(APPS);
+  applyTaskbarOpacity(OS_SETTINGS.taskbarOpacity);
   renderPinnedDock();
   updateClock();
   setInterval(updateClock, 1000);
