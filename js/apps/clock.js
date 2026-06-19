@@ -23,7 +23,7 @@ function buildClock() {
             <canvas id="clock-canvas" width="280" height="280" style="max-width:100%;height:auto;border-radius:50%"></canvas>
           </div>
           <div class="clock-digital">
-            <div id="clock-time-display">00:00:00.000</div>
+            <div id="clock-time-display">00:00:00</div>
             <div id="clock-date-display">Loading...</div>
           </div>
         </div>
@@ -94,8 +94,7 @@ function updateClockDisplay() {
   const now = new Date();
   const timeStr = String(now.getHours()).padStart(2,'0') + ':' +
                   String(now.getMinutes()).padStart(2,'0') + ':' +
-                  String(now.getSeconds()).padStart(2,'0') + '.' +
-                  String(now.getMilliseconds()).padStart(3,'0');
+                  String(now.getSeconds()).padStart(2,'0');
   const dateStr = now.toLocaleDateString([], { weekday:'short', month:'short', day:'numeric' });
   const timeEl = document.getElementById('clock-time-display');
   const dateEl = document.getElementById('clock-date-display');
