@@ -26,7 +26,7 @@ const OS_SETTINGS = {
   accent: '#6366f1',
   accentRgb: '99,102,241',
   brightness: 100,
-  taskbarOpacity: 80,   // ← Add this (default 80%)
+  taskbarOpacity: 60, 
   notifications: true,
   notifDuration: 3200,
   autoLock: false,
