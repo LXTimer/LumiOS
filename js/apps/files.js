@@ -1,7 +1,7 @@
 "use strict";
 
 // ─────────────────────────────────────────────
-//  APP: Files — Virtual File System
+//  APP: Files
 // ─────────────────────────────────────────────
 const FS = {
   '/': { type: 'folder', children: ['home', 'usr', 'etc'] },

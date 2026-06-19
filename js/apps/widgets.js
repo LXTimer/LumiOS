@@ -4,12 +4,12 @@
 //  Widgets State
 // ─────────────────────────────────────────────
 const WIDGET_DEFS = [
-  { id:'clock-digital', label:'Digital Clock', ic:'ti-clock',    gr:'linear-gradient(135deg,#f59e0b,#f97316)', relatedApp:'clock'    },
-  { id:'clock-analog',  label:'Analog Clock',  ic:'ti-clock-2',  gr:'linear-gradient(135deg,#f59e0b,#f97316)', relatedApp:'clock'    },
-  { id:'calendar',      label:'Calendar',      ic:'ti-calendar',  gr:'linear-gradient(135deg,#0ea5e9,#6366f1)', relatedApp:'calendar' },
-  { id:'weather',       label:'Weather',       ic:'ti-cloud',     gr:'linear-gradient(135deg,#0ea5e9,#34d399)', relatedApp:null       },
-  { id:'notes-peek',    label:'Notes Peek',    ic:'ti-notebook',  gr:'linear-gradient(135deg,#f59e0b,#fbbf24)', relatedApp:'notes'    },
-  { id:'system-stats',  label:'System Stats',  ic:'ti-cpu',       gr:'linear-gradient(135deg,#059669,#34d399)', relatedApp:'settings' },
+  { id:'clock-digital', label:'Digital Clock', ic:'ti-clock',    gr:'linear-gradient(135deg,#f59e0b,#f97316)'},
+  { id:'clock-analog',  label:'Analog Clock',  ic:'ti-clock-2',  gr:'linear-gradient(135deg,#f59e0b,#f97316)'},
+  { id:'calendar',      label:'Calendar',      ic:'ti-calendar',  gr:'linear-gradient(135deg,#0ea5e9,#6366f1)'},
+  { id:'weather',       label:'Weather',       ic:'ti-cloud',     gr:'linear-gradient(135deg,#0ea5e9,#34d399)'},
+  { id:'notes-peek',    label:'Notes Peek',    ic:'ti-notebook',  gr:'linear-gradient(135deg,#f59e0b,#fbbf24)'},
+  { id:'system-stats',  label:'System Stats',  ic:'ti-cpu',       gr:'linear-gradient(135deg,#059669,#34d399)'},
 ];
 
 let WIDGET_INSTANCES = [

@@ -1,7 +1,7 @@
 "use strict";
 
 const TERM_CMDS = {
-  help:   () => 'Commands:\n  help        Show this help\n  whoami      Current user\n  date        Date & time\n  pwd         Working directory\n  ls          List files\n  uname       System info\n  echo [txt]  Print text\n  clear       Clear screen',
+  help:   () => 'Commands:\n  help        Show this help\n  whoami      Current user\n  date        Date & time\n  pwd         Working directory\n  ls          List files\n  uname       System info\n  echo [txt]  Print text\n  clear       Clear screen\n version       OS version\n apps       Show apps installed',
   whoami: () => 'lumi-user',
   date:   () => new Date().toLocaleString(),
   pwd:    () => '/home/lumi-user',
@@ -9,6 +9,9 @@ const TERM_CMDS = {
   uname:  () => 'LumiOS 1.0.0 LumiCore x86_64',
   echo:   args => args.join(' ') || '',
   clear:  () => '__CLEAR__',
+  cd:     () => '',
+  version: () => 'LumiOS 1.0.0',
+  apps:   () => 'Calculator \n Calendar \n Clock \n Files \n Notes \n Settings \n Wdigets'
 };
 
 function buildTerminal() {

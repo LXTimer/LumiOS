@@ -8,13 +8,14 @@ function buildWelcome() {
           <i class="ti ti-sparkles" aria-hidden="true"></i>
         </div>
         <div>
-          <div class="welcome-title">Welcome to LumiOS!!</div>
+          <div class="welcome-title">Welcome to LumiOS!!!</div>
           <div class="welcome-sub">A luminous computing experience</div>
         </div>
       </div>
       <div class="welcome-tips">
-        <strong>Tips:</strong> Click desktop icons to open apps &middot;
-        Explore different apps to help you familiarize with this OS!
+        <strong>Tips:</strong> Click desktop and taskbar icons to open apps &middot;
+        Use the system settings to adjust the look & feel of the OS &middot; Use the terminal to explore the OS &middot;
+        Explore different apps to help you familiarize with this aesthetic OS! 
       </div>
       <div class="welcome-grid">
         ${APPS.filter(a => a.id !== 'welcome').map(a => `

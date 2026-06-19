@@ -23,13 +23,13 @@ function buildClock() {
             <canvas id="clock-canvas" width="280" height="280" style="max-width:100%;height:auto;border-radius:50%"></canvas>
           </div>
           <div class="clock-digital">
-            <div id="clock-time-display">00:00:00</div>
+            <div id="clock-time-display">00:00:00.000</div>
             <div id="clock-date-display">Loading...</div>
           </div>
         </div>
         <div id="clock-stopwatch-panel" class="clock-panel">
           <div class="stopwatch-display">
-            <div id="stopwatch-time">00:00:00</div>
+            <div id="stopwatch-time">00:00:00:000</div>
           </div>
           <div class="stopwatch-controls">
             <button class="stopwatch-btn" id="stopwatch-start-btn" onclick="toggleStopwatch()">
@@ -81,7 +81,7 @@ function startClockApp(wid) {
   clockIntervals.main = setInterval(() => {
     drawAnalogClock();
     updateClockDisplay();
-  }, 1000);
+  }, 10);
 
   if (clockIntervals.stopwatch) clearInterval(clockIntervals.stopwatch);
   if (clockState.stopwatchRunning) {
@@ -94,7 +94,8 @@ function updateClockDisplay() {
   const now = new Date();
   const timeStr = String(now.getHours()).padStart(2,'0') + ':' +
                   String(now.getMinutes()).padStart(2,'0') + ':' +
-                  String(now.getSeconds()).padStart(2,'0');
+                  String(now.getSeconds()).padStart(2,'0') + '.' +
+                  String(now.getMilliseconds()).padStart(3,'0');
   const dateStr = now.toLocaleDateString([], { weekday:'short', month:'short', day:'numeric' });
   const timeEl = document.getElementById('clock-time-display');
   const dateEl = document.getElementById('clock-date-display');
@@ -163,11 +164,13 @@ function toggleStopwatch() {
 
 function updateStopwatch() {
   clockState.stopwatchMs += 10;
-  const totalSecs = Math.floor(clockState.stopwatchMs / 1000);
-  const hours = Math.floor(totalSecs / 3600);
-  const minutes = Math.floor((totalSecs % 3600) / 60);
-  const seconds = totalSecs % 60;
-  const display = String(hours).padStart(2,'0') + ':' + String(minutes).padStart(2,'0') + ':' + String(seconds).padStart(2,'0');
+  const totalMs = clockState.stopwatchMs;
+  const hours = Math.floor(totalMs / 3600000);
+  const minutes = Math.floor((totalMs % 3600000) / 60000);
+  const seconds = Math.floor((totalMs % 60000) / 1000);
+  const miliseconds = totalMs % 1000;
+  const display = String(hours).padStart(2,'0') + ':' + String(minutes).padStart(2,'0') + ':' +
+                  String(seconds).padStart(2,'0') + ':' + String(miliseconds).padStart(3,'0');
   const el = document.getElementById('stopwatch-time');
   if (el) el.textContent = display;
 }
@@ -179,7 +182,7 @@ function resetStopwatch() {
   const btn = document.getElementById('stopwatch-start-btn');
   if (btn) { btn.innerHTML = '<i class="ti ti-player-play"></i> Start'; btn.classList.remove('running'); }
   const display = document.getElementById('stopwatch-time');
-  if (display) display.textContent = '00:00:00';
+  if (display) display.textContent = '00:00:00:000';
   const lapsList = document.getElementById('stopwatch-laps-list');
   if (lapsList) lapsList.innerHTML = '<div style="text-align:center;padding:20px 0">No laps recorded</div>';
 }
