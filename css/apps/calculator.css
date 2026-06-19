@@ -1,0 +1,13 @@
+/* ── Calculator ── */
+.calc-wrap { padding: 13px; height: 100%; display: flex; flex-direction: column; gap: 10px; }
+.calc-display { background: rgba(0,0,0,0.36); border-radius: 9px; padding: 11px 14px; flex-shrink: 0; }
+#cexd { font-size: 11px; color: rgba(255,255,255,0.3); min-height: 15px; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#cvd { font-size: 33px; font-weight: 200; text-align: right; letter-spacing: -1px; line-height: 1.05; }
+.calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; flex: 1; }
+.calc-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.07); border-radius: 9px; color: white; font-size: 16px; cursor: pointer; font-family: inherit; transition: opacity 0.1s, transform 0.1s; }
+.calc-btn:hover { opacity: 0.75; }
+.calc-btn:active { transform: scale(0.93); }
+.calc-btn.fn { background: rgba(255,255,255,0.15); }
+.calc-btn.op { background: rgba(var(--accent-rgb), 0.52); }
+.calc-btn.eq { background: linear-gradient(135deg, rgba(16,160,80,0.7), rgba(10,120,60,0.7)); }
+.calc-btn.wide { grid-column: span 2; }

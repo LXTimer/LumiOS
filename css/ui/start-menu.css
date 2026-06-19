@@ -1,0 +1,88 @@
+/* ── Start Menu ── */
+#smenu {
+  position: absolute;
+  bottom: 56px;
+  left: 8px;
+  width: 272px;
+  background: rgba(10, 10, 28, 0.96);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  z-index: 10000;
+  padding: 14px;
+  display: none;
+}
+.smenu-header { font-size: 13px; font-weight: 500; margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+.smenu-header i { font-size: 14px; color: var(--accent-color); }
+#srch { width: 100%; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 7px; padding: 6px 10px; color: #fff; font-size: 12px; outline: none; font-family: inherit; margin-bottom: 10px; transition: border-color var(--transition-dur); }
+#srch:focus { border-color: rgba(var(--accent-rgb), 0.5); }
+.smenu-section-label { font-size: 10px; color: rgba(255, 255, 255, 0.26); letter-spacing: 0.7px; margin-bottom: 6px; }
+#smgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+.sm-app { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 7px 2px; border-radius: 9px; cursor: pointer; transition: background var(--transition-dur), transform var(--transition-dur); }
+.sm-app:hover { background: rgba(255, 255, 255, 0.09); transform: scale(1.04); }
+.sm-app:active { transform: scale(0.96); }
+.sm-app-icon { width: 40px; height: 40px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 19px; color: white; box-shadow: 0 3px 10px rgba(0,0,0,0.25); }
+.sm-app span { font-size: 10px; color: rgba(255,255,255,0.7); text-align: center; line-height: 1.2; }
+.smenu-footer { margin-top: 12px; padding-top: 9px; border-top: 1px solid rgba(255, 255, 255, 0.06); display: flex; align-items: center; justify-content: space-between; }
+.smenu-user { font-size: 11px; color: rgba(255,255,255,0.28); display: flex; align-items: center; gap: 5px; }
+.smenu-signout { background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 3px 8px; color: rgba(255,255,255,0.5); font-size: 11px; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 4px; transition: background var(--transition-dur); }
+.smenu-signout:hover { background: rgba(255,255,255,0.12); }
+
+/* Volume Popup */
+#volume-popup {
+  position: absolute;
+  bottom: 56px;
+  right: 120px;
+  width: 220px;
+  background: rgba(10, 10, 28, 0.96);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  z-index: 10000;
+  padding: 14px 16px;
+  display: none;
+}
+#volume-popup.visible { display: block; animation: popupIn 0.18s ease; }
+.vol-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; font-size: 13px; font-weight: 500; }
+.vol-header i { font-size: 16px; color: rgba(var(--accent-rgb), 0.9); }
+.vol-slider { width: 100%; -webkit-appearance: none; appearance: none; height: 5px; border-radius: 3px; background: rgba(255, 255, 255, 0.12); outline: none; cursor: pointer; margin-bottom: 8px; }
+.vol-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--accent-color); cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3); transition: transform 0.1s; }
+.vol-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.vol-slider::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--accent-color); cursor: pointer; border: none; }
+.vol-footer { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; font-size: 11px; color: rgba(255, 255, 255, 0.4); }
+#vol-pct { font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, 0.85); }
+.vol-side i { font-size: 13px; }
+.vol-presets { display: flex; gap: 6px; }
+.vol-preset { flex: 1; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 5px 0; color: rgba(255, 255, 255, 0.7); font-size: 11px; cursor: pointer; font-family: inherit; transition: background var(--transition-dur); }
+.vol-preset:hover { background: rgba(var(--accent-rgb), 0.25); border-color: rgba(var(--accent-rgb), 0.4); color: #fff; }
+
+/* Calendar Popup */
+#calendar-popup {
+  position: absolute;
+  bottom: 56px;
+  right: 10px;
+  width: 240px;
+  background: rgba(10, 10, 28, 0.96);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  z-index: 10000;
+  padding: 14px;
+  display: none;
+}
+#calendar-popup.visible { display: block; animation: popupIn 0.18s ease; }
+.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.cal-month { font-size: 13px; font-weight: 600; color: rgba(255, 255, 255, 0.9); }
+.cal-nav { width: 26px; height: 26px; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: background var(--transition-dur); }
+.cal-nav:hover { background: rgba(var(--accent-rgb), 0.25); }
+.cal-day-names { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 4px; }
+.cal-day-names div { text-align: center; font-size: 10px; color: rgba(255, 255, 255, 0.35); padding: 3px 0; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 11px; border-radius: 50%; cursor: pointer; color: rgba(255, 255, 255, 0.75); transition: background var(--transition-dur); }
+.cal-cell:not(.empty):hover { background: rgba(255, 255, 255, 0.1); }
+.cal-cell.empty { cursor: default; }
+.cal-cell.today { background: var(--accent-color); color: white; font-weight: 600; }
+.cal-footer { margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.07); font-size: 10px; color: rgba(255, 255, 255, 0.35); text-align: center; }

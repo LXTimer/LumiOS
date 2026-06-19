@@ -1,0 +1,75 @@
+/* ════════════════════════════════════════════
+   Desktop Widgets
+   ════════════════════════════════════════════ */
+#widget-layer { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+.dw { position: absolute; width: 180px; background: rgba(10, 10, 28, 0.72); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.10); border-radius: 14px; overflow: hidden; pointer-events: all; cursor: grab; animation: popupIn 0.2s cubic-bezier(0.34, 1.2, 0.64, 1); box-shadow: 0 8px 32px rgba(0,0,0,0.4); user-select: none; }
+.dw:active { cursor: grabbing; }
+.dw-header { display: flex; align-items: center; gap: 7px; padding: 8px 8px 6px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.dw-icon { width: 20px; height: 20px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.dw-icon i { font-size: 11px; color: white; }
+.dw-title { flex: 1; font-size: 10px; font-weight: 500; color: rgba(255,255,255,0.5); letter-spacing: 0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dw-actions { display: flex; align-items: center; gap: 2px; opacity: 0; transition: opacity 0.15s; }
+.dw:hover .dw-actions { opacity: 1; }
+.dw-close, .dw-related { width: 18px; height: 18px; border-radius: 4px; background: transparent; border: none; color: rgba(255,255,255,0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: background 0.12s, color 0.12s; }
+.dw-close:hover { background: rgba(239,68,68,0.3); color: #f87171; }
+.dw-related:hover { background: rgba(99,102,241,0.25); color: rgba(var(--accent-rgb),1); }
+.dw-close i, .dw-related i { font-size: 10px; pointer-events: none; }
+.dw-body { padding: 10px; }
+.dw-clock-time { font-size: 28px; font-weight: 100; letter-spacing: -1px; color: rgba(255,255,255,0.88); line-height: 1; margin-bottom: 4px; }
+.dw-clock-date { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 0.2px; }
+.dw-analog-canvas { display: block; margin: 0 auto; border-radius: 50%; background: rgba(0,0,0,0.25); }
+.dw-cal-month { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.7); margin-bottom: 8px; text-align: center; }
+.dw-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; }
+.dw-cal-head { font-size: 8px; color: rgba(255,255,255,0.28); padding-bottom: 3px; font-weight: 600; }
+.dw-cal-day { font-size: 9px; color: rgba(255,255,255,0.55); padding: 3px 1px; border-radius: 4px; cursor: default; transition: background 0.12s; }
+.dw-cal-day:hover { background: rgba(255,255,255,0.07); }
+.dw-cal-today { background: rgba(var(--accent-rgb), 0.45) !important; color: white; font-weight: 600; border-radius: 4px; }
+.dw:has(.dw-cal-grid) { width: 192px; }
+.dw-weather-main { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.dw-weather-icon { font-size: 28px; color: rgba(255,255,255,0.6); }
+.dw-weather-temp { font-size: 26px; font-weight: 100; color: rgba(255,255,255,0.85); }
+.dw-weather-desc { font-size: 10px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+.dw-weather-hint { font-size: 9px; color: rgba(255,255,255,0.22); }
+.dw-notes-peek { font-size: 11px; color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 8px; cursor: pointer; min-height: 40px; }
+.dw-notes-peek:hover { color: rgba(255,255,255,0.85); }
+.dw-notes-btn { display: flex; align-items: center; gap: 5px; font-size: 10px; background: rgba(var(--accent-rgb),0.15); border: 1px solid rgba(var(--accent-rgb),0.25); color: rgba(255,255,255,0.7); border-radius: 6px; padding: 4px 8px; cursor: pointer; font-family: inherit; transition: background 0.12s; }
+.dw-notes-btn:hover { background: rgba(var(--accent-rgb),0.28); color: white; }
+.dw-notes-btn i { font-size: 11px; }
+.dw-stat-row { display: flex; justify-content: space-between; font-size: 10px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.04); color: rgba(255,255,255,0.55); }
+.dw-stat-row span:last-child { color: rgba(255,255,255,0.8); }
+.dw-action-btn { width: 22px; height: 22px; border-radius: 5px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: background 0.12s, color 0.12s; }
+.dw-action-btn:hover { background: rgba(255,255,255,0.12); color: white; }
+.dw-action-danger:hover { background: rgba(239,68,68,0.2); color: #f87171; border-color: rgba(239,68,68,0.3); }
+.dw-action-btn i { font-size: 11px; pointer-events: none; }
+
+/* Widgets App */
+.widgets-wrap { height: 100%; display: flex; overflow: hidden; }
+.widgets-sidebar { width: 200px; flex-shrink: 0; background: rgba(0,0,0,0.2); border-right: 1px solid rgba(255,255,255,0.06); padding: 10px 8px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+.widgets-main { flex: 1; padding: 10px 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+.widgets-sidebar-label { font-size: 9px; font-weight: 600; letter-spacing: 0.6px; color: rgba(255,255,255,0.28); text-transform: uppercase; padding: 4px 4px 6px; }
+.widget-card { display: flex; align-items: center; gap: 8px; padding: 7px 6px; border-radius: 8px; border: 1px solid transparent; transition: background 0.12s, border-color 0.12s; cursor: default; }
+.widget-card:hover { background: rgba(255,255,255,0.06); }
+.widget-card-active { background: rgba(var(--accent-rgb),0.08); border-color: rgba(var(--accent-rgb),0.2); }
+.widget-card-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.widget-card-icon i { font-size: 14px; color: white; }
+.widget-card-info { flex: 1; min-width: 0; }
+.widget-card-name { font-size: 11px; color: rgba(255,255,255,0.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.widget-card-related { font-size: 9px; color: rgba(var(--accent-rgb), 0.8); margin-top: 2px; cursor: pointer; display: flex; align-items: center; gap: 3px; }
+.widget-card-related:hover { color: rgba(var(--accent-rgb), 1); }
+.widget-card-related i { font-size: 9px; }
+.widget-card-add { width: 22px; height: 22px; border-radius: 6px; background: rgba(var(--accent-rgb),0.18); border: 1px solid rgba(var(--accent-rgb),0.3); color: rgba(var(--accent-rgb),1); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; flex-shrink: 0; transition: background 0.12s, transform 0.1s; }
+.widget-card-add:hover { background: rgba(var(--accent-rgb),0.32); transform: scale(1.1); }
+.widget-card-add:active { transform: scale(0.92); }
+.widget-card-add i { font-size: 12px; pointer-events: none; }
+.widgets-instance-list { display: flex; flex-direction: column; gap: 4px; }
+.widget-instance-row { display: flex; align-items: center; gap: 8px; padding: 6px 6px; border-radius: 7px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); }
+.widget-instance-icon { width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.widget-instance-icon i { font-size: 11px; color: white; }
+.widget-instance-name { flex: 1; font-size: 11px; color: rgba(255,255,255,0.7); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.widget-instance-actions { display: flex; gap: 4px; }
+.widgets-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 4px 0; }
+.widgets-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.widgets-hint { margin-top: auto; padding: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; font-size: 10px; color: rgba(255,255,255,0.28); display: flex; align-items: center; gap: 6px; line-height: 1.4; }
+.widgets-hint i { font-size: 13px; flex-shrink: 0; }
+.widgets-empty { display: flex; align-items: center; gap: 7px; font-size: 11px; color: rgba(255,255,255,0.2); padding: 10px 4px; }
+.widgets-empty i { font-size: 16px; }

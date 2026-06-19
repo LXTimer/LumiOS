@@ -1,0 +1,33 @@
+/* ── Context Menu ── */
+#ctx-menu {
+  position: absolute;
+  width: 196px;
+  background: rgba(10, 10, 28, 0.96);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  z-index: 10001;
+  padding: 4px;
+  display: none;
+  pointer-events: none;
+}
+#ctx-menu.visible {
+  display: block;
+  pointer-events: all;
+  animation: popupIn 0.15s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+.ctx-section { padding: 2px 0; }
+.ctx-item { display: flex; align-items: center; gap: 9px; padding: 7px 10px; border-radius: 6px; font-size: 12px; color: rgba(255, 255, 255, 0.85); cursor: pointer; transition: background var(--transition-dur), color var(--transition-dur); user-select: none; }
+.ctx-item i { font-size: 14px; color: rgba(255, 255, 255, 0.45); flex-shrink: 0; transition: color var(--transition-dur); width: 16px; text-align: center; }
+.ctx-item:hover { background: rgba(var(--accent-rgb), 0.2); color: #fff; }
+.ctx-item:hover i { color: rgba(var(--accent-rgb), 0.9); }
+.ctx-item:active { transform: scale(0.98); }
+.ctx-divider { height: 1px; background: rgba(255, 255, 255, 0.07); margin: 3px 6px; }
+
+/* Light mode context menu */
+#os.light-mode #ctx-menu { background: rgba(235, 235, 252, 0.97); border-color: rgba(0, 0, 0, 0.12); color: #1a1a2e; }
+#os.light-mode .ctx-item { color: rgba(20, 20, 50, 0.85); }
+#os.light-mode .ctx-item i { color: rgba(20, 20, 50, 0.4); }
+#os.light-mode .ctx-item:hover { background: rgba(var(--accent-rgb), 0.12); color: #1a1a2e; }
+#os.light-mode .ctx-divider { background: rgba(0, 0, 0, 0.08); }

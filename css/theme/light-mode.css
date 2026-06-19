@@ -1,0 +1,32 @@
+/* ── Light Mode ── */
+#os.light-mode #osbg {
+  background:
+    radial-gradient(ellipse 55% 55% at 18% 22%, rgba(180,140,255,0.28), transparent),
+    radial-gradient(ellipse 45% 45% at 82% 78%, rgba(120,170,255,0.22), transparent),
+    linear-gradient(148deg, #dcdcf0, #e4e4f5 45%, #d8e4f4);
+}
+#os.light-mode #big-time { opacity: 0.28; text-shadow: none; }
+#os.light-mode #big-date { opacity: 0.35; color: #333; }
+#os.light-mode .dki-label { color: rgba(20,20,50,0.8); text-shadow: 0 1px 3px rgba(255,255,255,0.6); }
+#os.light-mode .win { background: rgba(240, 240, 255, 0.84); border-color: rgba(0,0,0,0.1); color: #1a1a2e; }
+#os.light-mode .win.foc { border-color: rgba(var(--accent-rgb), 0.4); }
+#os.light-mode .wtb { background: rgba(255,255,255,0.55); border-bottom-color: rgba(0,0,0,0.08); }
+#os.light-mode .wtb-title { color: #1a1a2e; }
+#os.light-mode #tbar { background: rgba(220, 220, 240, 0.88); border-top-color: rgba(0,0,0,0.1); }
+#os.light-mode .tbb { color: #1a1a2e; background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.1); }
+#os.light-mode .tbb:hover { background: rgba(0,0,0,0.1); }
+#os.light-mode .tbb.act { background: rgba(var(--accent-rgb), 0.18); border-color: rgba(var(--accent-rgb), 0.4); color: var(--accent-color); }
+#os.light-mode .tray-btn { color: rgba(30,30,60,0.75); }
+#os.light-mode #tclk { color: rgba(20,20,50,0.85); }
+#os.light-mode .tray-date { color: rgba(20,20,50,0.5); }
+#os.light-mode .tbar-sep { background: rgba(0,0,0,0.12); }
+#os.light-mode #smenu, #os.light-mode #volume-popup, #os.light-mode #calendar-popup { background: rgba(235, 235, 252, 0.97); border-color: rgba(0,0,0,0.12); color: #1a1a2e; }
+#os.light-mode .smenu-header { color: #1a1a2e; }
+#os.light-mode #srch { color: #1a1a2e; background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.12); }
+#os.light-mode .sm-app span { color: rgba(20,20,50,0.8); }
+#os.light-mode .cal-cell { color: rgba(20,20,50,0.75); }
+#os.light-mode .cal-month { color: rgba(20,20,50,0.9); }
+#os.light-mode .vol-header { color: #1a1a2e; }
+#os.light-mode #vol-pct { color: rgba(20,20,50,0.85); }
+#os.light-mode .vol-footer { color: rgba(20,20,50,0.5); }
+#os.light-mode .vol-preset { color: rgba(20,20,50,0.75); background: rgba(0,0,0,0.07); border-color: rgba(0,0,0,0.12); }

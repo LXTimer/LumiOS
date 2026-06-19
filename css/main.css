@@ -1,0 +1,600 @@
+/* =============================================
+   LumiOS — main.css (core, theme vars, base)
+   ============================================= */
+
+/* ── CSS Custom Properties (theme engine) ── */
+:root {
+  --accent-color:  #6366f1;
+  --accent-rgb:    99, 102, 241;
+  --accent-glass:  rgba(99, 102, 241, 0.55);
+  --accent-soft:   rgba(99, 102, 241, 0.18);
+  --win-blur:      blur(24px) saturate(160%);
+  --win-bg:        rgba(14, 14, 32, 0.74);
+  --tbar-bg:       rgba(8, 8, 22, 0.84);
+  --transition-dur:0.15s;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #000;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+}
+
+#os {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-size: 13px;
+  color: #fff;
+  user-select: none;
+}
+
+/* ── Desktop Background ── */
+#osbg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 55% at 18% 22%, rgba(90, 18, 200, 0.45), transparent),
+    radial-gradient(ellipse 45% 45% at 82% 78%, rgba(18, 60, 200, 0.35), transparent),
+    radial-gradient(ellipse 38% 38% at 62% 16%, rgba(200, 18, 85, 0.2),  transparent),
+    linear-gradient(148deg, #050510, #0a0520 45%, #040919);
+  transition: background var(--transition-dur);
+}
+
+/* ── Brightness overlay ── */
+#brightness-overlay {
+  position: absolute;
+  inset: 0;
+  background: black;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 99997;
+  transition: opacity 0.4s;
+}
+
+/* ── Desktop Clock ── */
+#desktop-clock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -63%);
+  text-align: center;
+  pointer-events: none;
+}
+
+#big-time {
+  font-size: 72px;
+  font-weight: 100;
+  letter-spacing: -3px;
+  opacity: 0.46;
+  text-shadow: 0 0 60px rgba(140, 80, 255, 0.3);
+}
+
+#big-date {
+  font-size: 15px;
+  opacity: 0.24;
+  letter-spacing: 0.5px;
+  margin-top: 6px;
+}
+
+/* ── Desktop Icons ── */
+#dkicons {
+  position: absolute;
+  top: 14px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dki {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 4px;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 72px;
+  text-align: center;
+  transition: background var(--transition-dur);
+}
+
+.dki:hover { background: rgba(255, 255, 255, 0.12); }
+.dki:active { transform: scale(0.95); }
+
+.dki-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.32s cubic-bezier(0.34, 2.56, 0.64, 1),
+              box-shadow 0.32s cubic-bezier(0.34, 2.56, 0.64, 1);
+}
+
+.dki:hover .dki-icon {
+  transform: scale(1.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.dki:active .dki-icon {
+  transition: transform 0.1s ease-out;
+  transform: scale(0.94);
+}
+
+.dki-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+  line-height: 1.2;
+}
+
+/* ── Windows Layer ── */
+#wlayer {
+  position: absolute;
+  inset: 0 0 48px 0;
+  overflow: hidden;
+}
+
+/* ── Window ── */
+.win {
+  position: absolute;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--win-bg);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+              inset 0 0 0 0.5px rgba(255, 255, 255, 0.05);
+  min-width: 200px;
+  min-height: 130px;
+  backdrop-filter: var(--win-blur);
+  -webkit-backdrop-filter: var(--win-blur);
+  transition: box-shadow var(--transition-dur),
+              border-color var(--transition-dur),
+              opacity var(--transition-dur);
+  opacity: 0.92;
+  transform-origin: center center;
+}
+
+.win.foc {
+  border-color: rgba(var(--accent-rgb), 0.45);
+  opacity: 1;
+  box-shadow:
+    0 24px 72px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(var(--accent-rgb), 0.12),
+    0 0 36px rgba(var(--accent-rgb), 0.28);
+}
+
+/* ── Title Bar ── */
+.wtb {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  gap: 8px;
+  cursor: grab;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.wtb::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--app-gr, transparent);
+  opacity: 0.13;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+.wtb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 40%, var(--win-bg) 100%);
+  pointer-events: none;
+}
+
+.wtb:active { cursor: grabbing; }
+
+.wtb-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-left: 5px;
+  pointer-events: none;
+  flex: 1;
+  min-width: 0;
+}
+
+.wtb-app-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wtb-title {
+  font-size: 12px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Window Controls ── */
+.wbtns { display: flex; gap: 6px; flex-shrink: 0; }
+.wb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: filter 0.1s, transform 0.1s;
+}
+.wb:hover  { filter: brightness(1.25); transform: scale(1.1); }
+.wb.wbc    { background: #FF5F57; }
+.wb.wbm    { background: #FFBD2E; }
+.wb.wbx    { background: #28C840; }
+
+.wc { height: calc(100% - 38px); overflow: auto; }
+
+/* ── Resize Handles ── */
+.rh { position: absolute; z-index: 5; }
+.rh.e  { right: 0;  top: 6px;   bottom: 6px;  width: 5px;   cursor: ew-resize; }
+.rh.w  { left: 0;   top: 6px;   bottom: 6px;  width: 5px;   cursor: ew-resize; }
+.rh.s  { bottom: 0; left: 6px;  right: 6px;   height: 5px;  cursor: ns-resize; }
+.rh.n  { top: 0;    left: 6px;  right: 6px;   height: 5px;  cursor: ns-resize; }
+.rh.se { right: 0;  bottom: 0;  width: 12px;  height: 12px; cursor: se-resize; }
+.rh.sw { left: 0;   bottom: 0;  width: 12px;  height: 12px; cursor: sw-resize; }
+.rh.ne { right: 0;  top: 0;     width: 12px;  height: 12px; cursor: ne-resize; }
+.rh.nw { left: 0;   top: 0;     width: 12px;  height: 12px; cursor: nw-resize; }
+
+/* ── Taskbar ── */
+#tbar {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 48px;
+  background: var(--tbar-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 6px;
+  z-index: 9999;
+}
+
+.tbar-sep {
+  width: 1px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.09);
+  flex-shrink: 0;
+}
+
+/* ── Pinned Dock ── */
+#tb-dock {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.tb-dock-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background var(--transition-dur), transform var(--transition-dur);
+  position: relative;
+}
+
+.tb-dock-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.tb-dock-btn:active { transform: translateY(0) scale(0.92); }
+
+.tb-dock-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: white;
+}
+
+/* ── Running Apps ── */
+#tbapps {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.tbb {
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-family: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 130px;
+  min-width: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: background var(--transition-dur);
+  position: relative;
+}
+
+.tbb:hover { background: rgba(255, 255, 255, 0.13); }
+
+.tbb.act {
+  background: rgba(var(--accent-rgb), 0.22);
+  border-color: rgba(var(--accent-rgb), 0.4);
+}
+
+.tbb-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tbb span { overflow: hidden; text-overflow: ellipsis; }
+
+/* ── System Tray ── */
+.tbar-tray {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: rgba(255, 255, 255, 0.75);
+  flex-shrink: 0;
+}
+
+.tray-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 7px;
+  transition: background var(--transition-dur), color var(--transition-dur);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+}
+
+.tray-btn i { font-size: 15px; }
+.tray-btn:hover  { background: rgba(255, 255, 255, 0.1); }
+.tray-btn.tray-active { background: rgba(var(--accent-rgb), 0.2); color: #fff; }
+
+.tray-clock-btn {
+  flex-direction: column;
+  gap: 1px;
+  padding: 3px 8px;
+  min-width: 60px;
+  text-align: right;
+  align-items: flex-end;
+}
+
+#tclk {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.tray-date {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* ── Shared App Toolbar ── */
+.app-toolbar {
+  padding: 6px 10px;
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.app-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 5px;
+  padding: 3px 8px;
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  transition: background var(--transition-dur);
+}
+
+.app-btn:hover { background: rgba(var(--accent-rgb), 0.25); }
+
+.app-toolbar-sep { width: 1px; height: 16px; background: rgba(255,255,255,0.1); }
+
+/* ── Particle canvas ── */
+#particle-canvas { image-rendering: pixelated; }
+
+/* ── Wallpaper Picker ── */
+.wp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 8px;
+}
+
+.wp-swatch {
+  position: relative;
+  height: 54px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.15s, transform 0.12s;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.wp-swatch:hover { transform: scale(1.04); border-color: rgba(255,255,255,0.3); }
+.wp-active       { border-color: white !important; }
+
+.wp-label {
+  font-size: 9px;
+  color: rgba(255,255,255,0.8);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  padding-bottom: 4px;
+  letter-spacing: 0.3px;
+  pointer-events: none;
+}
+
+.wp-upload {
+  background: rgba(255,255,255,0.05);
+  border: 2px dashed rgba(255,255,255,0.15);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: white;
+}
+
+.wp-upload:hover { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.08); }
+
+/* ── Open-app dot indicator ── */
+.tb-dock-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 1px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  transition: transform 0.18s cubic-bezier(0.34, 1.3, 0.64, 1),
+              background 0.18s,
+              width 0.18s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+.tb-dock-btn.open::after { transform: translateX(-50%) scaleX(1); }
+.tb-dock-btn.open.focused::after { width: 6px; background: var(--accent-color); }
+
+.tbb.tba::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 4px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.5);
+  transition: transform 0.18s cubic-bezier(0.34, 1.3, 0.64, 1),
+              background 0.18s,
+              width 0.18s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+.tbb.tba::after { transform: translateX(-50%) scaleX(1); }
+.tbb.tba.act::after { width: 6px; background: var(--accent-color); }
+
+/* ── Window animations ── */
+@keyframes win-open {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes win-close {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.92); }
+}
+@keyframes win-minimize {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to   { opacity: 0; transform: scale(0.88) translateY(20px); }
+}
+@keyframes win-unminimize {
+  from { opacity: 0; transform: scale(0.88) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes popupIn {
+  from { opacity: 0; transform: translateY(6px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)  scale(1);     }
+}
+
+.win-entering  { animation: win-open      180ms cubic-bezier(0.34, 1.2, 0.64, 1) forwards; }
+.win-closing   { animation: win-close     140ms cubic-bezier(0.4, 0, 1, 1)        forwards; }
+.win-minimizing { animation: win-minimize 160ms cubic-bezier(0.4, 0, 1, 1)        forwards; }
+.win-restoring  { animation: win-unminimize 180ms cubic-bezier(0.34, 1.2, 0.64, 1) forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .win-entering, .win-closing, .win-minimizing, .win-restoring { animation: none; }
+}
+
+/* ── No Transparency ── */
+#os.no-transparency .win {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(18, 18, 38, 0.97) !important;
+}
+#os.no-transparency #tbar {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(6, 6, 18, 0.98) !important;
+}
+#os.no-transparency #smenu,
+#os.no-transparency #volume-popup,
+#os.no-transparency #calendar-popup,
+#os.no-transparency #notif {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(12, 12, 30, 0.99) !important;
+}

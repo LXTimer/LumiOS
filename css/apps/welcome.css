@@ -1,0 +1,17 @@
+/* ── Welcome ── */
+.welcome-wrap { padding: 18px; height: 100%; display: flex; flex-direction: column; gap: 13px; }
+.welcome-header { display: flex; align-items: center; gap: 11px; }
+.welcome-logo { width: 44px; height: 44px; border-radius: 14px; background: linear-gradient(135deg, #9333ea, #e11d9c); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 16px rgba(147, 51, 234, 0.4); }
+.welcome-logo i { font-size: 20px; color: white; }
+.welcome-title { font-size: 17px; font-weight: 600; letter-spacing: -0.3px; }
+.welcome-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 1px; }
+.welcome-tips { font-size: 11px; color: rgba(255,255,255,0.38); background: rgba(255,255,255,0.04); border-radius: 8px; padding: 9px 11px; border: 1px solid rgba(255,255,255,0.06); line-height: 1.75; }
+.welcome-tips strong { color: rgba(255,255,255,0.58); font-weight: 500; }
+.welcome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; flex: 1; }
+.welcome-app-btn { padding: 9px 11px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 9px; cursor: pointer; display: flex; align-items: center; gap: 9px; transition: background var(--transition-dur), transform var(--transition-dur); }
+.welcome-app-btn:hover { background: rgba(255,255,255,0.11); transform: translateY(-1px); }
+.welcome-app-btn:active { transform: translateY(0); }
+.welcome-app-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.welcome-app-icon i { font-size: 14px; color: white; }
+.welcome-app-name { font-size: 12px; font-weight: 500; }
+.welcome-app-hint { font-size: 10px; color: rgba(255,255,255,0.3); }

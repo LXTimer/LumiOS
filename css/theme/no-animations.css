@@ -1,0 +1,12 @@
+/* ── No Animations ── */
+#os.no-animations *,
+#os.no-animations *::before,
+#os.no-animations *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Restore knob slide — needs higher specificity to win back its transition */
+#os.no-animations .toggle-sw .toggle-knob {
+  transition: left 0.2s, right 0.2s !important;
+}
