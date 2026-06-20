@@ -57,51 +57,6 @@ const WALLPAPERS = [
     `,
   },
   {
-    id: 'midnight',
-    label: 'Midnight',
-    css: `
-      radial-gradient(ellipse 60% 50% at 50% 100%, rgba(30,10,80,0.9), transparent),
-      linear-gradient(180deg, #000005, #05010f)
-    `,
-  },
-  {
-    id: 'nebula',
-    label: 'Nebula',
-    css: `
-      radial-gradient(ellipse 70% 60% at 20% 80%, rgba(20,180,120,0.3), transparent),
-      radial-gradient(ellipse 50% 50% at 80% 20%, rgba(180,20,200,0.35), transparent),
-      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(0,60,160,0.25), transparent),
-      linear-gradient(135deg, #020c14, #060818)
-    `,
-  },
-  {
-    id: 'ember',
-    label: 'Ember',
-    css: `
-      radial-gradient(ellipse 36% 48% at 15% 85%, rgba(220,60,10,0.5), transparent),
-      radial-gradient(ellipse 45% 45% at 85% 20%, rgba(200,120,0,0.35), transparent),
-      linear-gradient(148deg, #0e0500, #1a0800 45%, #0a0300)
-    `,
-  },
-  {
-    id: 'ocean',
-    label: 'Ocean',
-    css: `
-      radial-gradient(ellipse 60% 60% at 30% 30%, rgba(0,100,200,0.4), transparent),
-      radial-gradient(ellipse 50% 50% at 70% 70%, rgba(0,180,160,0.3), transparent),
-      linear-gradient(148deg, #000d1a, #001a2e 45%, #000f1f)
-    `,
-  },
-  {
-    id: 'rose',
-    label: 'Rose',
-    css: `
-      radial-gradient(ellipse 55% 55% at 20% 30%, rgba(200,20,100,0.4), transparent),
-      radial-gradient(ellipse 45% 45% at 75% 70%, rgba(120,0,180,0.35), transparent),
-      linear-gradient(148deg, #100008, #1a000e 45%, #0d0008)
-    `,
-  },
-  {
     id: 'wallpaper_nature_1',
     label: 'Nature 1',
     css: `url('assets/wallpaper/wallpaper_nature_1.jpg') center/cover no-repeat`,
