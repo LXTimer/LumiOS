@@ -148,6 +148,7 @@ body {
   position: absolute;
   inset: 0 0 48px 0;
   overflow: hidden;
+  pointer-events: none;
 }
 
 /* ── Window ── */
@@ -168,7 +169,9 @@ body {
               opacity var(--transition-dur);
   opacity: 0.92;
   transform-origin: center center;
+  pointer-events: auto;
 }
+
 
 .win.foc {
   border-color: rgba(var(--accent-rgb), 0.45);

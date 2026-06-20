@@ -69,6 +69,12 @@ function init() {
     if (e.key === 'Escape') closeContextMenu();
   });
 
+  document.addEventListener('mousedown', e => {
+    if (ctxOpen && ! e.target.closest('#ctx-menu')) {
+      closeContextMenu();
+    }
+  });
+
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup',   () => { drag = null; });
 }

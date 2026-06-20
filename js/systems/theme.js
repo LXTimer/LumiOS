@@ -60,3 +60,4 @@ function applyTaskbarOpacity(value) {
   document.documentElement.style.setProperty('--tbar-opacity', OS_SETTINGS.taskbarOpacity / 100);
 }
 
+

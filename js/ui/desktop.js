@@ -7,7 +7,7 @@ function renderDesktopIcons() {
   const container = document.getElementById('dkicons');
   if (!container) return;
   container.innerHTML = APPS.map(a => `
-    <div class="dki" onclick="openApp('${a.id}')" title="${a.name}" role="listitem">
+    <div class="dki" ondblclick="openApp('${a.id}')" title="Double-click to open ${a.name}" role="listitem">
       <div class="dki-icon" style="background:${a.gr}">
         <i class="ti ${a.ic}" aria-hidden="true"></i>
       </div>
@@ -43,7 +43,10 @@ function showContextMenu(x, y) {
 function closeContextMenu() {
   if (!ctxOpen) return;
   const menu = document.getElementById('ctx-menu');
-  if (menu) menu.classList.remove('visible');
+  if (menu) {
+    menu.classList.remove('visible');
+    menu.style.display = 'none';
+  }
   ctxOpen = false;
 }
 

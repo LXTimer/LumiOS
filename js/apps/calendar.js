@@ -31,12 +31,9 @@ function calSeedEvents() {
   const now = new Date();
   const addDays = n => { const d = new Date(now); d.setDate(d.getDate() + n); return d; };
   CAL_EVENTS[calKey(now)] = [
-    { id: 1, title: 'Team Standup',  time: '09:00', color: CAL_COLORS[0] },
-    { id: 2, title: 'Design Review', time: '14:30', color: CAL_COLORS[2] },
+    { id: 1, title: 'Example: Team Standup',  time: '09:00', color: CAL_COLORS[0] },
   ];
-  CAL_EVENTS[calKey(addDays(2))]  = [{ id: 3, title: 'Dentist Appointment', time: '11:00', color: CAL_COLORS[1] }];
-  CAL_EVENTS[calKey(addDays(5))]  = [{ id: 4, title: 'Project Deadline',   time: '17:00', color: CAL_COLORS[3] }];
-  CAL_EVENTS[calKey(addDays(-3))] = [{ id: 5, title: 'Budget Review',      time: '10:00', color: CAL_COLORS[4] }];
+  CAL_EVENTS[calKey(addDays(2))]  = [{ id: 3, title: 'Example: Appointment', time: '11:00', color: CAL_COLORS[1] }];
 }
 
 function buildCalendarApp() {

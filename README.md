@@ -6,6 +6,10 @@ A fully functional and interactive, web-based operating system, built for aesthe
 
 LumiOS creates a web desktop just works the same as a normal desktop: draggable and resizeable windows, taskbar, and functional applicatons. LumiOS focuses on aesthetic like GUI and themes.
 
+![LumiOS - 1](./assets/LumiOS-1.png)
+![LumiOS - 2](./assets/LumiOS-2.png)
+
+
 ## Features
 
 + Draggable, resizable windows with minimize / maximize / close

@@ -286,7 +286,7 @@ function panelAbout() {
   return `
     <div class="settings-section-title">About LumiOS</div>
     <div class="settings-info-box" style="margin-bottom:12px">
-      <div><span>Version</span> LumiOS 1.0.0</div>
+      <div><span>Version</span> LumiOS 1.3.3</div>
       <div><span>Build</span> 2025.06.16</div>
       <div><span>Kernel</span> LumiCore 1.0</div>
       <div><span>Platform</span> Web-based</div>
