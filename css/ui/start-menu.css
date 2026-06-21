@@ -86,3 +86,35 @@
 .cal-cell.empty { cursor: default; }
 .cal-cell.today { background: var(--accent-color); color: white; font-weight: 600; }
 .cal-footer { margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.07); font-size: 10px; color: rgba(255, 255, 255, 0.35); text-align: center; }
+
+/* ── Battery Popup ── */
+#battery-popup {
+  position: absolute;
+  bottom: 56px;
+  right: 170px;
+  width: 240px;
+  background: rgba(10, 10, 28, 0.96);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  z-index: 10000;
+  padding: 16px;
+  display: none;
+}
+#battery-popup.visible { display: block; animation: popupIn 0.18s ease; }
+.bat-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 13px; font-weight: 500; }
+.bat-header i { font-size: 18px; }
+.bat-main { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
+.bat-percentage { font-size: 28px; font-weight: 200; color: rgba(255,255,255,0.9); }
+.bat-status { font-size: 11px; color: rgba(255,255,255,0.45); }
+.bat-details { margin-bottom: 12px; }
+.bat-detail-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 11px; color: rgba(255,255,255,0.65); border-bottom: 1px solid rgba(255,255,255,0.05); }
+.bat-detail-row span:last-child { color: rgba(255,255,255,0.4); font-variant-numeric: tabular-nums; }
+.bat-bar-wrap { margin-bottom: 14px; }
+.bat-bar-label { font-size: 10px; color: rgba(255,255,255,0.35); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.bat-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.1); overflow: hidden; }
+.bat-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease, background 0.5s ease; }
+.bat-saver-row { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,0.7); padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.07); }
+.bat-saver-row .toggle-sw { width: 34px; height: 18px; }
+.bat-saver-row .toggle-knob { width: 14px; height: 14px; }

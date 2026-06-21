@@ -182,17 +182,6 @@ function panelDisplay() {
         <option>144 Hz</option>
       </select>
     </div>
-    <div class="settings-row">
-      <div class="settings-row-info">
-        <div class="settings-row-label">Night Mode</div>
-        <div class="settings-row-desc">Reduce blue light after sunset</div>
-      </div>
-      <div class="toggle-sw" data-on="0"
-           onclick="var on=this.dataset.on==='1';this.dataset.on=on?'0':'1';this.classList.toggle('on',!on);
-                    var k=this.querySelector('.toggle-knob');k.style.left=on?'auto':'3px';k.style.right=on?'3px':'auto';
-                    notify(!on?'Night Mode enabled':'Night Mode disabled')" role="switch">
-        <div class="toggle-knob" style="left:3px;right:auto"></div>
-      </div>
     </div>`;
 }
 

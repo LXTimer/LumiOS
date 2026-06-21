@@ -31,3 +31,6 @@
 #os.light-mode .ctx-item i { color: rgba(20, 20, 50, 0.4); }
 #os.light-mode .ctx-item:hover { background: rgba(var(--accent-rgb), 0.12); color: #1a1a2e; }
 #os.light-mode .ctx-divider { background: rgba(0, 0, 0, 0.08); }
+
+
+
