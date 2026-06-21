@@ -5,7 +5,7 @@
 // ─────────────────────────────────────────────
 let CAL_EVENTS = {};
 let calEventsSeeded = false;
-const CAL_COLORS = ['#6366f1','#ec4899','#10b981','#f97316','#0ea5e9','#f59e0b'];
+const DEFAULT_COLOR = '#6366f1'; // Unified default color for all events
 let capp = { year: 0, month: 0, selectedDate: null, tab: 'month' };
 
 function calKey(d) {
@@ -16,7 +16,7 @@ function calParse(key) {
   return new Date(y, m - 1, d);
 }
 function cappEsc(s) {
-  return String(s).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"');
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 function cappFormatTime(t) {
   const [h, m] = (t || '09:00').split(':').map(Number);
@@ -31,9 +31,9 @@ function calSeedEvents() {
   const now = new Date();
   const addDays = n => { const d = new Date(now); d.setDate(d.getDate() + n); return d; };
   CAL_EVENTS[calKey(now)] = [
-    { id: 1, title: 'Example: Team Standup',  time: '09:00', color: CAL_COLORS[0] },
+    { id: 1, title: 'Example: Team Standup',  time: '09:00', color: DEFAULT_COLOR },
   ];
-  CAL_EVENTS[calKey(addDays(2))]  = [{ id: 3, title: 'Example: Appointment', time: '11:00', color: CAL_COLORS[1] }];
+  CAL_EVENTS[calKey(addDays(2))]  = [{ id: 3, title: 'Example: Appointment', time: '11:00', color: DEFAULT_COLOR }];
 }
 
 function buildCalendarApp() {
@@ -142,9 +142,6 @@ function cappRenderDetail() {
       <input type="text" class="capp-input" id="capp-new-title" placeholder="Event title…" onmousedown="event.stopPropagation()" onkeydown="if(event.key==='Enter')cappAddEvent()">
       <div class="capp-add-row">
         <input type="time" class="capp-input capp-input-time" id="capp-new-time" value="09:00" onmousedown="event.stopPropagation()">
-        <div class="capp-color-picker" id="capp-new-color-picker">
-          ${CAL_COLORS.map((c, i) => `<div class="capp-color-dot${i === 0 ? ' capp-color-active' : ''}" style="background:${c}" data-color="${c}" onclick="cappPickColor(this)"></div>`).join('')}
-        </div>
       </div>
       <button class="settings-btn" style="width:100%;justify-content:center;margin-top:4px" onclick="cappAddEvent()">
         <i class="ti ti-plus" style="font-size:12px"></i> Add Event
@@ -172,15 +169,9 @@ function cappGoToday() {
   cappRenderMonth();
 }
 
-function cappPickColor(el) {
-  el.parentElement.querySelectorAll('.capp-color-dot').forEach(d => d.classList.remove('capp-color-active'));
-  el.classList.add('capp-color-active');
-}
-
 function cappAddEvent() {
   const titleInput = document.getElementById('capp-new-title');
   const timeInput = document.getElementById('capp-new-time');
-  const colorEl = document.querySelector('#capp-new-color-picker .capp-color-active');
   const title = (titleInput?.value || '').trim();
   if (!title) { titleInput?.focus(); return; }
   const key = capp.selectedDate;
@@ -189,7 +180,7 @@ function cappAddEvent() {
     id: Date.now(),
     title,
     time: timeInput?.value || '09:00',
-    color: colorEl?.dataset.color || CAL_COLORS[0],
+    color: DEFAULT_COLOR, // Automatically uses the default color
   });
   notify(`Added "${title}"`);
   cappRenderMonth();

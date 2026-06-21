@@ -28,7 +28,6 @@ function calcPress(k) {
   const dv=document.getElementById('cvd'), de=document.getElementById('cexd');
   if (!dv) return;
   if (k==='AC')  { cVal='0'; cExpr=''; cOp=null; cFirst=null; cJustOp=false; }
-  else if (k==='±') { const n=-parseFloat(cVal); cVal=isNaN(n)?'0':String(n); }
   else if (k==='%')  cVal=String(parseFloat(cVal)/100);
   else if ('÷×−+'.includes(k)) { cFirst=parseFloat(cVal); cOp=k; cExpr=cVal+' '+k; cJustOp=true; }
   else if (k==='=') {
