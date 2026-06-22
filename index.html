@@ -10,8 +10,6 @@
   <link rel="stylesheet" href="css/apps/clock.css" />
   <link rel="stylesheet" href="css/apps/calendar.css" />
   <link rel="stylesheet" href="css/apps/calculator.css" />
-  <link rel="stylesheet" href="css/apps/notes.css" />
-  <link rel="stylesheet" href="css/apps/terminal.css" />
   <link rel="stylesheet" href="css/apps/files.css" />
   <link rel="stylesheet" href="css/apps/settings.css" />
   <link rel="stylesheet" href="css/apps/widgets.css" />
@@ -100,6 +98,45 @@
     </div>
   </div>
 
+  <!-- ── Battery Popup ── -->
+  <div id="battery-popup">
+    <div class="bat-header">
+      <i id="bat-popup-icon" class="ti ti-battery-4" style="color:var(--accent-color)"></i>
+      <span>Battery</span>
+    </div>
+    <div class="bat-main">
+      <div class="bat-percentage" id="bat-percentage">--%</div>
+      <div class="bat-status" id="bat-status">Checking battery…</div>
+    </div>
+    <div class="bat-details">
+      <div class="bat-detail-row">
+        <span>Power Source</span>
+        <span id="bat-source">--</span>
+      </div>
+      <div class="bat-detail-row">
+        <span>Time Remaining</span>
+        <span id="bat-time">--</span>
+      </div>
+      <div class="bat-detail-row">
+        <span>Battery Health</span>
+        <span id="bat-health">--</span>
+      </div>
+    </div>
+    <div class="bat-bar-wrap">
+      <div class="bat-bar-label">Charge Level</div>
+      <div class="bat-bar">
+        <div class="bat-bar-fill" id="bat-bar-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="bat-saver-row">
+      <span>Battery Saver</span>
+      <div class="toggle-sw" id="bat-saver-toggle" data-on="0"
+           onclick="toggleBatterySaver(this)" role="switch">
+        <div class="toggle-knob" style="left:3px;right:auto"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ── Calendar Popup ── -->
   <div id="calendar-popup"></div>
 
@@ -128,6 +165,9 @@
 
     <!-- System tray -->
     <div class="tbar-tray">
+      <button class="tray-btn" id="battery-btn" onclick="toggleBatteryPopup()" title="Battery">
+        <i id="battery-icon" class="ti ti-battery-4" style="font-size:16px"></i>
+      </button>
       <button class="tray-btn" id="wifi-btn" onclick="toggleWifi()" title="Wi-Fi">
         <i id="wifi-icon" class="ti ti-wifi"></i>
       </button>
@@ -202,15 +242,15 @@
 <script src="js/ui/windows.js"></script>
 <script src="js/ui/taskbar.js"></script>
 <script src="js/ui/desktop.js"></script>
-<script src="js/apps/welcome.js"></script>
-<script src="js/apps/clock.js"></script>
-<script src="js/apps/calendar.js"></script>
-<script src="js/apps/calculator.js"></script>
-<script src="js/apps/notes.js"></script>
-<script src="js/apps/terminal.js"></script>
-<script src="js/apps/files.js"></script>
-<script src="js/apps/settings.js"></script>
-<script src="js/apps/widgets.js"></script>
+  <script src="js/apps/welcome.js"></script>
+  <script src="js/apps/clock.js"></script>
+  <script src="js/apps/calendar.js"></script>
+  <script src="js/apps/calculator.js"></script>
+  <script src="js/apps/notes.js"></script>
+  <script src="js/apps/terminal.js"></script>
+  <script src="js/apps/files.js"></script>
+  <script src="js/apps/settings.js"></script>
+  <script src="js/apps/widgets.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

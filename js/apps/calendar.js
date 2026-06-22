@@ -16,7 +16,7 @@ function calParse(key) {
   return new Date(y, m - 1, d);
 }
 function cappEsc(s) {
-  return String(s).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"');
+  return String(s).replace(/&/g,'\x26amp;').replace(/</g,'\x26lt;').replace(/>/g,'\x26gt;').replace(/"/g,'\x26quot;');
 }
 function cappFormatTime(t) {
   const [h, m] = (t || '09:00').split(':').map(Number);

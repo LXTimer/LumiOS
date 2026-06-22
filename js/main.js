@@ -43,6 +43,7 @@ function init() {
   setInterval(updateClock, 1000);
   initParticles();
   initWidgets();
+  initBattery();
 
   setTimeout(() => openApp('welcome'), 200);
 
@@ -50,6 +51,7 @@ function init() {
   document.getElementById('osbg').addEventListener('mousedown', e => {
     if (!e.target.closest('#smenu')        && !e.target.closest('#smbtn'))          closeStartMenu();
     if (!e.target.closest('#volume-popup') && !e.target.closest('#vol-btn'))        closeVolumePopup();
+    if (!e.target.closest('#battery-popup') && !e.target.closest('#battery-btn'))   closeBatteryPopup();
     if (!e.target.closest('#calendar-popup') && !e.target.closest('.tray-clock-btn')) closeCalendar();
     if (!e.target.closest('#ctx-menu'))                                              closeContextMenu();
   });
@@ -60,6 +62,7 @@ function init() {
     e.preventDefault();
     closeStartMenu();
     closeVolumePopup();
+    closeBatteryPopup();
     closeCalendar();
     showContextMenu(e.clientX, e.clientY);
   });

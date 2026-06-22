@@ -89,24 +89,28 @@ body {
 /* ── Desktop Icons ── */
 #dkicons {
   position: absolute;
-  top: 14px;
-  left: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 48px);
+  pointer-events: none;
 }
 
 .dki {
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   padding: 8px 4px;
   border-radius: 10px;
-  cursor: pointer;
+  cursor: grab;
   width: 72px;
   text-align: center;
   transition: background var(--transition-dur);
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .dki:hover { background: rgba(255, 255, 255, 0.12); }
@@ -598,6 +602,7 @@ body {
 }
 #os.no-transparency #smenu,
 #os.no-transparency #volume-popup,
+#os.no-transparency #battery-popup,
 #os.no-transparency #calendar-popup,
 #os.no-transparency #notif {
   backdrop-filter: none !important;
