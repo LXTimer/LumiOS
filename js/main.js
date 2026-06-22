@@ -12,6 +12,7 @@ function buildAppContent(id) {
     case 'notes':      return buildNotes();
     case 'terminal':   return buildTerminal();
     case 'files':      return buildFiles();
+    case 'paint':      return buildPaint();
     case 'widgets':    return buildWidgets();
     case 'settings':   return buildSettings();
     default: return '<div style="padding:20px;color:rgba(255,255,255,.5)">App not found.</div>';
@@ -28,6 +29,7 @@ function postInitApp(aid, wid) {
   if (aid === 'calendar') initCalendarApp(wid);
   if (aid === 'files')    filesInit(wid);
   if (aid === 'widgets')  refreshWidgetsApp();
+  if (aid === 'paint')    paintInit(wid);
 }
 
 // ─────────────────────────────────────────────

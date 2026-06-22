@@ -12,6 +12,7 @@ const APPS = [
   { id:'terminal',   name:'Terminal',   ic:'ti-terminal-2', gr:'linear-gradient(135deg,#059669,#34d399)', w:442, h:286 },
   { id:'files',      name:'Files',      ic:'ti-folder',     gr:'linear-gradient(135deg,#e11d48,#f97316)', w:420, h:325 },
   { id:'settings',   name:'Settings',   ic:'ti-settings',   gr:'linear-gradient(135deg,#0ea5e9,#6366f1)', w:825, h:488 },
+  { id:'paint',    name:'Paint',    ic:'ti-pencil',     gr:'linear-gradient(135deg,#ff6b6b,#ee5a24)', w:640, h:460 },
   { id:'widgets', name:'Widgets', ic:'ti-layout-dashboard', gr:'linear-gradient(135deg,#7c3aed,#0ea5e9)', w:460, h:400 },
 ];
 

@@ -1,0 +1,163 @@
+/* ─────────────────────────────────────────────
+   APP: Paint
+   ───────────────────────────────────────────── */
+.paint-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--surface-color, #1a1a2e);
+  user-select: none;
+}
+
+.paint-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  background: rgba(0,0,0,0.3);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.paint-toolbar .app-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.15s;
+}
+.paint-toolbar .app-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+.paint-toolbar .app-btn.active {
+  background: var(--accent-color);
+  color: #fff;
+}
+
+.paint-separator {
+  width: 1px;
+  height: 24px;
+  background: rgba(255,255,255,0.12);
+  flex-shrink: 0;
+}
+
+.paint-color-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.12s, border-color 0.12s;
+}
+.paint-color-swatch:hover {
+  transform: scale(1.15);
+}
+.paint-color-swatch.active {
+  border-color: #fff;
+  transform: scale(1.15);
+}
+
+.paint-tool-label {
+  font-size: 10px;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: 2px;
+}
+
+.paint-size-slider {
+  width: 60px;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+.paint-size-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  cursor: pointer;
+}
+.paint-size-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  cursor: pointer;
+  border: none;
+}
+
+.paint-size-preview {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.paint-size-dot {
+  border-radius: 50%;
+  background: rgba(255,255,255,0.8);
+  transition: width 0.1s, height 0.1s;
+}
+
+.paint-canvas-wrap {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  background: #ffffff;
+  cursor: crosshair;
+}
+
+.paint-canvas-wrap canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.paint-statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 10px;
+  background: rgba(0,0,0,0.25);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 10px;
+  color: rgba(255,255,255,0.35);
+  flex-shrink: 0;
+}
+
+.paint-color-input-wrap {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,0.2);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.paint-color-input-wrap input[type="color"] {
+  position: absolute;
+  inset: -4px;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
