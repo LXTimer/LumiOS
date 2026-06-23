@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="css/apps/paint.css" />
   <link rel="stylesheet" href="css/apps/files.css" />
   <link rel="stylesheet" href="css/apps/settings.css" />
+  <link rel="stylesheet" href="css/apps/notes.css" />
+  <link rel="stylesheet" href="css/apps/terminal.css" />
   <link rel="stylesheet" href="css/apps/widgets.css" />
   <link rel="stylesheet" href="css/ui/start-menu.css" />
   <link rel="stylesheet" href="css/ui/notifications.css" />
@@ -132,7 +134,7 @@
     <div class="bat-saver-row">
       <span>Battery Saver</span>
       <div class="toggle-sw" id="bat-saver-toggle" data-on="0"
-           onclick="toggleBatterySaver(this)" role="switch">
+           onclick="toggleBatterySaver(this)" role="switch" aria-checked="false">
         <div class="toggle-knob" style="left:3px;right:auto"></div>
       </div>
     </div>
@@ -215,10 +217,8 @@
     <div class="ctx-item" role="menuitem" onclick="ctxAction('new-note')">
       <i class="ti ti-notebook" aria-hidden="true"></i> New Note
     </div>
-    </div>
-    <div class="ctx-divider"></div>
-    <div class="ctx-section">
-    </div>
+  </div>
+  <div class="ctx-divider"></div>
   <div class="ctx-item" role="menuitem" onclick="ctxAction('wallpaper')">
     <i class="ti ti-photo" aria-hidden="true"></i> Change Wallpaper
   </div>
@@ -232,7 +232,7 @@
     </div>
   </div>
   <div class="ctx-item" role="menuitem" onclick="ctxAction('widgets')">
-  <i class="ti ti-layout-dashboard" aria-hidden="true"></i> Desktop Widgets
+    <i class="ti ti-layout-dashboard" aria-hidden="true"></i> Desktop Widgets
   </div>
 </div>
 
@@ -243,16 +243,16 @@
 <script src="js/ui/windows.js"></script>
 <script src="js/ui/taskbar.js"></script>
 <script src="js/ui/desktop.js"></script>
-  <script src="js/apps/welcome.js"></script>
-  <script src="js/apps/clock.js"></script>
-  <script src="js/apps/calendar.js"></script>
-  <script src="js/apps/calculator.js"></script>
-  <script src="js/apps/paint.js"></script>
-  <script src="js/apps/notes.js"></script>
-  <script src="js/apps/terminal.js"></script>
-  <script src="js/apps/files.js"></script>
-  <script src="js/apps/settings.js"></script>
-  <script src="js/apps/widgets.js"></script>
+<script src="js/apps/welcome.js"></script>
+<script src="js/apps/clock.js"></script>
+<script src="js/apps/calendar.js"></script>
+<script src="js/apps/calculator.js"></script>
+<script src="js/apps/paint.js"></script>
+<script src="js/apps/notes.js"></script>
+<script src="js/apps/terminal.js"></script>
+<script src="js/apps/files.js"></script>
+<script src="js/apps/settings.js"></script>
+<script src="js/apps/widgets.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

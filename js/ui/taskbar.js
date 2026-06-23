@@ -329,9 +329,9 @@ function toggleBatterySaver(el) {
   batSaverOn = !batSaverOn;
   el.dataset.on = batSaverOn ? '1' : '0';
   el.classList.toggle('on', batSaverOn);
+  el.setAttribute('aria-checked', batSaverOn);
   const knob = el.querySelector('.toggle-knob');
   knob.style.left = batSaverOn ? 'auto' : '3px';
   knob.style.right = batSaverOn ? '3px' : 'auto';
   notify(batSaverOn ? 'Battery Saver enabled' : 'Battery Saver disabled');
 }
-REPLACE

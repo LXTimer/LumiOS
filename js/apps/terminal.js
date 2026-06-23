@@ -11,7 +11,7 @@ const TERM_CMDS = {
   clear:  () => '__CLEAR__',
   cd:     () => '',
   version: () => 'LumiOS 1.3.3',
-  apps:   () => 'Calculator \n Calendar \n Clock \n Files \n Notes \n Settings \n Wdigets'
+  apps:   () => 'Calculator \n Calendar \n Clock \n Files \n Notes \n Paint \n Settings \n Terminal \n Widgets'
 };
 
 function buildTerminal() {

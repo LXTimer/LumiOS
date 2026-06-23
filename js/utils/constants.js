@@ -7,7 +7,7 @@ const APPS = [
   { id:'welcome',    name:'Welcome',    ic:'ti-sparkles',  gr:'linear-gradient(135deg,#9333ea,#e11d9c)', w:472, h:328 },
   { id:'clock',      name:'Clock',      ic:'ti-clock',     gr:'linear-gradient(135deg,#f59e0b,#f97316)', w:475, h:525 },
   { id:'calendar',   name:'Calendar',   ic:'ti-calendar',  gr:'linear-gradient(135deg,#06b6d4,#3b82f6)', w:580, h:460 },
-  { id:'calculator', name:'Calculator', ic:'ti-calculator', gr:'linear-gradient(135deg,#0077ff,#00c2ff)', w:252, h:382 },
+  { id:'calculator', name:'Calculator', ic:'ti-calculator', gr:'linear-gradient(135deg,#0077ff,#00c2ff)', w:480, h:520 },
   { id:'notes',      name:'Notes',      ic:'ti-notebook',   gr:'linear-gradient(135deg,#f59e0b,#fbbf24)', w:374, h:308 },
   { id:'terminal',   name:'Terminal',   ic:'ti-terminal-2', gr:'linear-gradient(135deg,#059669,#34d399)', w:442, h:286 },
   { id:'files',      name:'Files',      ic:'ti-folder',     gr:'linear-gradient(135deg,#e11d48,#f97316)', w:420, h:325 },
@@ -105,16 +105,16 @@ const WALLPAPERS = [
   {
     id: 'wallpaper_nature_1',
     label: 'Nature 1',
-    css: `url('assets/wallpaper/wallpaper_nature_1.jpg') center/cover no-repeat`,
+    css: `url('assets/wallpaper/nature/wallpaper_nature_1.jpg') center/cover no-repeat`,
   },
   {
     id: 'wallpaper_nature_2',
     label: 'Nature 2',
-    css: `url('assets/wallpaper/wallpaper_nature_2.jpg') center/cover no-repeat`,
+    css: `url('assets/wallpaper/nature/wallpaper_nature_2.jpg') center/cover no-repeat`,
   },
   {
     id: 'wallpaper_nature_3',
     label: 'Nature 3',
-    css: `url('assets/wallpaper/wallpaper_nature_3.jpg') center/cover no-repeat`,
+    css: `url('assets/wallpaper/nature/wallpaper_nature_3.jpg') center/cover no-repeat`,
   },
 ];

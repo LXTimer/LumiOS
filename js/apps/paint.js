@@ -43,7 +43,7 @@ function buildPaint() {
         <span class="paint-tool-label">Color</span>
         <div class="paint-color-input-wrap">
           <input type="color" value="${paintState.color}"
-                 onchange="paintSetColor(this.value,this.closest('.paint-color-input-wrap').nextElementSibling?.querySelector?.('[data-color='+this.value+']'))">
+                 onchange="paintSetColor(this.value,null)">
         </div>
         <div class="paint-color-palette" style="display:flex;gap:3px;flex-wrap:wrap">${colors}</div>
         <div class="paint-separator"></div>
@@ -166,7 +166,6 @@ function setupPaintCanvas(canvas, winEl) {
 
     // Start a path for line/rect/circle tools
     paintState.pathStart = { x: pos.x, y: pos.y };
-    paintState.drawing = true;
   });
 
   canvas.addEventListener('mousemove', e => {
