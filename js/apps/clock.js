@@ -1,6 +1,6 @@
 "use strict";
 
-let clockState = { activeTab: 'time', stopwatchRunning: false, stopwatchMs: 0, alarms: [] };
+let clockState = { activeTab: 'time', stopwatchRunning: false, stopwatchMs: 0, alarms: [], timerRunning: false, timerTotalSec: 0, timerRemainingSec: 0 };
 let clockIntervals = {};
 
 function buildClock() {
@@ -15,6 +15,9 @@ function buildClock() {
         </button>
         <button class="clock-tab" data-tab="alarm" onclick="switchClockTab('alarm',this)">
           <i class="ti ti-alarm"></i> Alarm
+        </button>
+        <button class="clock-tab" data-tab="timer" onclick="switchClockTab('timer',this)">
+          <i class="ti ti-hourglass"></i> Timer
         </button>
       </div>
       <div class="clock-content">
@@ -58,6 +61,47 @@ function buildClock() {
             <div style="text-align:center;padding:20px;color:rgba(255,255,255,0.5);font-size:12px">
               No alarms set. Add one to get started!
             </div>
+          </div>
+        </div>
+        <div id="clock-timer-panel" class="clock-panel">
+          <div class="timer-setup" id="timer-setup">
+            <div class="timer-input-group">
+              <label>Min</label>
+              <input type="number" class="timer-input" id="timer-min-input" min="0" max="999" value="5">
+            </div>
+            <span class="timer-separator">:</span>
+            <div class="timer-input-group">
+              <label>Sec</label>
+              <input type="number" class="timer-input" id="timer-sec-input" min="0" max="59" value="0">
+            </div>
+            <button class="timer-btn" onclick="startTimer()">
+              <i class="ti ti-player-play"></i> Start
+            </button>
+          </div>
+          <div class="timer-ring" id="timer-ring">
+            <svg width="180" height="180" viewBox="0 0 180 180">
+              <circle class="timer-ring-bg" cx="90" cy="90" r="82"></circle>
+              <circle class="timer-ring-progress" id="timer-progress" cx="90" cy="90" r="82"
+                      stroke-dasharray="515.22" stroke-dashoffset="0"></circle>
+            </svg>
+            <div class="timer-ring-text" id="timer-ring-text">05:00</div>
+          </div>
+          <div class="timer-display" id="timer-display" style="display:none">05:00</div>
+          <div class="timer-controls" id="timer-controls" style="display:none">
+            <button class="timer-btn" id="timer-pause-btn" onclick="toggleTimer()">
+              <i class="ti ti-player-pause"></i> Pause
+            </button>
+            <button class="timer-btn timer-btn-secondary" onclick="resetTimer()">
+              <i class="ti ti-refresh"></i> Reset
+            </button>
+          </div>
+          <div class="timer-presets">
+            <button class="timer-preset" onclick="setTimerPreset(1,0)">1 min</button>
+            <button class="timer-preset" onclick="setTimerPreset(5,0)">5 min</button>
+            <button class="timer-preset" onclick="setTimerPreset(10,0)">10 min</button>
+            <button class="timer-preset" onclick="setTimerPreset(15,0)">15 min</button>
+            <button class="timer-preset" onclick="setTimerPreset(25,0)">25 min</button>
+            <button class="timer-preset" onclick="setTimerPreset(30,0)">30 min</button>
           </div>
         </div>
       </div>
@@ -209,25 +253,147 @@ function toggleAlarm(alarmId) {
   if (alarm) { alarm.enabled = !alarm.enabled; renderAlarmsList(); }
 }
 
-function renderAlarmsList() {
-  const list = document.getElementById('alarms-list');
-  if (!list) return;
-  if (clockState.alarms.length === 0) {
-    list.innerHTML = '<div style="text-align:center;padding:20px;color:rgba(255,255,255,0.5);font-size:12px">No alarms set. Add one to get started!</div>';
-    return;
-  }
-  list.innerHTML = clockState.alarms.map(alarm => `
-    <div class="alarm-item ${alarm.enabled ? '' : 'disabled'}">
-      <div class="alarm-item-time">${alarm.time}</div>
-      <div class="alarm-item-label">${alarm.label}</div>
-      <div class="alarm-item-controls">
-        <button class="alarm-toggle" onclick="toggleAlarm(${alarm.id})" title="Toggle alarm">
-          <i class="ti ${alarm.enabled ? 'ti-bell' : 'ti-bell-off'}"></i>
-        </button>
-        <button class="alarm-delete" onclick="deleteAlarm(${alarm.id})" title="Delete alarm">
-          <i class="ti ti-trash"></i>
-        </button>
-      </div>
-    </div>
-  `).join('');
+// ── Timer ──
+function setTimerPreset(min, sec) {
+  const minInput = document.getElementById('timer-min-input');
+  const secInput = document.getElementById('timer-sec-input');
+  if (minInput) minInput.value = min;
+  if (secInput) secInput.value = sec;
+  updateTimerDisplayFromInputs();
 }
+
+function updateTimerDisplayFromInputs() {
+  const minInput = document.getElementById('timer-min-input');
+  const secInput = document.getElementById('timer-sec-input');
+  const ringText = document.getElementById('timer-ring-text');
+  const display = document.getElementById('timer-display');
+  const min = parseInt(minInput?.value || 0, 10);
+  const sec = parseInt(secInput?.value || 0, 10);
+  const totalSec = Math.max(0, min * 60 + sec);
+  const mm = String(Math.floor(totalSec / 60)).padStart(2, '0');
+  const ss = String(totalSec % 60).padStart(2, '0');
+  if (ringText) ringText.textContent = mm + ':' + ss;
+  if (display) display.textContent = mm + ':' + ss;
+}
+
+function startTimer() {
+  const minInput = document.getElementById('timer-min-input');
+  const secInput = document.getElementById('timer-sec-input');
+  const min = parseInt(minInput?.value || 0, 10);
+  const sec = parseInt(secInput?.value || 0, 10);
+  const totalSec = min * 60 + sec;
+  if (totalSec <= 0) { notify('Please set a time'); return; }
+
+  clockState.timerTotalSec = totalSec;
+  clockState.timerRemainingSec = totalSec;
+  clockState.timerRunning = true;
+
+  // Switch UI
+  const setup = document.getElementById('timer-setup');
+  const ring = document.getElementById('timer-ring');
+  const display = document.getElementById('timer-display');
+  const controls = document.getElementById('timer-controls');
+  if (setup) setup.style.display = 'none';
+  if (display) display.style.display = 'block';
+  if (controls) controls.style.display = 'flex';
+
+  updateTimerProgress();
+  if (clockIntervals.timer) clearInterval(clockIntervals.timer);
+  clockIntervals.timer = setInterval(tickTimer, 1000);
+}
+
+function tickTimer() {
+  if (!clockState.timerRunning) return;
+  clockState.timerRemainingSec--;
+  if (clockState.timerRemainingSec <= 0) {
+    clockState.timerRemainingSec = 0;
+    timerComplete();
+  }
+  updateTimerProgress();
+}
+
+function updateTimerProgress() {
+  const remaining = clockState.timerRemainingSec;
+  const total = clockState.timerTotalSec;
+  const mm = String(Math.floor(remaining / 60)).padStart(2, '0');
+  const ss = String(remaining % 60).padStart(2, '0');
+
+  const ringText = document.getElementById('timer-ring-text');
+  const display = document.getElementById('timer-display');
+  const progress = document.getElementById('timer-progress');
+  const ring = document.getElementById('timer-ring');
+
+  if (ringText) ringText.textContent = mm + ':' + ss;
+  if (display) display.textContent = mm + ':' + ss;
+
+  // Update ring progress
+  if (progress && total > 0) {
+    const circumference = 2 * Math.PI * 82; // r=82
+    const offset = circumference * (1 - remaining / total);
+    progress.style.strokeDashoffset = offset;
+  }
+
+  // Pulse animation when done
+  if (ring && remaining === 0) {
+    ring.classList.add('timer-done');
+  } else if (ring) {
+    ring.classList.remove('timer-done');
+  }
+}
+
+function toggleTimer() {
+  clockState.timerRunning = !clockState.timerRunning;
+  const btn = document.getElementById('timer-pause-btn');
+  if (btn) {
+    btn.innerHTML = clockState.timerRunning
+      ? '<i class="ti ti-player-pause"></i> Pause'
+      : '<i class="ti ti-player-play"></i> Resume';
+  }
+  if (clockState.timerRunning) {
+    if (clockIntervals.timer) clearInterval(clockIntervals.timer);
+    clockIntervals.timer = setInterval(tickTimer, 1000);
+  } else {
+    if (clockIntervals.timer) clearInterval(clockIntervals.timer);
+  }
+}
+
+function resetTimer() {
+  clockState.timerRunning = false;
+  clockState.timerRemainingSec = 0;
+  clockState.timerTotalSec = 0;
+  if (clockIntervals.timer) clearInterval(clockIntervals.timer);
+
+  // Reset UI
+  const setup = document.getElementById('timer-setup');
+  const ring = document.getElementById('timer-ring');
+  const display = document.getElementById('timer-display');
+  const controls = document.getElementById('timer-controls');
+  if (setup) setup.style.display = 'flex';
+  if (ring) ring.classList.remove('timer-done');
+  if (display) display.style.display = 'none';
+  if (controls) controls.style.display = 'none';
+
+  const progress = document.getElementById('timer-progress');
+  if (progress) progress.style.strokeDashoffset = '0';
+
+  updateTimerDisplayFromInputs();
+}
+
+function timerComplete() {
+  clockState.timerRunning = false;
+  if (clockIntervals.timer) clearInterval(clockIntervals.timer);
+  notify('Timer finished!');
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = 800;
+    osc.type = 'sine';
+    gain.gain.value = 0.3;
+    osc.start();
+    setTimeout(() => { osc.stop(); ctx.close(); }, 300);
+  } catch (e) {}
+}
+

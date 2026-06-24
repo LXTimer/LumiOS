@@ -22,6 +22,93 @@
 .stopwatch-btn-secondary:hover { background: rgba(255, 255, 255, 0.15); border-color: rgba(255, 255, 255, 0.3); }
 .stopwatch-laps { width: 100%; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 10px; }
 #stopwatch-laps-list { width: 100%; }
+
+/* ── Timer ── */
+.timer-display {
+  font-size: 56px;
+  font-weight: 200;
+  letter-spacing: 2px;
+  color: var(--accent-color);
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+  margin: 20px 0;
+  position: relative;
+}
+.timer-ring {
+  width: 180px;
+  height: 180px;
+  position: relative;
+  margin-bottom: 20px;
+}
+.timer-ring svg {
+  transform: rotate(-90deg);
+}
+.timer-ring-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 8;
+}
+.timer-ring-progress {
+  fill: none;
+  stroke: var(--accent-color);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+  filter: drop-shadow(0 0 8px rgba(var(--accent-rgb), 0.5));
+}
+.timer-ring-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: 200;
+  color: white;
+  font-family: 'Courier New', monospace;
+}
+.timer-controls { display: flex; gap: 8px; width: 100%; justify-content: center; margin-bottom: 15px; flex-wrap: wrap; }
+.timer-btn { padding: 8px 16px; background: linear-gradient(135deg, var(--accent-color), rgba(var(--accent-rgb), 0.8)); border: 1px solid rgba(var(--accent-rgb), 0.3); color: white; border-radius: 6px; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 5px; transition: all var(--transition-dur); }
+.timer-btn:hover:not(:disabled) { background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.9), var(--accent-color)); box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3); }
+.timer-btn.running { background: linear-gradient(135deg, #ef4444, #dc2626); border-color: rgba(239, 68, 68, 0.3); }
+.timer-btn-secondary { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: rgba(255, 255, 255, 0.8); }
+.timer-btn-secondary:hover { background: rgba(255, 255, 255, 0.15); border-color: rgba(255, 255, 255, 0.3); }
+.timer-setup { display: flex; gap: 8px; align-items: center; justify-content: center; margin-bottom: 15px; flex-wrap: wrap; }
+.timer-input-group { display: flex; align-items: center; gap: 6px; }
+.timer-input-group label { font-size: 11px; color: rgba(255, 255, 255, 0.6); }
+.timer-input {
+  width: 60px;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  border-radius: 6px;
+  font-size: 18px;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+}
+.timer-input:focus { outline: none; background: rgba(255, 255, 255, 0.12); border-color: var(--accent-color); }
+.timer-input::-webkit-inner-spin-button,
+.timer-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.timer-input[type=number] { -moz-appearance: textfield; }
+.timer-separator { font-size: 20px; color: rgba(255, 255, 255, 0.4); font-weight: bold; }
+.timer-presets { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.timer-preset { padding: 5px 10px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 5px; color: rgba(255, 255, 255, 0.7); font-size: 11px; cursor: pointer; transition: all var(--transition-dur); }
+.timer-preset:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); }
+.timer-done {
+  animation: timerPulse 1s ease-in-out infinite;
+}
+@keyframes timerPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.98); }
+}
+.timer-ring.timer-done .timer-ring-progress {
+  stroke: #ef4444;
+}
+.timer-ring.timer-done .timer-ring-text {
+  color: #ef4444;
+}
+
 .alarm-controls { width: 100%; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
 .alarm-time-input { display: flex; gap: 8px; width: 100%; }
 #alarm-time-input { flex: 1; padding: 8px 12px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); color: white; border-radius: 6px; font-size: 14px; cursor: pointer; }
