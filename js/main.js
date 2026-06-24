@@ -46,6 +46,7 @@ function init() {
   initParticles();
   initWidgets();
   initBattery();
+  applyWallpaper(OS_SETTINGS.wallpaper);
 
   setTimeout(() => openApp('welcome'), 200);
 
@@ -55,6 +56,7 @@ function init() {
     if (!e.target.closest('#volume-popup') && !e.target.closest('#vol-btn'))        closeVolumePopup();
     if (!e.target.closest('#battery-popup') && !e.target.closest('#battery-btn'))   closeBatteryPopup();
     if (!e.target.closest('#calendar-popup') && !e.target.closest('.tray-clock-btn')) closeCalendar();
+    if (!e.target.closest('#quick-settings') && !e.target.closest('#tray-bat-btn') && !e.target.closest('#tray-wifi-btn') && !e.target.closest('#tray-vol-btn')) closeQuickSettings();
     if (!e.target.closest('#ctx-menu'))                                              closeContextMenu();
   });
 

@@ -143,6 +143,55 @@
   <!-- ── Calendar Popup ── -->
   <div id="calendar-popup"></div>
 
+  <!-- ── Quick Settings Panel ── -->
+  <div id="quick-settings">
+    <div class="qs-header">
+      <span class="qs-title">Quick Settings</span>
+      <button class="qs-close-btn" onclick="closeQuickSettings()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="qs-row">
+      <button class="qs-tile" id="qs-wifi" onclick="toggleWifi(); updateQuickSettings();">
+        <i class="ti ti-wifi" style="font-size:20px"></i>
+        <span>Wi-Fi</span>
+      </button>
+      <button class="qs-tile" id="qs-bluetooth" onclick="toggleBluetooth(); updateQuickSettings();">
+        <i class="ti ti-bluetooth" style="font-size:20px"></i>
+        <span>Bluetooth</span>
+      </button>
+      <button class="qs-tile" id="qs-night" onclick="toggleNightMode(); updateQuickSettings();">
+        <i class="ti ti-moon-stars" style="font-size:20px"></i>
+        <span>Night</span>
+      </button>
+      <button class="qs-tile" id="qs-dnd" onclick="toggleDnD(); updateQuickSettings();">
+        <i class="ti ti-bell-off" style="font-size:20px"></i>
+        <span>DnD</span>
+      </button>
+    </div>
+    <div class="qs-slider-group">
+      <div class="qs-slider-row">
+        <i class="ti ti-volume"></i>
+        <input type="range" class="qs-slider" id="qs-vol-slider" min="0" max="100" value="80"
+               oninput="setVolume(this.value); updateQuickSettings()">
+        <span class="qs-slider-value" id="qs-vol-pct">80</span>
+      </div>
+      <div class="qs-slider-row">
+        <i class="ti ti-sun"></i>
+        <input type="range" class="qs-slider" id="qs-brightness-slider" min="20" max="100" value="100"
+               oninput="applyBrightness(this.value); updateQuickSettings()">
+        <span class="qs-slider-value" id="qs-brightness-pct">100</span>
+      </div>
+    </div>
+    <div class="qs-footer">
+      <div class="qs-battery" id="qs-battery">
+        <i class="ti ti-battery-4" id="qs-bat-icon"></i>
+        <span id="qs-bat-text">Battery: --%</span>
+      </div>
+      <button class="qs-settings-btn" onclick="openApp('settings'); closeQuickSettings()">
+        <i class="ti ti-settings"></i>
+      </button>
+    </div>
+  </div>
+
   <!-- ── Taskbar ── -->
   <nav id="tbar" aria-label="Taskbar">
 
@@ -168,14 +217,14 @@
 
     <!-- System tray -->
     <div class="tbar-tray">
-      <button class="tray-btn" id="battery-btn" onclick="toggleBatteryPopup()" title="Battery">
-        <i id="battery-icon" class="ti ti-battery-4" style="font-size:16px"></i>
+      <button class="tray-btn" id="tray-bat-btn" onclick="toggleQuickSettings()" title="Battery">
+        <i id="tray-bat-icon" class="ti ti-battery-4" style="font-size:16px"></i>
       </button>
-      <button class="tray-btn" id="wifi-btn" onclick="toggleWifi()" title="Wi-Fi">
-        <i id="wifi-icon" class="ti ti-wifi"></i>
+      <button class="tray-btn" id="tray-wifi-btn" onclick="toggleQuickSettings()" title="Wi-Fi">
+        <i id="tray-wifi-icon" class="ti ti-wifi"></i>
       </button>
-      <button class="tray-btn" id="vol-btn" onclick="toggleVolume()" title="Volume">
-        <i id="volume-icon" class="ti ti-volume"></i>
+      <button class="tray-btn" id="tray-vol-btn" onclick="toggleQuickSettings()" title="Volume">
+        <i id="tray-vol-icon" class="ti ti-volume"></i>
       </button>
       <button class="tray-btn tray-clock-btn" onclick="showCalendar()" title="Calendar">
         <span id="tclk">--:--</span>

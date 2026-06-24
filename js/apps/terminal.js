@@ -26,46 +26,32 @@ Commands:
     rmdir <dir>        Remove empty directory
     mv <src> <dst>     Move/rename file
     cp <src> <dst>     Copy file
-    head <file> [n]    Show first n lines
-    tail <file> [n]    Show last n lines
-    wc <file>          Count lines/words/chars
-    find <name>        Search for files by name
 
   System:
     uname [-a]         System information
-    neofetch           Display system info (fancy)
-    uptime             Show OS uptime
+    neofetch           System info (fancy)
+    uptime             OS uptime
     hostname           Display hostname
-    df                 Disk free space
     ps                 Process list
     date               Current date & time
     version            OS version
     whoami             Current user
     id                 User identity
-    users              Logged-in users
     env                Environment variables
     which <cmd>        Locate a command
 
   Text & Utilities:
     echo [text...]     Print text
     clear              Clear terminal screen
-    grep <pattern>     Search text (demo)
-    sort [text...]     Sort lines
-    uniq [text...]     Remove adjacent duplicates
     banner <text>      Print ASCII banner
-    cowsay <text>      Cow says...
-    fortune            Random wisdom
-    yes [text]         Repeat text
 
   Network:
-    ping <host>        Ping a host (demo)
-    curl <url>         Fetch URL (demo)
+    ping <host>        Ping a host
 
   System Control:
-    reboot             Reboot (demo)
-    shutdown           Shutdown (demo)
+    reboot             Reboot
+    shutdown           Shutdown
     apps               List installed apps
-    colors             Show terminal color palette
 `.trim();
 
 // ─── File System Commands ───
@@ -216,65 +202,6 @@ TERM_CMDS.cp = (args) => {
   return '';
 };
 
-TERM_CMDS.head = (args) => {
-  if (!args.length) return 'head: missing operand';
-  let n = 10;
-  let fileArg = args[0];
-  if (args[1] && !isNaN(args[1])) { n = parseInt(args[1]); }
-  else if (args[0] === '-n' && args[1]) { n = parseInt(args[1]); fileArg = args[2] || args[1]; }
-  const path = resolvePath(fileArg, termCwd);
-  const node = FS[path];
-  if (!node) return `head: ${fileArg}: No such file or directory`;
-  if (node.type === 'folder') return `head: ${fileArg}: Is a directory`;
-  if (!node.content) return '';
-  const lines = node.content.split('\n');
-  return lines.slice(0, n).join('\n');
-};
-
-TERM_CMDS.tail = (args) => {
-  if (!args.length) return 'tail: missing operand';
-  let n = 10;
-  let fileArg = args[0];
-  if (args[1] && !isNaN(args[1])) { n = parseInt(args[1]); }
-  else if (args[0] === '-n' && args[1]) { n = parseInt(args[1]); fileArg = args[2] || args[1]; }
-  const path = resolvePath(fileArg, termCwd);
-  const node = FS[path];
-  if (!node) return `tail: ${fileArg}: No such file or directory`;
-  if (node.type === 'folder') return `tail: ${fileArg}: Is a directory`;
-  if (!node.content) return '';
-  const lines = node.content.split('\n');
-  return lines.slice(Math.max(0, lines.length - n)).join('\n');
-};
-
-TERM_CMDS.wc = (args) => {
-  if (!args.length) return 'wc: missing operand';
-  const path = resolvePath(args[0], termCwd);
-  const node = FS[path];
-  if (!node) return `wc: ${args[0]}: No such file or directory`;
-  if (!node.content) return '0 0 0 ' + args[0];
-  const lines = node.content.split('\n');
-  const words = node.content.split(/\s+/).filter(Boolean).length;
-  const chars = node.content.length;
-  return `${lines.length} ${words} ${chars} ${args[0]}`;
-};
-
-TERM_CMDS.find = (args) => {
-  if (!args.length) return 'find: missing operand';
-  const pattern = args[0].toLowerCase();
-  const results = [];
-  function searchDir(dirPath) {
-    const node = FS[dirPath];
-    if (!node || node.type !== 'folder') return;
-    (node.children || []).forEach(child => {
-      const childPath = dirPath === '/' ? '/' + child : dirPath + '/' + child;
-      if (child.toLowerCase().includes(pattern)) results.push(childPath);
-      const childNode = FS[childPath];
-      if (childNode?.type === 'folder') searchDir(childPath);
-    });
-  }
-  searchDir(termCwd);
-  return results.length ? results.join('\n') : `find: no matches for '${args[0]}'`;
-};
 
 // ─── System Commands ───
 TERM_CMDS.uname = (args) => {
@@ -305,29 +232,6 @@ TERM_CMDS.uptime = () => `up ${getUptime()}`;
 
 TERM_CMDS.hostname = () => 'LumiOS';
 
-TERM_CMDS.df = () => {
-  let totalItems = 0;
-  let totalSize = 0;
-  function countDir(path) {
-    const node = FS[path];
-    if (!node) return;
-    if (node.type === 'file') {
-      totalItems++;
-      const sz = node.size ? parseInt(node.size) || 0 : 0;
-      totalSize += sz;
-    }
-    if (node.type === 'folder') {
-      (node.children || []).forEach(child => {
-        const cp = path === '/' ? '/' + child : path + '/' + child;
-        countDir(cp);
-      });
-    }
-  }
-  countDir('/');
-  return `Filesystem      Size  Used  Avail  Use%
-LumiOS-FS       ${totalSize || '16'}K   ${Math.round(totalSize * 0.42) || '6'}K   ${Math.round(totalSize * 0.58) || '10'}K   ${totalSize ? '42' : '0'}%`;
-};
-
 TERM_CMDS.ps = () => {
   const processes = ['kernel', 'lumi-desktop', 'lumi-window-manager', 'lumi-taskbar', 'lumi-session'];
   // Add any open apps as processes
@@ -345,8 +249,6 @@ TERM_CMDS.ps = () => {
 };
 
 TERM_CMDS.id = () => 'uid=1000(lumi-user) gid=1000(lumi-user) groups=1000(lumi-user)';
-
-TERM_CMDS.users = () => 'lumi-user';
 
 TERM_CMDS.env = () => {
   return `SHELL=/bin/lumish
@@ -372,26 +274,6 @@ TERM_CMDS.echo = (args) => args.join(' ') || '';
 
 TERM_CMDS.clear = () => '__CLEAR__';
 
-TERM_CMDS.grep = (args) => {
-  if (!args.length) return 'grep: missing pattern';
-  const pattern = args[0];
-  const input = args.slice(1).join(' ') || '(no input provided)';
-  const lines = input.split('\n');
-  const matches = lines.filter(l => l.includes(pattern));
-  return matches.length ? matches.join('\n') : '(no matches)';
-};
-
-TERM_CMDS.sort = (args) => {
-  const input = args.join(' ') || 'nothing to sort';
-  return input.split(' ').sort().join(' ');
-};
-
-TERM_CMDS.uniq = (args) => {
-  const input = args.join(' ') || '';
-  if (!input) return '';
-  return input.split(' ').filter((w, i, arr) => i === 0 || w !== arr[i-1]).join(' ');
-};
-
 TERM_CMDS.banner = (args) => {
   const text = args.join(' ') || 'LumiOS';
   const lines = text.split('').map(c => {
@@ -402,69 +284,6 @@ TERM_CMDS.banner = (args) => {
   // Simple ASCII banner
   const border = '='.repeat(text.length * 3 + 4);
   return `${border}\n= ${text.toUpperCase().split('').join(' | ')} =\n${border}`;
-};
-
-TERM_CMDS.cowsay = (args) => {
-  const text = args.join(' ') || 'Moo!';
-  const len = text.length;
-  const border = ' ' + '_'.repeat(len + 2) + ' ';
-  const msg = '< ' + text + ' >';
-  const border2 = ' ' + '-'.repeat(len + 2) + ' ';
-  const cow = `
-${border}
-${msg}
-${border2}
-        \\   ^__^
-         \\  (oo)\\_______
-            (__)\\       )\\/\\
-                ||----w |
-                ||     ||
-  `;
-  return cow.trim();
-};
-
-TERM_CMDS.fortune = () => {
-  const fortunes = [
-    "The best way to predict the future is to create it.",
-    "A journey of a thousand miles begins with a single step.",
-    "In the middle of difficulty lies opportunity.",
-    "Code is poetry in motion.",
-    "LumiOS: A luminous computing experience.",
-    "The only limit is your imagination.",
-    "Why write a novel when you can write code?",
-    "Have you tried turning it off and on again?",
-    "There are 10 types of people in the world: those who understand binary, and those who don't.",
-    "I find your lack of faith in the LumiOS disturbing.",
-    "To Infinity and Beyond!",
-    "Let there be light — LumiOS!",
-    "A smooth sea never made a skilled sailor.",
-    "The best error message is the one that never shows up.",
-  ];
-  return fortunes[Math.floor(Math.random() * fortunes.length)];
-};
-
-TERM_CMDS.yes = (args) => {
-  const text = args.join(' ') || 'y';
-  return (text + ' '.repeat(5)).repeat(10).trim();
-};
-
-// ─── Colors ───
-TERM_CMDS.colors = () => {
-  const cols = [
-    ['30','black'], ['31','red'], ['32','green'], ['33','yellow'],
-    ['34','blue'], ['35','magenta'], ['36','cyan'], ['37','white'],
-    ['90','bright black'], ['91','bright red'], ['92','bright green'], ['93','bright yellow'],
-    ['94','bright blue'], ['95','bright magenta'], ['96','bright cyan'], ['97','bright white'],
-  ];
-  return cols.map(([code, name]) => {
-    const color = {
-      '31':'#f87171','32':'#4ade80','33':'#fbbf24','34':'#60a5fa',
-      '35':'#c084fc','36':'#22d3ee','37':'#e5e7eb','90':'#6b7280',
-      '91':'#fca5a5','92':'#86efac','93':'#fde047','94':'#93c5fd',
-      '95':'#d8b4fe','96':'#67e8f9','97':'#f9fafb',
-    }[code] || '#ccc';
-    return `<span style="color:${color}">\\e[${code}m</span>  ${name.padEnd(16)}`;
-  }).join('');
 };
 
 // ─── Network Commands ───
@@ -478,15 +297,6 @@ TERM_CMDS.ping = (args) => {
 --- ${host} ping statistics ---
 3 packets transmitted, 3 received, 0% packet loss, time 2002ms
 rtt min/avg/max/mdev = 0.38/0.40/0.42/0.02 ms`;
-};
-
-TERM_CMDS.curl = (args) => {
-  if (!args.length) return 'curl: try \'curl --help\' for more information';
-  const url = args.filter(a => !a.startsWith('-')).pop() || 'https://example.com';
-  return `<!DOCTYPE html>
-<html><head><title>${url}</title></head>
-<body><h1>LumiOS cURL</h1><p>Mock response for ${url}</p>
-<p>Status: 200 OK</p><p>Content-Type: text/html</p></body></html>`;
 };
 
 // ─── System Control ───

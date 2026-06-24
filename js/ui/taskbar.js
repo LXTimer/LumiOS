@@ -55,40 +55,23 @@ function closeStartMenu() {
 let wifiOn = true;
 function toggleWifi() {
   wifiOn = !wifiOn;
-  const icon = document.getElementById('wifi-icon');
+  const icon = document.getElementById('tray-wifi-icon');
   if (icon) icon.className = wifiOn ? 'ti ti-wifi' : 'ti ti-wifi-off';
-  const btn = document.getElementById('wifi-btn');
+  const btn = document.getElementById('tray-wifi-btn');
   if (btn) btn.classList.toggle('tray-active', wifiOn);
   notify(wifiOn ? 'Wi-Fi connected' : 'Wi-Fi disconnected');
 }
 
 // ─────────────────────────────────────────────
-//  Tray — Volume
+//  Tray — Volume (icons in tray now open Quick Settings)
 // ─────────────────────────────────────────────
-let volOpen = false;
 let currentVolume = 80;
-
-function toggleVolume() {
-  volOpen = !volOpen;
-  const popup = document.getElementById('volume-popup');
-  if (popup) popup.classList.toggle('visible', volOpen);
-  const btn = document.getElementById('vol-btn');
-  if (btn) btn.classList.toggle('tray-active', volOpen);
-}
-
-function closeVolumePopup() {
-  volOpen = false;
-  const popup = document.getElementById('volume-popup');
-  if (popup) popup.classList.remove('visible');
-  const btn = document.getElementById('vol-btn');
-  if (btn) btn.classList.remove('tray-active');
-}
 
 function setVolume(val) {
   currentVolume = parseInt(val, 10);
   const slider    = document.getElementById('vol-slider');
   const pct       = document.getElementById('vol-pct');
-  const trayIcon  = document.getElementById('volume-icon');
+  const trayIcon  = document.getElementById('tray-vol-icon');
   const popupIcon = document.getElementById('vol-popup-icon');
   if (slider) slider.value = currentVolume;
   if (pct)    pct.textContent = currentVolume + '%';
@@ -167,67 +150,38 @@ function calNav(dir) {
 // ─────────────────────────────────────────────
 //  Tray — Battery
 // ─────────────────────────────────────────────
-let batOpen = false;
 let batManager = null;
 let batSaverOn = false;
 let batUnsupported = false;
 
-function toggleBatteryPopup() {
-  batOpen = !batOpen;
-  const popup = document.getElementById('battery-popup');
-  if (popup) popup.classList.toggle('visible', batOpen);
-  const btn = document.getElementById('battery-btn');
-  if (btn) btn.classList.toggle('tray-active', batOpen);
-  if (batOpen && batManager) updateBatteryUI(batManager);
-}
-
-function closeBatteryPopup() {
-  batOpen = false;
-  const popup = document.getElementById('battery-popup');
-  if (popup) popup.classList.remove('visible');
-  const btn = document.getElementById('battery-btn');
-  if (btn) btn.classList.remove('tray-active');
-}
-
 function initBattery() {
   if (!navigator.getBattery) {
     batUnsupported = true;
-    const icon = document.getElementById('battery-icon');
+    const icon = document.getElementById('tray-bat-icon');
     if (icon) icon.className = 'ti ti-battery-off';
-    const pct = document.getElementById('bat-percentage');
-    if (pct) pct.textContent = 'N/A';
-    const status = document.getElementById('bat-status');
-    if (status) status.textContent = 'Battery API not available';
     return;
   }
 
   navigator.getBattery().then(battery => {
     batManager = battery;
-    updateBatteryUI(battery);
     updateBatteryTrayIcon(battery);
 
-    battery.addEventListener('levelchange', () => {
-      updateBatteryUI(battery);
-      updateBatteryTrayIcon(battery);
-    });
-    battery.addEventListener('chargingchange', () => {
-      updateBatteryUI(battery);
-      updateBatteryTrayIcon(battery);
-    });
-    battery.addEventListener('chargingtimechange', () => updateBatteryUI(battery));
-    battery.addEventListener('dischargingtimechange', () => updateBatteryUI(battery));
+    battery.addEventListener('levelchange', () => updateBatteryTrayIcon(battery));
+    battery.addEventListener('chargingchange', () => updateBatteryTrayIcon(battery));
   }).catch(() => {
     batUnsupported = true;
-    const icon = document.getElementById('battery-icon');
+    const icon = document.getElementById('tray-bat-icon');
     if (icon) icon.className = 'ti ti-battery-off';
   });
 }
 
 function updateBatteryTrayIcon(battery) {
-  const icon = document.getElementById('battery-icon');
+  const icon = document.getElementById('tray-bat-icon');
   if (!icon) return;
-  const level = battery.level * 100;
-  const charging = battery.charging;
+  const batteryObj = battery || batManager;
+  if (!batteryObj) return;
+  const level = batteryObj.level * 100;
+  const charging = batteryObj.charging;
 
   if (charging) {
     icon.className = 'ti ti-battery-charging';
@@ -247,91 +201,104 @@ function updateBatteryTrayIcon(battery) {
   }
 }
 
-function updateBatteryUI(battery) {
-  const level = Math.round(battery.level * 100);
-  const charging = battery.charging;
-  const pctEl = document.getElementById('bat-percentage');
-  const statusEl = document.getElementById('bat-status');
-  const sourceEl = document.getElementById('bat-source');
-  const timeEl = document.getElementById('bat-time');
-  const healthEl = document.getElementById('bat-health');
-  const barFill = document.getElementById('bat-bar-fill');
-  const popupIcon = document.getElementById('bat-popup-icon');
+// ─────────────────────────────────────────────
+//  Quick Settings Panel
+// ─────────────────────────────────────────────
+let qsOpen = false;
+let bluetoothOn = false;
+let nightMode = false;
+let dndOn = false;
 
-  if (pctEl) pctEl.textContent = level + '%';
-  if (barFill) {
-    barFill.style.width = level + '%';
-    if (charging) {
-      barFill.style.background = 'linear-gradient(90deg,#34d399,#10b981)';
-    } else if (level <= 10) {
-      barFill.style.background = 'linear-gradient(90deg,#ef4444,#dc2626)';
-    } else if (level <= 30) {
-      barFill.style.background = 'linear-gradient(90deg,#f59e0b,#d97706)';
-    } else {
-      barFill.style.background = 'linear-gradient(90deg,var(--accent-color),#818cf8)';
-    }
-  }
-
-  if (popupIcon) {
-    if (charging) {
-      popupIcon.className = 'ti ti-battery-charging';
-      popupIcon.style.color = '#34d399';
-    } else if (level <= 10) {
-      popupIcon.className = 'ti ti-battery-1';
-      popupIcon.style.color = '#ef4444';
-    } else if (level <= 30) {
-      popupIcon.className = 'ti ti-battery-2';
-      popupIcon.style.color = '#f59e0b';
-    } else if (level <= 60) {
-      popupIcon.className = 'ti ti-battery-3';
-      popupIcon.style.color = 'var(--accent-color)';
-    } else {
-      popupIcon.className = 'ti ti-battery-4';
-      popupIcon.style.color = 'var(--accent-color)';
-    }
-  }
-
-  if (statusEl) {
-    if (charging && level === 100) statusEl.textContent = 'Fully Charged';
-    else if (charging) statusEl.textContent = 'Charging…';
-    else if (level <= 10) statusEl.textContent = 'Critical — Plug in soon';
-    else if (level <= 20) statusEl.textContent = 'Low battery';
-    else statusEl.textContent = 'Power status: OK';
-  }
-
-  if (sourceEl) {
-    sourceEl.textContent = charging ? 'AC Power' : 'Battery';
-  }
-
-  if (timeEl) {
-    if (charging && battery.chargingTime !== Infinity) {
-      const min = Math.round(battery.chargingTime / 60);
-      if (min >= 60) timeEl.textContent = Math.floor(min / 60) + 'h ' + (min % 60) + 'm until full';
-      else timeEl.textContent = min + 'm until full';
-    } else if (!charging && battery.dischargingTime !== Infinity) {
-      const min = Math.round(battery.dischargingTime / 60);
-      if (min >= 60) timeEl.textContent = Math.floor(min / 60) + 'h ' + (min % 60) + 'm remaining';
-      else timeEl.textContent = min + 'm remaining';
-    } else {
-      timeEl.textContent = charging ? 'Calculating…' : 'Not available';
-    }
-  }
-
-  if (healthEl) {
-    // Browser API doesn't give health, so we estimate based on cycles / level behavior
-    if (level >= 80) healthEl.textContent = 'Good';
-    else if (level >= 50) healthEl.textContent = 'Fair';
-    else healthEl.textContent = 'Unknown';
+function toggleQuickSettings() {
+  qsOpen = !qsOpen;
+  const panel = document.getElementById('quick-settings');
+  if (panel) panel.classList.toggle('visible', qsOpen);
+  if (qsOpen) {
+    updateQuickSettings();
+    // Mark all tray buttons as active
+    document.querySelectorAll('.tray-btn').forEach(b => {
+      if (b.id && b.id.startsWith('tray-')) b.classList.add('tray-active');
+    });
+  } else {
+    document.querySelectorAll('.tray-btn').forEach(b => {
+      if (b.id && b.id.startsWith('tray-')) b.classList.remove('tray-active');
+    });
   }
 }
 
-function toggleBatterySaver(el) {
-  batSaverOn = !batSaverOn;
-  el.dataset.on = batSaverOn ? '1' : '0';
-  el.classList.toggle('on', batSaverOn);
-  el.setAttribute('aria-checked', batSaverOn);
-  const knob = el.querySelector('.toggle-knob');
-  knob.style.left = batSaverOn ? 'auto' : '3px';
-  knob.style.right = batSaverOn ? '3px' : 'auto';
-  notify(batSaverOn ? 'Battery Saver enabled' : 'Battery Saver disabled');
+function closeQuickSettings() {
+  qsOpen = false;
+  const panel = document.getElementById('quick-settings');
+  if (panel) panel.classList.remove('visible');
+  document.querySelectorAll('.tray-btn').forEach(b => {
+    if (b.id && b.id.startsWith('tray-')) b.classList.remove('tray-active');
+  });
+}
+
+function updateQuickSettings() {
+  const volSlider = document.getElementById('qs-vol-slider');
+  const volPct = document.getElementById('qs-vol-pct');
+  if (volSlider) volSlider.value = currentVolume;
+  if (volPct) volPct.textContent = currentVolume;
+
+  const brtSlider = document.getElementById('qs-brightness-slider');
+  const brtPct = document.getElementById('qs-brightness-pct');
+  if (brtSlider) brtSlider.value = OS_SETTINGS.brightness;
+  if (brtPct) brtPct.textContent = OS_SETTINGS.brightness;
+
+  const wifiTile = document.getElementById('qs-wifi');
+  if (wifiTile) wifiTile.classList.toggle('active', wifiOn);
+
+  const btTile = document.getElementById('qs-bluetooth');
+  if (btTile) btTile.classList.toggle('active', bluetoothOn);
+
+  const nightTile = document.getElementById('qs-night');
+  if (nightTile) nightTile.classList.toggle('active', nightMode);
+
+  const dndTile = document.getElementById('qs-dnd');
+  if (dndTile) dndTile.classList.toggle('active', dndOn);
+
+  const batText = document.getElementById('qs-bat-text');
+  const batIcon = document.getElementById('qs-bat-icon');
+  if (batManager) {
+    const level = Math.round(batManager.level * 100);
+    if (batText) batText.textContent = 'Battery: ' + level + '%';
+    if (batIcon) {
+      if (batManager.charging) batIcon.className = 'ti ti-battery-charging';
+      else if (level <= 10) batIcon.className = 'ti ti-battery-1';
+      else if (level <= 30) batIcon.className = 'ti ti-battery-2';
+      else if (level <= 60) batIcon.className = 'ti ti-battery-3';
+      else batIcon.className = 'ti ti-battery-4';
+    }
+  } else {
+    if (batText) batText.textContent = 'Battery: --%';
+  }
+}
+
+function toggleBluetooth() {
+  bluetoothOn = !bluetoothOn;
+  updateQuickSettings();
+  notify(bluetoothOn ? 'Bluetooth enabled' : 'Bluetooth disabled');
+}
+
+function toggleNightMode() {
+  nightMode = !nightMode;
+  if (nightMode) {
+    applyBrightness(40);
+    const s = document.getElementById('qs-brightness-slider');
+    if (s) s.value = 40;
+  } else {
+    applyBrightness(100);
+    const s = document.getElementById('qs-brightness-slider');
+    if (s) s.value = 100;
+  }
+  updateQuickSettings();
+  notify(nightMode ? 'Night mode enabled' : 'Night mode disabled');
+}
+
+function toggleDnD() {
+  dndOn = !dndOn;
+  OS_SETTINGS.notifications = !dndOn;
+  updateQuickSettings();
+  notify(dndOn ? 'Do Not Disturb enabled' : 'Do Not Disturb disabled');
 }

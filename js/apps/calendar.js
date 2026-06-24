@@ -5,7 +5,7 @@
 // ─────────────────────────────────────────────
 let CAL_EVENTS = {};
 let calEventsSeeded = false;
-const CAL_COLORS = ['#6366f1','#ec4899','#10b981','#f97316','#0ea5e9','#f59e0b'];
+const CAL_COLORS = ['#6366f1','#ec4899','#10b981','#f97316','#0ea5e9'];
 let capp = { year: 0, month: 0, selectedDate: null, tab: 'month' };
 
 function calKey(d) {

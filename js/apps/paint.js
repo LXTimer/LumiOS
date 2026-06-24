@@ -6,8 +6,8 @@
 
 const PAINT_COLORS = [
   '#000000','#ffffff','#ff0000','#ff6600','#ffcc00','#00ff00','#00ccff','#0033ff',
-  '#6600ff','#ff00ff','#cc6600','#808080','#000080','#800000','#008000','#00ffff',
-  '#ff99cc','#cc99ff','#99ccff','#99ff99','#ffcc99','#cccccc',
+  '#6600ff','#ff00ff','#808080','#000080','#800000',
+  '#ff99cc','#99ff99','#ffcc99',
 ];
 
 const PAINT_TOOLS = ['brush','eraser','fill','line','rect','circle'];
@@ -56,8 +56,6 @@ function buildPaint() {
         </div>
         <div class="paint-separator"></div>
         <button class="app-btn" onclick="paintClear()" title="Clear Canvas"><i class="ti ti-trash"></i></button>
-        <button class="app-btn" onclick="paintUndo()" title="Undo"><i class="ti ti-arrow-back-up"></i></button>
-        <button class="app-btn" onclick="paintRedo()" title="Redo"><i class="ti ti-arrow-forward-up"></i></button>
         <button class="app-btn" onclick="paintSave()" title="Save as PNG"><i class="ti ti-download"></i></button>
       </div>
       <div class="paint-canvas-wrap">
@@ -357,24 +355,6 @@ function paintSaveState(canvas) {
   paintState.redo = [];
 }
 
-function paintUndo() {
-  if (paintState.path.length <= 1) return;
-  const last = paintState.path.pop();
-  paintState.redo.push(last);
-  const prev = paintState.path[paintState.path.length - 1];
-  const canvas = document.getElementById('paint-canvas');
-  if (!canvas || !prev) return;
-  restoreCanvas(canvas, prev);
-}
-
-function paintRedo() {
-  if (paintState.redo.length === 0) return;
-  const next = paintState.redo.pop();
-  paintState.path.push(next);
-  const canvas = document.getElementById('paint-canvas');
-  if (!canvas || !next) return;
-  restoreCanvas(canvas, next);
-}
 
 function restoreCanvas(canvas, data) {
   const ctx = canvas.getContext('2d');

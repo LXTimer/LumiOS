@@ -16,7 +16,7 @@ function notify(msg) {
 }
 
 // ─────────────────────────────────────────────
-//  Clock update (shared by taskbar + desktop)
+//  Clock update
 // ─────────────────────────────────────────────
 function updateClock() {
   const now = new Date();
