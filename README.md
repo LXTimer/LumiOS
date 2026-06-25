@@ -4,7 +4,7 @@ A fully functional and interactive, web-based operating system, built for aesthe
 
 ## Overview
 
-LumiOS creates a web desktop just works the same as a normal desktop: draggable and resizeable windows, taskbar, and functional applicatons. LumiOS focuses on aesthetic like GUI and themes.
+LumiOS delivers a fully interactive web‑based operating system, complete with draggable and resizable windows, a taskbar, and functional built‑in applications. It mainly emphasizes aesthetics, focusing on creating fantastic user expereinces.
 
 ![LumiOS - 1](./assets/LumiOS-1.png)
 ![LumiOS - 2](./assets/LumiOS-2.png)
@@ -28,6 +28,15 @@ LumiOS creates a web desktop just works the same as a normal desktop: draggable 
 + Terminal with command execution and file system navigation
 + Welcome app for onboarding
 
+## Dev Log — Notes App Updates
+
+June 2026 — Notes was overhauled with quality-of-life improvements:
+
+- **Download as .txt** — Replaced the old Save-to-filesystem button with a direct browser download that saves notes as plain `.txt` files.
+- **Status bar** — Added cursor position (Ln/Col) and live word count at the bottom, similar to Notepad.
+- **Open from Files** — Double-clicking `.txt` or `.md` files in the Files app now opens them in Notes for editing.
+- **GUI cleanup** — Removed placeholder text, replaced the text-based "List" button with an icon, and cleaned up the toolbar.
+
 ## Apps
 | App | Description |
 |---|---|
@@ -36,7 +45,7 @@ LumiOS creates a web desktop just works the same as a normal desktop: draggable 
 | **Calculator** | Standard four-function calculator |
 | **Notes** | Rich-text editor for notestaking|
 | **Terminal** | Simple terminal with command execution and file system navigation |
-| **Files** | File system with navigation and preview |
+| **Files** | File system with navigation and preview. Can be used to download and edit .txt files |
 | **Settings** | Appearance, display, notifications, security, and about panels |
 | **Widgets** | Manage desktop-overlay widgets |
 | **Paint** | Drawing canvas with tools, colors, and shapes |
@@ -76,3 +85,4 @@ LumiOS/
 
 ## Credits
 Inspired by Puter, Prozilla OS, and OS.js.
+
