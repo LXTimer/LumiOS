@@ -8,6 +8,21 @@ let notesMode = 'richtext';
 let notesContent = '';
 let notesFilename = '';
 
+// ─── Load external content (called from Files app) ───
+function notesLoadContent(content, filename) {
+  notesContent = content;
+  notesFilename = filename;
+  // Switch to markdown mode if it looks like markdown, otherwise richtext
+  if (content.includes('# ') || content.includes('```') || content.includes('**')) {
+    notesSetMode('markdown');
+  } else {
+    notesSetMode('richtext');
+  }
+  const editor = document.getElementById('notes-editor');
+  if (editor) {
+    editor.innerText = content;
+  }
+}
 
 // ─── Build ───
 function buildNotes() {

@@ -231,11 +231,20 @@ function filesOpen(el, path) {
   const node = FS[path];
   if (!node) return;
   if (node.type === 'folder') { filesNavigate(el, path); return; }
+  const name = path.split('/').pop();
+  const ext = (node.ext || name.split('.').pop() || '').toLowerCase();
+
+  // Open .txt / .md files in Notes app
+  if ((ext === 'txt' || ext === 'md') && node.content !== null) {
+    notesLoadContent(node.content, name);
+    openApp('notes');
+    return;
+  }
+
   const root = el.closest('.files-wrap');
   if (!root) return;
   const preview = root.querySelector('#files-preview');
   if (!preview) return;
-  const name = path.split('/').pop();
   if (node.content !== null) {
     preview.querySelector('#files-preview-title').textContent = name;
     preview.querySelector('#files-preview-content').textContent = node.content;
