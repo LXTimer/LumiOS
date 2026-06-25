@@ -94,7 +94,7 @@ function buildClock() {
             <button class="timer-btn timer-btn-secondary" onclick="resetTimer()">
               <i class="ti ti-refresh"></i> Reset
             </button>
-          </div>
+          </div> 
           <div class="timer-presets">
             <button class="timer-preset" onclick="setTimerPreset(1,0)">1 min</button>
             <button class="timer-preset" onclick="setTimerPreset(5,0)">5 min</button>

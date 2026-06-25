@@ -123,7 +123,6 @@ let ctxOpen = false;
 function showContextMenu(x, y) {
   const menu = document.getElementById('ctx-menu');
   if (!menu) return;
-  menu.style.display = 'block';
   menu.classList.remove('visible');
 
   const menuW = menu.offsetWidth;
@@ -144,7 +143,6 @@ function closeContextMenu() {
   const menu = document.getElementById('ctx-menu');
   if (menu) {
     menu.classList.remove('visible');
-    menu.style.display = 'none';
   }
   ctxOpen = false;
 }

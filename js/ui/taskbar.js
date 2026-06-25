@@ -111,6 +111,16 @@ function closeCalendar() {
   if (btn) btn.classList.remove('tray-active');
 }
 
+function closeVolumePopup() {
+  const popup = document.getElementById('volume-popup');
+  if (popup) popup.classList.remove('visible');
+}
+
+function closeBatteryPopup() {
+  const popup = document.getElementById('battery-popup');
+  if (popup) popup.classList.remove('visible');
+}
+
 function renderCalendar() {
   const popup = document.getElementById('calendar-popup');
   if (!popup) return;

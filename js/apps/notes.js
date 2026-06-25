@@ -8,6 +8,8 @@ let notesMode = 'richtext';
 let notesContent = '';
 let notesFilename = '';
 
+
+
 // ─── Build ───
 function buildNotes() {
   notesContent = '';
@@ -329,10 +331,8 @@ document.addEventListener('input', function(e) {
 function notesRenderMarkdown(md) {
   if (!md || md.trim() === '') return '<div class="notes-preview-empty">Nothing to preview</div>';
 
-  // Escape HTML special chars using a safe approach
-  var html = md;
-  html = html.split('&').join('__AMP__').split('<').join('__LT__').split('>').join('__GT__');
-  html = html.split('&').join('__AMP__').split('<').join('__LT__').split('>').join('__GT__');
+  let html = md;
+  html = html.split('&').join('&').split('<').join('<').split('>').join('>');
 
   // Code blocks (```) — must happen before other inline transforms
   html = html.replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre><code>$2</code></pre>');

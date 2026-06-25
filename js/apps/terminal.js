@@ -277,9 +277,7 @@ TERM_CMDS.clear = () => '__CLEAR__';
 TERM_CMDS.banner = (args) => {
   const text = args.join(' ') || 'LumiOS';
   const lines = text.split('').map(c => {
-    const code = c.toUpperCase().charCodeAt(0);
-    const size = Math.max(3, text.length);
-    return c + ' '.repeat(2);
+    return c + ' ';
   });
   // Simple ASCII banner
   const border = '='.repeat(text.length * 3 + 4);

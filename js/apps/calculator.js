@@ -315,13 +315,10 @@ function calcEvaluate(expr) {
 
   // Replace function names
   expr = expr.replace(/sqrt\(/g, 'Math.sqrt(');
-  expr = expr.replace(/sin\(/g, `Math.sin(${calcAngleMode === 'deg' ? '(x=>x*Math.PI/180)' : ''}`); 
   
-  // Actually, for the expression evaluator we handle functions that take raw numbers
+  // For the expression evaluator, we handle functions that take raw numbers
   // Since the user presses sin/cos etc as unary operations BEFORE entering the expression,
   // we don't need to handle them inside the expression. Only basic operators.
-  // But let's support them anyway for robustness.
-  expr = expr.replace(/sqrt\(/g, 'Math.sqrt(');
   expr = expr.replace(/Math\.Math\./g, 'Math.');
 
   try {

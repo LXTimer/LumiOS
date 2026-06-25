@@ -52,6 +52,7 @@ function init() {
 
   // Close overlays on desktop click
   document.getElementById('osbg').addEventListener('mousedown', e => {
+    if (e.button === 2) return; // Don't close on right-click
     if (!e.target.closest('#smenu')        && !e.target.closest('#smbtn'))          closeStartMenu();
     if (!e.target.closest('#volume-popup') && !e.target.closest('#vol-btn'))        closeVolumePopup();
     if (!e.target.closest('#battery-popup') && !e.target.closest('#battery-btn'))   closeBatteryPopup();
@@ -77,6 +78,7 @@ function init() {
   });
 
   document.addEventListener('mousedown', e => {
+    if (e.button === 2) return;
     if (ctxOpen && ! e.target.closest('#ctx-menu')) {
       closeContextMenu();
     }
