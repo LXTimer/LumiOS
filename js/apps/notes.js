@@ -9,7 +9,6 @@ let notesContent = '';
 let notesFilename = '';
 
 
-
 // ─── Build ───
 function buildNotes() {
   notesContent = '';
@@ -31,10 +30,10 @@ function buildNotes() {
         </button>
         <div class="app-toolbar-sep"></div>
         <span id="notes-rt-buttons">
-          <button class="app-btn notes-btn-bold"      onclick="document.execCommand('bold',false,null)" title="Bold">B</button>
+          <button class="app-btn notes-btn-bold"      onclick="document.execCommand('bold',false,null)" title="Bold"><b>B</b></button>
           <button class="app-btn notes-btn-italic"    onclick="document.execCommand('italic',false,null)" title="Italic"><i>I</i></button>
           <button class="app-btn notes-btn-underline" onclick="document.execCommand('underline',false,null)" title="Underline"><u>U</u></button>
-          <button class="app-btn" onclick="document.execCommand('insertUnorderedList',false,null)" title="List">List</button>
+          <button class="app-btn notes-btn-list"      onclick="document.execCommand('insertUnorderedList',false,null)" title="List"><i class="ti ti-list"></i></button>
           <button class="app-btn" onclick="document.execCommand('formatBlock',false,'h3')" title="Heading">H</button>
           <button class="app-btn" onclick="document.execCommand('formatBlock',false,'p')" title="Body">P</button>
         </span>
@@ -47,8 +46,8 @@ function buildNotes() {
           <button class="app-btn" onclick="notesInsertCodeBlock()"><i class="ti ti-code"></i></button>
         </span>
         <div class="app-toolbar-sep"></div>
-        <button class="app-btn" onclick="notesSaveToFile()" title="Save to Files (saves .md or .html)">
-          <i class="ti ti-file-export"></i> Save
+        <button class="app-btn" onclick="notesDownloadTxt()" title="Download as .txt">
+          <i class="ti ti-download"></i> Download
         </button>
         <button class="app-btn" onclick="notesCopyContent()" title="Copy to clipboard">
           <i class="ti ti-copy"></i>
@@ -59,10 +58,13 @@ function buildNotes() {
       </div>
       <div id="notes-editor" contenteditable="true"
            onmousedown="event.stopPropagation()" aria-label="Notes editor">
-        <p style="color:rgba(255,255,255,.3);font-style:italic">Start typing your notes here&hellip;</p>
       </div>
       <div id="notes-preview" style="display:none">
-        <div class="notes-preview-empty">Nothing to preview — switch to Markdown mode and write some markdown!</div>
+        <div class="notes-preview-empty">Nothing to preview</div>
+      </div>
+      <div class="notes-statusbar" id="notes-statusbar">
+        <span id="notes-cursor-pos">Ln 1, Col 1</span>
+        <span id="notes-word-count">0 words</span>
       </div>
     </div>`;
 }
@@ -110,14 +112,14 @@ function notesSetMode(mode) {
         // Coming from markdown, show plain text in richtext
         editor.innerText = notesContent;
       } else if (!notesContent) {
-        editor.innerHTML = '<p style="color:rgba(255,255,255,.3);font-style:italic">Start typing your notes here&hellip;</p>';
+        editor.innerHTML = '';
       }
     } else if (mode === 'markdown') {
       if (prevMode === 'richtext') {
         editor.innerText = notesContent || '';
       }
       if (!notesContent && !editor.innerText) {
-        editor.innerText = 'Start typing markdown here...';
+        editor.innerText = '';
       }
     }
   }
@@ -215,57 +217,38 @@ function notesInsertCodeBlock() {
   notesContent = editor.innerText || editor.textContent || '';
 }
 
-// ─── Save to Filesystem ───
-function notesSaveToFile() {
+// ─── Download as .txt ───
+function notesDownloadTxt() {
   const editor = document.getElementById('notes-editor');
   if (!editor) return;
 
   let content = '';
-  let ext = '';
-
   if (notesMode === 'richtext') {
-    content = editor.innerHTML;
-    ext = '.html';
+    content = editor.innerText || editor.textContent || '';
   } else {
     content = notesContent || editor.innerText || editor.textContent || '';
-    ext = '.md';
   }
 
-  if (!content || content.trim() === '' ||
-      content.includes('Start typing your notes') ||
-      content.includes('Start typing markdown')) {
-    notify('Nothing to save!');
+  if (!content || content.trim() === '') {
+    notify('Nothing to download!');
     return;
   }
 
   const date = new Date();
   const dateStr = date.toISOString().slice(0, 10);
-  const name = notesFilename || 'note-' + dateStr + ext;
-  if (!notesFilename) notesFilename = name;
+  const name = (notesFilename ? notesFilename.replace(/\.(md|html)$/, '') : 'note-' + dateStr) + '.txt';
 
-  const homePath = '/home/lumi-user';
-  const homeNode = FS[homePath];
-  if (!homeNode || homeNode.type !== 'folder') {
-    notify('Cannot save: Filesystem not available');
-    return;
-  }
+  const blob = new Blob([content], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 
-  const filePath = homePath + '/' + name;
-
-  if (FS[filePath]) {
-    FS[filePath].content = content;
-    FS[filePath].size = Math.ceil(content.length / 1024) + ' KB';
-  } else {
-    FS[filePath] = {
-      type: 'file',
-      ext: ext === '.md' ? 'md' : 'html',
-      size: Math.ceil(content.length / 1024) + ' KB',
-      content: content,
-    };
-    homeNode.children.push(name);
-  }
-
-  notify('Saved "' + name + '" to ~/');
+  notify('Downloaded "' + name + '"');
 }
 
 // ─── Copy to Clipboard ───
@@ -274,7 +257,7 @@ function notesCopyContent() {
   if (!editor) return;
 
   const text = notesContent || editor.innerText || editor.textContent || '';
-  if (!text || text.includes('Start typing')) {
+  if (!text || text.trim() === '') {
     notify('Nothing to copy!');
     return;
   }
@@ -300,9 +283,9 @@ function notesClear() {
   notesFilename = '';
 
   if (notesMode === 'richtext') {
-    editor.innerHTML = '<p style="color:rgba(255,255,255,.3);font-style:italic">Start typing your notes here&hellip;</p>';
+    editor.innerHTML = '';
   } else {
-    editor.innerText = 'Start typing markdown here...';
+    editor.innerText = '';
   }
 
   const preview = document.getElementById('notes-preview');
@@ -311,6 +294,68 @@ function notesClear() {
   }
 
   notify('Notes cleared');
+}
+
+// ─── Status Bar — Cursor Position & Word Count ───
+function notesUpdateStatusbar() {
+  const editor = document.getElementById('notes-editor');
+  if (!editor) return;
+
+  const text = editor.innerText || editor.textContent || '';
+  notesContent = text;
+
+  // Word count
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  document.getElementById('notes-word-count').textContent = words + ' word' + (words !== 1 ? 's' : '');
+
+  // Cursor line / column
+  const sel = window.getSelection();
+  if (!sel || !sel.rangeCount || !editor.contains(sel.anchorNode)) {
+    document.getElementById('notes-cursor-pos').textContent = 'Ln 1, Col 1';
+    return;
+  }
+
+  const node = sel.anchorNode;
+  const offset = sel.anchorOffset;
+
+  // If the node is a text node, walk previous siblings to count lines
+  let line = 1;
+  let col = 1;
+
+  if (node === editor) {
+    // Cursor is directly on the editor element (empty or at start)
+    line = 1;
+    col = 1;
+  } else {
+    // Walk up and count previous siblings + text before cursor
+    let targetNode = node;
+    let targetOffset = offset;
+
+    // Count newlines in the full text before the cursor position
+    const fullText = text;
+    if (targetNode.nodeType === 3) {
+      // text node: calculate partial text before cursor
+      const beforeText = fullText.substring(0, getTextOffset(editor, targetNode, targetOffset));
+      const lines = beforeText.split('\n');
+      line = lines.length;
+      col = lines[lines.length - 1].length + 1;
+    }
+  }
+
+  document.getElementById('notes-cursor-pos').textContent = 'Ln ' + line + ', Col ' + col;
+}
+
+function getTextOffset(root, targetNode, targetOffset) {
+  let offset = 0;
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+  while (walker.nextNode()) {
+    const n = walker.currentNode;
+    if (n === targetNode) {
+      return offset + targetOffset;
+    }
+    offset += (n.textContent || '').length;
+  }
+  return offset;
 }
 
 // ─── Input Tracking ───
@@ -325,6 +370,15 @@ document.addEventListener('input', function(e) {
   if (preview && notesMode === 'preview' && notesContent && notesContent.trim()) {
     preview.innerHTML = notesRenderMarkdown(notesContent);
   }
+
+  notesUpdateStatusbar();
+});
+
+document.addEventListener('selectionchange', function() {
+  const editor = document.getElementById('notes-editor');
+  if (editor && editor.style.display !== 'none') {
+    notesUpdateStatusbar();
+  }
 });
 
 // ─── Markdown Renderer ───
@@ -334,7 +388,6 @@ function notesRenderMarkdown(md) {
   let html = md;
   html = html.split('&').join('&').split('<').join('<').split('>').join('>');
 
-  // Code blocks (```) — must happen before other inline transforms
   html = html.replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
 
   // Headings
@@ -356,20 +409,15 @@ function notesRenderMarkdown(md) {
   // Links
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
 
-  // Images
   html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width:100%">');
 
-  // Horizontal rules (before lists, since --- can conflict)
   html = html.replace(/^---$/gm, '<hr>');
 
-  // Blockquotes
   html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
 
-  // Unordered lists
   html = html.replace(/^[-*] (.+)$/gm, '<li>$1</li>');
   html = html.replace(/(<li>.*<\/li>\n?)+/g, function(m) { return '<ul>' + m + '</ul>'; });
 
-  // Ordered lists
   html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
   html = html.replace(/(<li>.*<\/li>\n?)+/g, function(m) {
     if (m.indexOf('<ul>') !== -1) return m;

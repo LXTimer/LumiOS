@@ -4,21 +4,22 @@
   bottom: 56px;
   left: 8px;
   width: 340px;
+  padding: 16px;
   background: rgba(10, 10, 28, 0.96);
   backdrop-filter: blur(32px);
   -webkit-backdrop-filter: blur(32px);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 14px;
   z-index: 10000;
-  padding: 16px;
   display: none;
 }
+
 .smenu-header { font-size: 14px; font-weight: 500; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
 .smenu-header i { font-size: 14px; color: var(--accent-color); }
 #srch { width: 100%; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 7px; padding: 8px 12px; color: #fff; font-size: 13px; outline: none; font-family: inherit; margin-bottom: 12px; transition: border-color var(--transition-dur); }
 #srch:focus { border-color: rgba(var(--accent-rgb), 0.5); }
 .smenu-section-label { font-size: 10px; color: rgba(255, 255, 255, 0.26); letter-spacing: 0.7px; margin-bottom: 6px; }
-#smgrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+#smgrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; max-height: 420px; overflow-y: auto; }
 .sm-app { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 8px 2px; border-radius: 9px; cursor: pointer; transition: background var(--transition-dur), transform var(--transition-dur); }
 .sm-app:hover { background: rgba(255, 255, 255, 0.09); transform: scale(1.04); }
 .sm-app:active { transform: scale(0.96); }
