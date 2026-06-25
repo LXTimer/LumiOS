@@ -21,6 +21,12 @@ LumiOS creates a web desktop just works the same as a normal desktop: draggable 
 + Custom wallpapers, app icons, and accent colors
 + Dark / light mode, adjustable brightness, adjustable taskbar opacity
 + Desktop widgets
++ Scientific calculator, markdown notes, file preview, and drawing tools
++ Clock with stopwatch, timer, and alarms; calendar with events and agenda
++ Notification settings, security panel, and about information
++ Weather, notes peek, and system stats widgets
++ Terminal with command execution and file system navigation
++ Welcome app for onboarding
 
 ## Apps
 | App | Description |
@@ -29,7 +35,44 @@ LumiOS creates a web desktop just works the same as a normal desktop: draggable 
 | **Calendar** | Month view, event creation, and agenda list |
 | **Calculator** | Standard four-function calculator |
 | **Notes** | Rich-text editor for notestaking|
-| **Terminal** | Simple terminal that allows commands to run |              (incomplete)
-| **Files** | File system |             (incomplete)
+| **Terminal** | Simple terminal with command execution and file system navigation |
+| **Files** | File system with navigation and preview |
 | **Settings** | Appearance, display, notifications, security, and about panels |
 | **Widgets** | Manage desktop-overlay widgets |
+| **Paint** | Drawing canvas with tools, colors, and shapes |
+| **Welcome** | Onboarding and getting started guide |
+
+## Demo
+Visit <[LumiOS](https://lxtimer.github.io/LumiOS/)> for live Demo
+
+## Project Structure
+
+```
+LumiOS/
+├── index.html
+├── assets/
+│   ├── icons/
+│   ├── wallpaper/
+│   └── LumiOS-1.png, LumiOS-2.png
+├── css/
+│   ├── apps/
+│   ├── theme/
+│   ├── ui/
+│   └── main.css
+├── js/
+│   ├── apps/       # Clock, Calendar, Paint, Notes, etc.
+│   ├── systems/    # Particles, theme handling
+│   ├── ui/         # Window management, taskbar
+│   ├── utils/      # Helper functions
+│   └── main.js
+└── README.md
+```
+
+## Installation
+
+1. Clone or download the repository
+2. Open `index.html` in a modern browser (Chrome, Firefox, Edge)
+
+
+## Credits
+Inspired by Puter, Prozilla OS, and OS.js.
