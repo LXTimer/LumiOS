@@ -58,11 +58,8 @@ function buildSettingsPanel(id) {
 function panelAppearance() {
   const ACCENTS = [
     { color:'#6366f1', label:'Indigo'  },
-    { color:'#8b5cf6', label:'Violet'  },
     { color:'#ec4899', label:'Pink'    },
     { color:'#0ea5e9', label:'Sky'     },
-    { color:'#10b981', label:'Emerald' },
-    { color:'#f97316', label:'Orange'  },
   ];
   const toggleRow = (key, label, desc) => {
     const on = OS_SETTINGS[key];

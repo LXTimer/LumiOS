@@ -9,7 +9,6 @@ const WIDGET_DEFS = [
   { id:'calendar',      label:'Calendar',      ic:'ti-calendar',  gr:'linear-gradient(135deg,#0ea5e9,#6366f1)'},
   { id:'weather',       label:'Weather',       ic:'ti-cloud',     gr:'linear-gradient(135deg,#0ea5e9,#34d399)'},
   { id:'notes-peek',    label:'Notes Peek',    ic:'ti-notebook',  gr:'linear-gradient(135deg,#f59e0b,#fbbf24)'},
-  { id:'system-stats',  label:'System Stats',  ic:'ti-cpu',       gr:'linear-gradient(135deg,#059669,#34d399)'},
 ];
 
 let WIDGET_INSTANCES = [
@@ -115,7 +114,6 @@ function widgetBodyHTML(inst) {
     case 'calendar':      return widgetCalendar();
     case 'weather':       return widgetWeather();
     case 'notes-peek':    return widgetNotesPeek();
-    case 'system-stats':  return widgetSystemStats();
     default: return '';
   }
 }
@@ -164,18 +162,6 @@ function widgetNotesPeek() {
     <button class="dw-notes-btn" onclick="openApp('notes')"><i class="ti ti-pencil"></i> Open Notes</button>`;
 }
 
-function widgetSystemStats() {
-  const cores = navigator.hardwareConcurrency || '—';
-  const mem = navigator.deviceMemory ? navigator.deviceMemory + ' GB' : '—';
-  const upMs = Date.now() - OS_BOOT_TIME;
-  const upMin = Math.floor(upMs / 60000);
-  return `<div class="dw-stat-row"><span>CPU Cores</span><span>${cores}</span></div>
-    <div class="dw-stat-row"><span>Memory</span><span>${mem}</span></div>
-    <div class="dw-stat-row"><span>Uptime</span><span id="dw-uptime">${upMin}m</span></div>
-    <div class="dw-stat-row"><span>Windows</span><span id="dw-wincount">${Object.keys(wins).length}</span></div>
-    <button class="dw-notes-btn" style="margin-top:6px" onclick="openApp('settings')"><i class="ti ti-settings"></i> Open Settings</button>`;
-}
-
 // ── Tick ──
 function tickWidgets() {
   const timeEl = document.getElementById('dw-digital-time');
@@ -188,10 +174,6 @@ function tickWidgets() {
     drawWidgetAnalog(inst.iid);
   });
 
-  const uptEl = document.getElementById('dw-uptime');
-  if (uptEl) uptEl.textContent = Math.floor((Date.now() - OS_BOOT_TIME) / 60000) + 'm';
-  const wcEl = document.getElementById('dw-wincount');
-  if (wcEl) wcEl.textContent = Object.keys(wins).length;
 }
 
 function drawWidgetAnalog(iid) {

@@ -87,3 +87,4 @@ LumiOS/
 
 ## Credits
 Inspired by Puter, Prozilla OS, and OS.js.
+

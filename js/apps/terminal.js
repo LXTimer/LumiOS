@@ -24,33 +24,19 @@ Commands:
     touch <file>       Create empty file
     rm <path>          Remove file/directory
     rmdir <dir>        Remove empty directory
-    mv <src> <dst>     Move/rename file
-    cp <src> <dst>     Copy file
 
   System:
     uname [-a]         System information
-    neofetch           System info (fancy)
     uptime             OS uptime
-    hostname           Display hostname
-    ps                 Process list
     date               Current date & time
     version            OS version
     whoami             Current user
-    id                 User identity
-    env                Environment variables
-    which <cmd>        Locate a command
 
   Text & Utilities:
     echo [text...]     Print text
     clear              Clear terminal screen
-    banner <text>      Print ASCII banner
-
-  Network:
-    ping <host>        Ping a host
 
   System Control:
-    reboot             Reboot
-    shutdown           Shutdown
     apps               List installed apps
 `.trim();
 
