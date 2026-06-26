@@ -21,23 +21,11 @@ Commands:
     pwd                Print working directory
     cat <file>         Display file contents
     mkdir <name>       Create directory
-    touch <file>       Create empty file
     rm <path>          Remove file/directory
-    rmdir <dir>        Remove empty directory
-
-  System:
-    uname [-a]         System information
-    uptime             OS uptime
-    date               Current date & time
-    version            OS version
-    whoami             Current user
 
   Text & Utilities:
     echo [text...]     Print text
     clear              Clear terminal screen
-
-  System Control:
-    apps               List installed apps
 `.trim();
 
 // ─── File System Commands ───
@@ -105,19 +93,6 @@ TERM_CMDS.mkdir = (args) => {
   return '';
 };
 
-TERM_CMDS.touch = (args) => {
-  if (!args.length) return 'touch: missing operand';
-  const name = args[0];
-  const parentPath = termCwd;
-  const parent = FS[parentPath];
-  if (!parent || parent.type !== 'folder') return 'touch: invalid path';
-  const newPath = parentPath === '/' ? '/' + name : parentPath + '/' + name;
-  if (FS[newPath]) return '';
-  FS[newPath] = { type: 'file', ext: name.includes('.') ? name.split('.').pop() : '', size: '0 KB', content: '' };
-  parent.children.push(name);
-  return '';
-};
-
 TERM_CMDS.rm = (args) => {
   if (!args.length) return 'rm: missing operand';
   const flags = { recursive: false };
@@ -138,169 +113,14 @@ TERM_CMDS.rm = (args) => {
   return results.filter(r => r).join('\n');
 };
 
-TERM_CMDS.rmdir = (args) => {
-  if (!args.length) return 'rmdir: missing operand';
-  const path = resolvePath(args[0], termCwd);
-  const node = FS[path];
-  if (!node) return `rmdir: failed to remove '${args[0]}': No such file or directory`;
-  if (node.type !== 'folder') return `rmdir: failed to remove '${args[0]}': Not a directory`;
-  if (node.children && node.children.length > 0)
-    return `rmdir: failed to remove '${args[0]}': Directory not empty`;
-  return removeFromFS(args[0], path) ? '' : `rmdir: failed to remove '${args[0]}'`;
-};
-
-TERM_CMDS.mv = (args) => {
-  if (args.length < 2) return 'mv: missing operand';
-  const srcPath = resolvePath(args[0], termCwd);
-  const srcNode = FS[srcPath];
-  if (!srcNode) return `mv: cannot stat '${args[0]}': No such file or directory`;
-  const name = args[1].split('/').pop() || args[1];
-  const dstParent = args[1].includes('/')
-    ? normalizePath(termCwd + '/' + args[1].split('/').slice(0,-1).join('/'))
-    : termCwd;
-  const dstPath = dstParent === '/' ? '/' + name : dstParent + '/' + name;
-  if (FS[dstPath]) return `mv: cannot move '${args[0]}' to '${name}': File exists`;
-  FS[dstPath] = JSON.parse(JSON.stringify(srcNode));
-  removeFromFS(args[0], srcPath);
-  const dstNode = FS[dstParent];
-  if (dstNode && dstNode.children && !dstNode.children.includes(name)) {
-    dstNode.children.push(name);
-  }
-  return '';
-};
-
-TERM_CMDS.cp = (args) => {
-  if (args.length < 2) return 'cp: missing operand';
-  const srcPath = resolvePath(args[0], termCwd);
-  const srcNode = FS[srcPath];
-  if (!srcNode) return `cp: cannot stat '${args[0]}': No such file or directory`;
-  const name = args[1].split('/').pop() || args[1];
-  const dstParent = args[1].includes('/')
-    ? normalizePath(termCwd + '/' + args[1].split('/').slice(0,-1).join('/'))
-    : termCwd;
-  const dstPath = dstParent === '/' ? '/' + name : dstParent + '/' + name;
-  if (FS[dstPath]) return `cp: cannot create '${name}': File exists`;
-  FS[dstPath] = JSON.parse(JSON.stringify(srcNode));
-  const dstNode = FS[dstParent];
-  if (dstNode && dstNode.children && !dstNode.children.includes(name)) {
-    dstNode.children.push(name);
-  }
-  return '';
-};
-
-
 // ─── System Commands ───
-TERM_CMDS.uname = (args) => {
-  if (args.includes('-a')) return 'LumiOS 1.3.3 LumiCore web x86_64 GNU/Linux';
-  return 'LumiOS';
-};
-
-TERM_CMDS.neofetch = () => {
-  const ua = navigator.userAgent;
-  const browser = ua.includes('Chrome') ? 'Chrome' : ua.includes('Firefox') ? 'Firefox' : ua.includes('Safari') ? 'Safari' : 'Unknown';
-  const cores = navigator.hardwareConcurrency || 'N/A';
-  const mem = navigator.deviceMemory ? navigator.deviceMemory + ' GiB' : 'N/A';
-  return `
-         ██████████          lumi-user@LumiOS
-       ██          ██        ──────────────────────
-      ██   ▀▀  ▀▀   ██       OS: LumiOS 1.3.3 LumiCore
-     ██              ██      Host: Web Browser
-     ██    ▀▀▀▀▀▀    ██      Kernel: LumiCore 1.0
-     ██              ██      Browser: ${browser}
-      ██   ██████   ██       Shell: Lumish 1.0
-       ██          ██        CPU: (${cores}) @ WebAssembly
-         ██████████          Memory: ${mem}
-                              Uptime: ${getUptime()}
-  `.trim();
-};
-
-TERM_CMDS.uptime = () => `up ${getUptime()}`;
-
-TERM_CMDS.hostname = () => 'LumiOS';
-
-TERM_CMDS.ps = () => {
-  const processes = ['kernel', 'lumi-desktop', 'lumi-window-manager', 'lumi-taskbar', 'lumi-session'];
-  // Add any open apps as processes
-  Object.entries(wins || {}).forEach(([wid, w]) => {
-    const app = APPS.find(a => a.id === w.aid);
-    if (app) processes.push(app.name.toLowerCase().replace(/\s+/g, '-') + ' [' + wid + ']');
-  });
-  const lines = processes.map((p, i) => {
-    const pid = String(100 + i).padStart(5);
-    const cpu = (Math.random() * 3 + 0.1).toFixed(1);
-    const mem = (Math.random() * 20 + 2).toFixed(1);
-    return `${pid}  ${cpu.padStart(4)}  ${mem.padStart(4)}  ${p}`;
-  });
-  return '  PID   CPU%  MEM%  COMMAND\n' + lines.join('\n');
-};
-
-TERM_CMDS.id = () => 'uid=1000(lumi-user) gid=1000(lumi-user) groups=1000(lumi-user)';
-
-TERM_CMDS.env = () => {
-  return `SHELL=/bin/lumish
-USER=lumi-user
-HOME=/home/lumi-user
-PATH=/usr/bin:/usr/local/bin:/bin
-PWD=${termCwd}
-TERM=xterm-256color
-LANG=en_US.UTF-8
-DISPLAY=:0
-OS=LumiOS`;
-};
-
-TERM_CMDS.which = (args) => {
-  if (!args.length) return '';
-  const cmd = args[0];
-  if (TERM_CMDS[cmd]) return `/usr/bin/${cmd}`;
-  return `which: no ${cmd} in (/usr/bin:/usr/local/bin:/bin)`;
-};
-
 // ─── Text & Utility Commands ───
 TERM_CMDS.echo = (args) => args.join(' ') || '';
 
 TERM_CMDS.clear = () => '__CLEAR__';
 
-TERM_CMDS.banner = (args) => {
-  const text = args.join(' ') || 'LumiOS';
-  const lines = text.split('').map(c => {
-    return c + ' ';
-  });
-  // Simple ASCII banner
-  const border = '='.repeat(text.length * 3 + 4);
-  return `${border}\n= ${text.toUpperCase().split('').join(' | ')} =\n${border}`;
-};
-
 // ─── Network Commands ───
-TERM_CMDS.ping = (args) => {
-  if (!args.length) return 'ping: missing host';
-  const host = args[0];
-  return `PING ${host} (127.0.0.1) 56(84) bytes of data.
-64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.42ms
-64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.38ms
-64 bytes from 127.0.0.1: icmp_seq=3 ttl=64 time=0.41ms
---- ${host} ping statistics ---
-3 packets transmitted, 3 received, 0% packet loss, time 2002ms
-rtt min/avg/max/mdev = 0.38/0.40/0.42/0.02 ms`;
-};
-
 // ─── System Control ───
-TERM_CMDS.reboot = () => {
-  setTimeout(() => location.reload(), 500);
-  return 'Rebooting LumiOS...';
-};
-
-TERM_CMDS.shutdown = () => {
-  document.body.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#000;color:#4ade80;font-family:monospace;font-size:18px">
-    <div>System halted.<br><br><span style="color:#6b7280;font-size:13px">You may close this tab.</span></div>
-  </div>`;
-  return '';
-};
-
-TERM_CMDS.apps = () => {
-  return APPS.map(a => `  ${a.name}`).join('\n');
-};
-
-TERM_CMDS.version = () => 'LumiOS 1.3.3 (LumiCore 1.0)';
 
 // ─── Helpers ───
 function resolvePath(input, cwd) {
