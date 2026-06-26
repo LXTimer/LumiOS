@@ -2,6 +2,16 @@
 
 A fully functional and interactive, web-based operating system, built for aesthetics.
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Apps](#apps)
+- [Demo](#demo)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Credits](#credits)
+
 ## Overview
 
 LumiOS delivers a fully interactive web‑based operating system, complete with draggable and resizable windows, a taskbar, and functional built‑in applications. It mainly emphasizes aesthetics, focusing on creating fantastic user expereinces.
@@ -27,15 +37,6 @@ LumiOS delivers a fully interactive web‑based operating system, complete with 
 + Weather, notes peek, and system stats widgets
 + Terminal with command execution and file system navigation
 + Welcome app for onboarding
-
-## Dev Log — Notes App Updates
-
-June 2026 — Notes was overhauled with quality-of-life improvements:
-
-- **Download as .txt** — Replaced the old Save-to-filesystem button with a direct browser download that saves notes as plain `.txt` files.
-- **Status bar** — Added cursor position (Ln/Col) and live word count at the bottom, similar to Notepad.
-- **Open from Files** — Double-clicking `.txt` or `.md` files in the Files app now opens them in Notes for editing.
-- **GUI cleanup** — Removed placeholder text, replaced the text-based "List" button with an icon, and cleaned up the toolbar.
 
 ## Apps
 | App | Description |
@@ -85,4 +86,3 @@ LumiOS/
 
 ## Credits
 Inspired by Puter, Prozilla OS, and OS.js.
-

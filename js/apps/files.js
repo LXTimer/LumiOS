@@ -3,23 +3,21 @@
 // ─────────────────────────────────────────────
 //  APP: Files
 // ─────────────────────────────────────────────
+
 const FS = {
-  '/': { type: 'folder', children: ['home', 'usr', 'etc'] },
-  '/home': { type: 'folder', children: ['lumi-user'] },
-  '/home/lumi-user': { type: 'folder', children: ['Documents', 'Downloads', 'Pictures', 'Music', 'Desktop', 'notes.md', 'README.txt'] },
-  '/home/lumi-user/Documents': { type: 'folder', children: ['report.pdf', 'budget.xlsx', 'resume.docx'] },
-  '/home/lumi-user/Downloads': { type: 'folder', children: ['LumiOS-1.0.iso', 'photo-pack.zip', 'song.mp3'] },
-  '/home/lumi-user/Pictures': { type: 'folder', children: ['wallpaper.png', 'screenshot.png', 'avatar.jpg'] },
-  '/home/lumi-user/Music': { type: 'folder', children: ['track01.mp3', 'track02.mp3', 'playlist.m3u'] },
-  '/home/lumi-user/Desktop': { type: 'folder', children: ['LumiOS.lnk'] },
-  '/home/lumi-user/notes.md': { type: 'file', ext: 'md', size: '5 KB', content: '# My Notes\n\nWelcome to LumiOS!' },
-  '/home/lumi-user/README.txt': { type: 'file', ext: 'txt', size: '2 KB', content: 'LumiOS — a luminous computing experience. \nVersion 1.3.3' },
-  '/usr': { type:'folder', children:['bin', 'lib'] },
-  '/usr/bin': { type:'folder', children:['bash', 'ls', 'cat'] },
-  '/usr/lib': { type:'folder', children:[] },
-  '/etc': { type:'folder', children:['config.json', 'hosts'] },
-  '/etc/config.json': { type:'file', ext:'json', size:'1 KB', content: '{\n  "os": "LumiOS",\n  "version": "1.3.3",\n  "theme": "dark"\n}' },
-  '/etc/hosts': { type:'file', ext:'', size:'1 KB', content: '127.0.0.1   localhost\n::1         localhost' },
+  "/": { type: "folder", children: ["Download", "Notes"] },
+  "/Download": { type: "folder", children: ["download.txt"] },
+  "/Download/download.txt": {
+    type: "file", ext: "txt", size: "---",
+    src: "assets/demo/Download/download.txt",
+    content: "Download"
+  },
+  "/Notes": { type: "folder", children: ["Welcome To LumiOS.txt"] },
+  "/Notes/Welcome To LumiOS.txt": {
+    type: "file", ext: "txt", size: "---",
+    src: "assets/demo/Notes/Welcome To LumiOS.txt",
+    content: "Welcome to LumiOS!!!\nThank you for using this OS!!\nFreely explore this OS!"
+  }
 };
 
 const FILES_STATE = {};
@@ -32,7 +30,7 @@ function fsGetIcon(name, node) {
     txt:  { ic:'ti-file-text',    color:'rgba(200,200,200,.7)'  },
     json: { ic:'ti-braces',       color:'rgba(100,160,255,.85)' },
     pdf:  { ic:'ti-file-type-pdf',color:'rgba(240,80,80,.85)'   },
-    xlsx: { ic:'ti-table',        color:'rgba(60,200,100,.85)'  },
+    xlsx:  { ic:'ti-table',        color:'rgba(60,200,100,.85)'  },
     docx: { ic:'ti-file-word',    color:'rgba(80,140,240,.85)'  },
     png:  { ic:'ti-photo',        color:'rgba(255,120,180,.85)' },
     jpg:  { ic:'ti-photo',        color:'rgba(255,120,180,.85)' },
@@ -69,14 +67,9 @@ function buildFiles() {
       <div class="files-body" onmousedown="event.stopPropagation()">
         <div class="files-sidebar">
           <div class="files-sidebar-label">Favourites</div>
-          <div class="files-sidebar-item" onclick="filesNavigate(this,'/home/lumi-user')"><i class="ti ti-home"></i> Home</div>
-          <div class="files-sidebar-item" onclick="filesNavigate(this,'/home/lumi-user/Documents')"><i class="ti ti-file-text"></i> Documents</div>
-          <div class="files-sidebar-item" onclick="filesNavigate(this,'/home/lumi-user/Downloads')"><i class="ti ti-download"></i> Downloads</div>
-          <div class="files-sidebar-item" onclick="filesNavigate(this,'/home/lumi-user/Pictures')"><i class="ti ti-photo"></i> Pictures</div>
-          <div class="files-sidebar-item" onclick="filesNavigate(this,'/home/lumi-user/Music')"><i class="ti ti-music"></i> Music</div>
-          <div class="files-sidebar-label" style="margin-top:10px">System</div>
-          <div class="files-sidebar-item" onclick="filesNavigate(this,'/')"><i class="ti ti-device-desktop"></i> Root</div>
-          <div class="files-sidebar-item" onclick="filesNavigate(this,'/etc')"><i class="ti ti-settings"></i> etc</div>
+          <div class="files-sidebar-item" onclick="filesNavigate(this,'/')"><i class="ti ti-folder"></i> Demo Root</div>
+          <div class="files-sidebar-item" onclick="filesNavigate(this,'/Download')"><i class="ti ti-download"></i> Download</div>
+          <div class="files-sidebar-item" onclick="filesNavigate(this,'/Notes')"><i class="ti ti-file-text"></i> Notes</div>
         </div>
         <div class="files-main">
           <div class="files-list" id="files-pane"></div>
@@ -98,7 +91,7 @@ function filesGetState(el) {
   if (!root) return null;
   let state = root._filesState;
   if (!state) {
-    state = { path: '/home/lumi-user', history: ['/home/lumi-user'], histIdx: 0, view: 'list' };
+    state = { path: '/', history: ['/'], histIdx: 0, view: 'list' };
     root._filesState = state;
   }
   return state;
@@ -109,7 +102,7 @@ function filesInit(wid) {
   if (!winEl) return;
   const root = winEl.querySelector('.files-wrap');
   if (!root) return;
-  root._filesState = { path: '/home/lumi-user', history: ['/home/lumi-user'], histIdx: 0, view: 'list' };
+  root._filesState = { path: '/', history: ['/'], histIdx: 0, view: 'list' };
   filesRender(root);
 }
 
@@ -234,23 +227,38 @@ function filesOpen(el, path) {
   const name = path.split('/').pop();
   const ext = (node.ext || name.split('.').pop() || '').toLowerCase();
 
-  // Open .txt / .md files in Notes app
-  if ((ext === 'txt' || ext === 'md') && node.content !== null) {
-    notesLoadContent(node.content, name);
-    openApp('notes');
-    return;
-  }
-
   const root = el.closest('.files-wrap');
   if (!root) return;
-  const preview = root.querySelector('#files-preview');
-  if (!preview) return;
-  if (node.content !== null) {
-    preview.querySelector('#files-preview-title').textContent = name;
-    preview.querySelector('#files-preview-content').textContent = node.content;
-    preview.style.display = 'flex';
+
+  const loadContent = (text) => {
+    if (ext === 'txt' || ext === 'md') {
+      notesLoadContent(text, name);
+      openApp('notes');
+    } else {
+      const preview = root.querySelector('#files-preview');
+      if (preview) {
+        preview.querySelector('#files-preview-title').textContent = name;
+        preview.querySelector('#files-preview-content').textContent = text;
+        preview.style.display = 'flex';
+      }
+    }
+  };
+
+  if (node.src) {
+    fetch(node.src)
+      .then(r => r.ok ? r.text() : Promise.reject('fetch failed'))
+      .then(loadContent)
+      .catch(() => {
+        if (node.content !== null && node.content !== undefined) {
+          loadContent(node.content);
+        } else {
+          notify(`Error loading "${name}"`);
+        }
+      });
+  } else if (node.content !== null && node.content !== undefined) {
+    loadContent(node.content);
   } else {
-    notify(`Cannot preview "${name}" — binary file`);
+    notify(`No source path or content for "${name}"`);
   }
 }
 

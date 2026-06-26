@@ -4,7 +4,7 @@
 //  APP: Terminal — Extended
 // ─────────────────────────────────────────────
 
-let termCwd = '/home/lumi-user';
+let termCwd = '/';
 let termHistory = [];
 let termHistIdx = -1;
 let termHistoryTemp = '';
@@ -82,8 +82,8 @@ TERM_CMDS.ls = (args) => {
 };
 
 TERM_CMDS.cd = (args) => {
-  if (!args.length) { termCwd = '/home/lumi-user'; return ''; }
-  const target = args[0] === '~' ? '/home/lumi-user'
+  if (!args.length) { termCwd = '/'; return ''; }
+  const target = args[0] === '~' ? '/'
     : args[0].startsWith('/') ? args[0]
     : termCwd === '/' ? '/' + args[0]
     : termCwd + '/' + args[0];
@@ -318,7 +318,7 @@ TERM_CMDS.version = () => 'LumiOS 1.3.3 (LumiCore 1.0)';
 
 // ─── Helpers ───
 function resolvePath(input, cwd) {
-  if (input === '~') return '/home/lumi-user';
+  if (input === '~') return '/';
   if (input === '.' || input === '') return cwd;
   if (input === '..') {
     if (cwd === '/') return '/';
@@ -327,7 +327,7 @@ function resolvePath(input, cwd) {
     return '/' + parts.join('/') || '/';
   }
   if (input.startsWith('/')) return normalizePath(input);
-  if (input.startsWith('~')) return normalizePath('/home/lumi-user' + input.slice(1));
+  if (input.startsWith('~')) return normalizePath('/' + input.slice(1));
   return normalizePath(cwd + '/' + input);
 }
 

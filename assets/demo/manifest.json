@@ -1,0 +1,35 @@
+{
+  "/": {
+    "type": "folder",
+    "children": [
+      "Download",
+      "Notes"
+    ]
+  },
+  "/Download": {
+    "type": "folder",
+    "children": [
+      "Download.txt"
+    ]
+  },
+  "/Notes": {
+    "type": "folder",
+    "children": [
+      "Welcome To LumiOS.txt"
+    ]
+  },
+  "/Notes/Welcome To LumiOS.txt": {
+    "type": "file",
+    "ext": "txt",
+    "size": "---",
+    "content": null,
+    "src": "assets/demo/Notes/Welcome To LumiOS.txt"
+  },
+  "/Download/Download.txt": {
+    "type": "file",
+    "ext": "txt",
+    "size": "---",
+    "content": null,
+    "src":"assets/demo/Download/Download.txt"
+  }
+}

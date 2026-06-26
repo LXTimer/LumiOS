@@ -12,12 +12,7 @@ let notesFilename = '';
 function notesLoadContent(content, filename) {
   notesContent = content;
   notesFilename = filename;
-  // Switch to markdown mode if it looks like markdown, otherwise richtext
-  if (content.includes('# ') || content.includes('```') || content.includes('**')) {
-    notesSetMode('markdown');
-  } else {
-    notesSetMode('richtext');
-  }
+  // Update editor if it already exists
   const editor = document.getElementById('notes-editor');
   if (editor) {
     editor.innerText = content;
@@ -26,8 +21,7 @@ function notesLoadContent(content, filename) {
 
 // ─── Build ───
 function buildNotes() {
-  notesContent = '';
-  notesFilename = '';
+  const hasPreloaded = notesContent !== '';
   return `
     <div class="notes-wrap">
       <div class="app-toolbar" id="notes-toolbar">
@@ -72,8 +66,7 @@ function buildNotes() {
         </button>
       </div>
       <div id="notes-editor" contenteditable="true"
-           onmousedown="event.stopPropagation()" aria-label="Notes editor">
-      </div>
+           onmousedown="event.stopPropagation()" aria-label="Notes editor">${hasPreloaded ? notesContent : ''}</div>
       <div id="notes-preview" style="display:none">
         <div class="notes-preview-empty">Nothing to preview</div>
       </div>
