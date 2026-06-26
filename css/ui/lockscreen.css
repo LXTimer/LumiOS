@@ -1,0 +1,166 @@
+/* ─────────────────────────────────────────────
+   Boot Splash — Startup animation
+   ───────────────────────────────────────────── */
+
+#boot-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 1000000;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  transition: opacity 500ms ease-out, visibility 500ms;
+  opacity: 1;
+  visibility: visible;
+}
+
+#boot-splash.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#boot-splash img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  animation: bootLogoIn 800ms ease-out forwards;
+}
+
+#boot-splash .boot-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  animation: bootFadeIn 600ms ease-out 300ms backwards;
+}
+
+#boot-splash .boot-bar {
+  width: 200px;
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  animation: bootFadeIn 600ms ease-out 400ms backwards;
+}
+
+#boot-splash .boot-bar::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--accent-color, #0ea5e9);
+  border-radius: 2px;
+  transform-origin: left;
+  animation: bootBar 1200ms ease-in-out 500ms forwards;
+}
+
+@keyframes bootLogoIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes bootFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes bootBar {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ─────────────────────────────────────────────
+   Lock Screen — Full screen blur overlay
+   ───────────────────────────────────────────── */
+
+#lock-screen {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  overflow: hidden;
+  background: transparent;
+  animation: lockFadeIn 320ms ease-out forwards;
+}
+
+#lock-screen.visible {
+  display: flex;
+}
+
+#lock-bg {
+  position: absolute;
+  inset: -40px;
+  z-index: 0;
+  filter: blur(40px) saturate(140%) brightness(0.8);
+  transform: scale(1.05);
+}
+
+#lock-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+}
+
+.lock-clock, .lock-btn { position: relative; z-index: 1; }
+
+@keyframes lockFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.lock-clock {
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.6);
+  user-select: none;
+}
+
+.lock-time {
+  font-size: 96px;
+  font-weight: 200;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.lock-date {
+  font-size: 18px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.75);
+  margin-top: 6px;
+}
+
+.lock-btn {
+  padding: 14px 56px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: #fff;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.18s, transform 0.12s, border-color 0.18s;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.lock-btn:hover {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.4);
+  transform: scale(1.04);
+}
+
+.lock-btn:active {
+  transform: scale(0.96);
+}

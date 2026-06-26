@@ -22,6 +22,7 @@ LumiOS delivers a fully interactive web‑based operating system, complete with 
 
 ## Features
 
++ Lock Screen
 + Draggable, resizable windows with minimize / maximize / close
 + Taskbar with pinned app dock, running-app buttons, and system tray
 + Start menu with live search

@@ -19,10 +19,18 @@
   <link rel="stylesheet" href="css/ui/start-menu.css" />
   <link rel="stylesheet" href="css/ui/notifications.css" />
   <link rel="stylesheet" href="css/ui/overlays.css" />
+  <link rel="stylesheet" href="css/ui/lockscreen.css" />
   <link rel="stylesheet" href="css/theme/light-mode.css" />
   <link rel="stylesheet" href="css/theme/no-animations.css" />
 </head>
 <body>
+
+<!-- ── Boot Splash ── -->
+<div id="boot-splash" role="status" aria-label="Starting LumiOS">
+  <img src="assets/icons/lumiIcon.png" alt="LumiOS" onerror="this.style.display='none'">
+  <div class="boot-text">LumiOS</div>
+  <div class="boot-bar"></div>
+</div>
 
 <div id="os" role="application" aria-label="LumiOS Desktop">
 
@@ -255,9 +263,21 @@
 
 </div>
 
+  <!-- ── Lock Screen ── -->
+  <div id="lock-screen" role="dialog" aria-label="Lock Screen" aria-modal="true">
+    <div id="lock-bg" aria-hidden="true"></div>
+    <div class="lock-clock">
+      <div class="lock-time">--:--</div>
+      <div class="lock-date">Loading&hellip;</div>
+    </div>
+    <button class="lock-btn" onclick="unlockOS()" aria-label="Unlock and enter desktop">
+      Unlock
+    </button>
+  </div>
+
 <!-- ── Context Menu ── -->
 <div id="ctx-menu" role="menu" aria-label="Desktop context menu">
-  
+
   <div class="ctx-section">
     <div class="ctx-item" role="menuitem" onclick="ctxAction('new-folder')">
       <i class="ti ti-folder-plus" aria-hidden="true"></i> New Folder

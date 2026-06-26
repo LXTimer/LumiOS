@@ -18,7 +18,7 @@ function buildAppContent(id) {
     default: return '<div style="padding:20px;color:rgba(255,255,255,.5)">App not found.</div>';
   }
 }
-
+  
 function postInitApp(aid, wid) {
   if (aid === 'terminal') {
     const inp = document.querySelector('#' + wid + ' .tin');
@@ -35,6 +35,11 @@ function postInitApp(aid, wid) {
 // ─────────────────────────────────────────────
 //  Boot / Init
 // ─────────────────────────────────────────────
+function hideBootSplash() {
+  const splash = document.getElementById('boot-splash');
+  if (splash) splash.classList.add('hidden');
+}
+
 function init() {
   applyAccent(OS_SETTINGS.accent, false);
   renderDesktopIcons();
@@ -48,7 +53,12 @@ function init() {
   initBattery();
   applyWallpaper(OS_SETTINGS.wallpaper);
 
-  setTimeout(() => openApp('welcome'), 200);
+  setLockScreenVisible(true);
+
+  setTimeout(() => {
+    hideBootSplash();
+    setTimeout(() => openApp('welcome'), 250);
+  }, 1600);
 
   // Close overlays on desktop click
   document.getElementById('osbg').addEventListener('mousedown', e => {

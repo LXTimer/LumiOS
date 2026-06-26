@@ -53,3 +53,32 @@ function startUptimeTicker() {
     else clearInterval(uptimeInterval);
   }, 1000);
 }
+
+// ─────────────────────────────────────────────
+//  Lock Screen
+// ─────────────────────────────────────────────
+function setLockScreenVisible(visible) {
+  const ls = document.getElementById('lock-screen');
+  if (!ls) return;
+  ls.classList.toggle('visible', visible);
+
+  if (visible) {
+    const now = new Date();
+    const time = now.toLocaleTimeString('en-CA', { hour: '2-digit', minute: '2-digit' });
+    const date = now.toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    const timeEl = document.querySelector('.lock-time');
+    const dateEl = document.querySelector('.lock-date');
+    if (timeEl) timeEl.textContent = time;
+    if (dateEl) dateEl.textContent = date;
+
+    const osbg = document.getElementById('osbg');
+    const lockBg = document.getElementById('lock-bg');
+    if (osbg && lockBg) {
+      lockBg.style.background = osbg.style.background || getComputedStyle(osbg).background;
+    }
+  }
+}
+
+function unlockOS() {
+  setLockScreenVisible(false);
+}
