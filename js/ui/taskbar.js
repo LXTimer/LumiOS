@@ -50,6 +50,62 @@ function closeStartMenu() {
 }
 
 // ─────────────────────────────────────────────
+// Taskbar Search (beside Start button)
+// ─────────────────────────────────────────────
+function openStartMenuFromTaskbarSearch() {
+  const m = document.getElementById('smenu');
+  const btn = document.getElementById('smbtn');
+  const s = document.getElementById('tbsearch');
+  if (!m || !s) return;
+
+  m.style.display = 'block';
+  if (btn) btn.setAttribute('aria-expanded', 'true');
+
+  // Keep cursor in taskbar search
+  setTimeout(() => { s.focus(); s.select(); }, 0);
+
+  // Sync results immediately
+  filterStartMenuFromTaskbar(s.value || '');
+}
+
+function filterStartMenuFromTaskbar(q) {
+  const m = document.getElementById('smenu');
+  if (m && m.style.display !== 'block') m.style.display = 'block';
+  filterStartMenu(q || '');
+}
+
+function handleTaskbarSearchKey(e) {
+  const key = e.key;
+  if (key === 'Escape') {
+    closeStartMenu();
+    return;
+  }
+
+  if (key !== 'Enter') return;
+
+  const grid = document.getElementById('smgrid');
+  if (!grid) return;
+
+  const first = grid.querySelector('.sm-app');
+  if (!first) {
+    notify('No matching apps');
+    return;
+  }
+
+  // Activate the first match
+  const onclick = first.getAttribute('onclick') || '';
+  // onclick is like: openApp('id'); closeStartMenu();
+  const match = onclick.match(/openApp\('([^']+)'\)/);
+  if (match && match[1]) {
+    openApp(match[1]);
+    closeStartMenu();
+  } else {
+    // fallback: click
+    first.click();
+  }
+}
+
+// ─────────────────────────────────────────────
 //  Tray — Wi-Fi
 // ─────────────────────────────────────────────
 let wifiOn = true;

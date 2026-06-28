@@ -14,6 +14,16 @@ function applyDarkMode(on) {
   notify(on ? 'Dark mode enabled' : 'Light mode enabled');
 }
 
+function applyNightMode(on) {
+  OS_SETTINGS.nightMode = on;
+  applyBrightness(on ? 40 : 100);
+  const s = document.getElementById('qs-brightness-slider');
+  if (s) s.value = on ? 40 : 100;
+  const pct = document.getElementById('qs-brightness-pct');
+  if (pct) pct.textContent = on ? 40 : 100;
+  notify(on ? 'Night mode enabled' : 'Night mode disabled');
+}
+
 function applyAnimations(on) {
   document.getElementById('os').classList.toggle('no-animations', !on);
   notify(on ? 'Animations enabled' : 'Animations disabled');

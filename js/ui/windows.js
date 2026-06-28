@@ -91,24 +91,112 @@ function unminimizeWindow(wid) {
 function maximizeWindow(wid) {
   const w = wins[wid]; if (!w) return;
   const lyr = document.getElementById('wlayer');
+  if (!lyr) return;
+
+  const animationsOff = document.getElementById('os').classList.contains('no-animations');
+
+  // Capture current and target rects in layer coordinates
+  const layerRect = lyr.getBoundingClientRect();
+  const curRect = w.el.getBoundingClientRect();
+  const cur = {
+    l: curRect.left - layerRect.left,
+    t: curRect.top  - layerRect.top,
+    w: curRect.width,
+    h: curRect.height,
+  };
+
   if (w.max) {
-    const s = w.sv;
-    w.el.style.left = s.l+'px'; w.el.style.top = s.t+'px';
-    w.el.style.width = s.w+'px'; w.el.style.height = s.h+'px';
-    w.max = false;
-  } else {
-    const layerRect = lyr.getBoundingClientRect();
-    const winRect   = w.el.getBoundingClientRect();
-    w.sv = {
-      l: winRect.left - layerRect.left,
-      t: winRect.top  - layerRect.top,
-      w: w.el.offsetWidth,
-      h: w.el.offsetHeight,
-    };
-    w.el.style.left = '0px'; w.el.style.top = '0px';
-    w.el.style.width = lyr.clientWidth+'px'; w.el.style.height = lyr.clientHeight+'px';
-    w.max = true;
+    // Unmaximize: animate back to saved rect if available
+    const s = w.sv || { l: cur.l, t: cur.t, w: cur.w, h: cur.h };
+    const to = s;
+
+    if (animationsOff) {
+      w.el.style.left = to.l + 'px'; w.el.style.top = to.t + 'px';
+      w.el.style.width = to.w + 'px'; w.el.style.height = to.h + 'px';
+      w.max = false;
+      w.el.classList.remove('win-maximizing', 'win-unmaximizing');
+      return;
+    }
+
+    const scaleX = to.w / cur.w;
+    const scaleY = to.h / cur.h;
+    // use average scale to keep it uniform (looks cleaner)
+    const sAvg = (scaleX + scaleY) / 2;
+
+    const cx = cur.l + cur.w / 2;
+    const cy = cur.t + cur.h / 2;
+    const tcx = to.l + to.w / 2;
+    const tcy = to.t + to.h / 2;
+
+    const dx = tcx - cx;
+    const dy = tcy - cy;
+
+    w.el.classList.remove('win-maximizing');
+    w.el.style.setProperty('--mx', dx + 'px');
+    w.el.style.setProperty('--my', dy + 'px');
+    w.el.style.setProperty('--ms', String(sAvg));
+
+    w.el.classList.add('win-unmaximizing');
+    w.el.addEventListener('animationend', () => {
+      w.el.classList.remove('win-unmaximizing');
+      w.el.style.transform = '';
+      w.el.style.left = to.l + 'px';
+      w.el.style.top = to.t + 'px';
+      w.el.style.width = to.w + 'px';
+      w.el.style.height = to.h + 'px';
+      w.max = false;
+    }, { once: true });
+
+    return;
   }
+
+  // Maximize: animate from current to full layer bounds
+  const to = {
+    l: 0,
+    t: 0,
+    w: lyr.clientWidth,
+    h: lyr.clientHeight,
+  };
+
+  // Save current bounds for unmaximize
+  w.sv = { l: cur.l, t: cur.t, w: cur.w, h: cur.h };
+  if (animationsOff) {
+    w.el.style.left = '0px'; w.el.style.top = '0px';
+    w.el.style.width = lyr.clientWidth + 'px'; w.el.style.height = lyr.clientHeight + 'px';
+    w.max = true;
+    w.el.classList.remove('win-maximizing', 'win-unmaximizing');
+    return;
+  }
+
+  const scaleX = to.w / cur.w;
+  const scaleY = to.h / cur.h;
+  const sAvg = (scaleX + scaleY) / 2;
+
+  const cx = cur.l + cur.w / 2;
+  const cy = cur.t + cur.h / 2;
+  const tcx = to.l + to.w / 2;
+  const tcy = to.t + to.h / 2;
+
+  const dx = tcx - cx;
+  const dy = tcy - cy;
+
+  // We animate with transform so we keep geometry stable during the animation,
+  // then snap to final rect on animation end.
+  w.el.classList.remove('win-unmaximizing');
+  w.el.style.setProperty('--mx', dx + 'px');
+  w.el.style.setProperty('--my', dy + 'px');
+  w.el.style.setProperty('--ms', String(sAvg));
+
+  w.el.classList.add('win-maximizing');
+  w.el.addEventListener('animationend', () => {
+    w.el.classList.remove('win-maximizing');
+    w.el.style.transform = '';
+    w.el.style.left = to.l + 'px';
+    w.el.style.top = to.t + 'px';
+    w.el.style.width = to.w + 'px';
+    w.el.style.height = to.h + 'px';
+    w.max = true;
+  }, { once: true });
 }
 
 // ─────────────────────────────────────────────

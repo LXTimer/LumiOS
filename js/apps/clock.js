@@ -396,4 +396,3 @@ function timerComplete() {
     setTimeout(() => { osc.stop(); ctx.close(); }, 300);
   } catch (e) {}
 }
-

@@ -14,6 +14,7 @@ const WIDGET_DEFS = [
 let WIDGET_INSTANCES = [
   { iid:'wi-1', defId:'clock-analog', x:-16, y:10,  visible:true, anchorRight:true },
   { iid:'wi-2', defId:'calendar',     x:-8,  y:185, visible:true, anchorRight:true },
+  { iid:'wi-3', defId:'notes-peek',   x:-14, y:385, visible:true, anchorRight:true },
 ];
 
 let widgetRaf = null;

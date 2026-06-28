@@ -1,5 +1,5 @@
 /* ── Clock App ── */
-.clock-wrap { display: flex; flex-direction: column; height: 100%; padding: 12px; gap: 10px; }
+.clock-wrap { display: flex; flex-direction: column; height: 100%; padding: 12px; gap: 10px; background: var(--app-glass-bg); border: 1px solid var(--app-glass-border); backdrop-filter: var(--app-glass-blur); -webkit-backdrop-filter: var(--app-glass-blur); border-radius: 10px; overflow: hidden; }
 .clock-tabs { display: flex; gap: 4px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px; }
 .clock-tab { flex: 1; padding: 8px 12px; background: rgba(255, 255, 255, 0.05); border: none; border-bottom: 2px solid transparent; color: rgba(255, 255, 255, 0.6); font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; transition: all var(--transition-dur); border-radius: 4px 4px 0 0; }
 .clock-tab:hover { background: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.8); }

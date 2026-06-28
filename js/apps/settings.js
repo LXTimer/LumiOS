@@ -79,7 +79,6 @@ function panelAppearance() {
   return `
     <div class="settings-section-title">Appearance</div>
     ${toggleRow('transparency','Transparency','Window blur & glass effects')}
-    ${toggleRow('darkMode','Dark Mode','System-wide dark theme')}
     ${toggleRow('animations','Animations','Motion & transition effects')}
     ${toggleRow('particles', 'Particles', 'Drifting stars on the desktop')}
 
@@ -178,18 +177,6 @@ function panelDisplay() {
         <option>120 Hz</option>
         <option>144 Hz</option>
       </select>
-    </div>
-    <div class="settings-row">
-      <div class="settings-row-info">
-        <div class="settings-row-label">Night Mode</div>
-        <div class="settings-row-desc">Reduce blue light after sunset</div>
-      </div>
-      <div class="toggle-sw" data-on="0"
-           onclick="var on=this.dataset.on==='1';this.dataset.on=on?'0':'1';this.classList.toggle('on',!on);
-                    var k=this.querySelector('.toggle-knob');k.style.left=on?'auto':'3px';k.style.right=on?'3px':'auto';
-                    notify(!on?'Night Mode enabled':'Night Mode disabled')" role="switch">
-        <div class="toggle-knob" style="left:3px;right:auto"></div>
-      </div>
     </div>`;
 }
 
@@ -327,7 +314,7 @@ function settingToggle(el) {
   const key = el.dataset.key;
   OS_SETTINGS[key] = newOn;
   if (key === 'transparency') applyTransparency(newOn);
-  if (key === 'darkMode')     applyDarkMode(newOn);
+  if (key === 'nightMode')    applyNightMode(newOn);
   if (key === 'animations')   applyAnimations(newOn);
   if (key === 'particles') applyParticles(newOn);
 }

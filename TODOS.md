@@ -1,0 +1,6 @@
+- [x] Add maximize/unmaximize animation CSS (transform-based) to `css/main.css`
+- [x] Update `js/ui/windows.js` `maximizeWindow()` to:
+  - compute fromRect/toRect
+  - set CSS vars + add animation classes
+  - on animationend, snap to final geometry and clear transforms/classes
+- [ ] Verify no regression with drag/resize/max state

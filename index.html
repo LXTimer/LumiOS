@@ -169,6 +169,7 @@
         <i class="ti ti-moon-stars" style="font-size:20px"></i>
         <span>Night</span>
       </button>
+      
       <button class="qs-tile" id="qs-dnd" onclick="toggleDnD(); updateQuickSettings();">
         <i class="ti ti-bell-off" style="font-size:20px"></i>
         <span>DnD</span>
@@ -205,12 +206,20 @@
     <!-- Start button -->
     <button class="tbb" id="smbtn" onclick="toggleStartMenu()"
             aria-label="Open Start Menu" aria-expanded="false" aria-controls="smenu"
-            style="width:40px;padding:0;justify-content:center;flex-shrink:0;border-radius:10px">
+            style="width:44px;padding:0;justify-content:center;flex-shrink:0;border-radius:10px">
       <img src="assets/icons/lumiIcon.png" alt="LumiOS"
-           style="width:24px;height:24px;object-fit:contain"
+           style="width:26px;height:26px;object-fit:contain"
            onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <i class="ti ti-layout-grid" style="font-size:17px;display:none" aria-hidden="true"></i>
+      <i class="ti ti-layout-grid" style="font-size:18px;display:none" aria-hidden="true"></i>
     </button>
+
+    <!-- Taskbar app search -->·
+    <input id="tbsearch" type="search" placeholder="Search apps..."
+           aria-label="Search apps"
+           autocomplete="off"
+           oninput="filterStartMenuFromTaskbar(this.value)"
+           onkeydown="handleTaskbarSearchKey(event)"
+           onfocus="openStartMenuFromTaskbarSearch()" />
 
     <div class="tbar-sep"></div>
 

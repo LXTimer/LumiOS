@@ -23,6 +23,7 @@ const OS_SETTINGS = {
   particles: true,
   transparency: true,
   darkMode: true,
+  nightMode: false,
   animations: true,
   accent: '#0ea5e9',
   accentRgb: '14,165,233',
