@@ -1,5 +1,16 @@
 "use strict";
 
+const BROWSER_HOME_URL = 'https://duckduckgo.com/';
+const BROWSER_SEARCH_URL = 'https://duckduckgo.com/?q=';
+const BROWSER_PROXY_PREFIX = '/proxy?url=';
+
+const browserState = {
+  history: [],
+  index: -1,
+  currentUrl: BROWSER_HOME_URL,
+  initialized: false,
+};
+
 function buildBrowser() {
   return `
     <div class="browser-app">
@@ -28,7 +39,7 @@ function buildBrowser() {
         </div>
       </div>
       <div class="browser-content" id="browser-content">
-        <iframe src="https://duckduckgo.com" class="browser-iframe" id="browser-iframe"></iframe>
+        <iframe src="about:blank" class="browser-iframe" id="browser-iframe"></iframe>
       </div>
     </div>
   `;
@@ -37,9 +48,15 @@ function buildBrowser() {
 function browserInit(wid) {
   const searchInput = document.querySelector(`#${wid} #browser-search-input`);
   const iframe = document.querySelector(`#${wid} #browser-iframe`);
-  
+
+  if (browserState.initialized) {
+    return;
+  }
+
+  browserState.initialized = true;
+
   if (searchInput) {
-    searchInput.addEventListener('keypress', (e) => {
+    searchInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         browserSearch();
       }
@@ -48,57 +65,51 @@ function browserInit(wid) {
   
   if (iframe) {
     iframe.addEventListener('load', () => {
-      console.log('Page loaded');
+      browserSetLoading(false);
+
+      if (browserHasProxy() && iframe.contentWindow) {
+        const loadedUrl = browserDisplayValueFor(iframe.contentWindow.location.href);
+        const activeUrl = browserResolveInput(loadedUrl);
+        browserCommitHistory(activeUrl);
+
+        if (searchInput) {
+          searchInput.value = browserDisplayValueFor(activeUrl);
+        }
+      }
     });
   }
+
+  browserNavigate(browserState.currentUrl, { replace: true });
 }
 
 function browserSearch() {
   const searchInput = document.getElementById('browser-search-input');
-  const iframe = document.getElementById('browser-iframe');
-  
-  if (!searchInput || !iframe) return;
+  if (!searchInput) return;
   
   const query = searchInput.value.trim();
-  if (query) {
-    iframe.src = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
-  } else {
-    iframe.src = 'https://duckduckgo.com';
-  }
+  browserNavigate(query || BROWSER_HOME_URL);
 }
 
 function browserBack() {
-  const iframe = document.getElementById('browser-iframe');
-  if (iframe && iframe.contentWindow) {
-    try {
-      iframe.contentWindow.history.back();
-    } catch (e) {
-      console.log('Cannot go back');
-    }
+  if (browserState.index > 0) {
+    browserState.index -= 1;
+    browserNavigate(browserState.history[browserState.index], { replace: true });
   }
 }
 
 function browserForward() {
-  const iframe = document.getElementById('browser-iframe');
-  if (iframe && iframe.contentWindow) {
-    try {
-      iframe.contentWindow.history.forward();
-    } catch (e) {
-      console.log('Cannot go forward');
-    }
+  if (browserState.index < browserState.history.length - 1) {
+    browserState.index += 1;
+    browserNavigate(browserState.history[browserState.index], { replace: true });
   }
 }
 
 function browserRefresh() {
-  const iframe = document.getElementById('browser-iframe');
-  if (iframe) {
-    iframe.src = iframe.src;
+  if (browserState.currentUrl) {
+    browserNavigate(browserState.currentUrl, { replace: true });
   }
 }
 
 function browserHome() {
-  const iframe = document.getElementById('browser-iframe');
-  if (iframe) {
-    iframe.src = 'https://duckduckgo.com';
-  }
+  browserNavigate(BROWSER_HOME_URL);
 }
