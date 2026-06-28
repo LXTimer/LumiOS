@@ -80,5 +80,21 @@ function setLockScreenVisible(visible) {
 }
 
 function unlockOS() {
-  setLockScreenVisible(false);
+  const ls = document.getElementById('lock-screen');
+  if (!ls) return;
+  
+  // Add unlock animation classes
+  const clock = document.querySelector('.lock-clock');
+  const bottom = document.querySelector('.lock-bottom');
+  
+  if (clock) clock.classList.add('lock-unlocking-time');
+  if (bottom) bottom.classList.add('lock-unlocking-bottom');
+  
+  // Play animation then hide
+  setTimeout(() => {
+    setLockScreenVisible(false);
+    // Cleanup classes
+    if (clock) clock.classList.remove('lock-unlocking-time');
+    if (bottom) bottom.classList.remove('lock-unlocking-bottom');
+  }, 350);
 }

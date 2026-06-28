@@ -40,18 +40,26 @@ LumiOS delivers a fully interactive web‑based operating system, complete with 
 + Welcome app for onboarding
 
 ## Apps
+
 | App | Description |
 |---|---|
 | **Clock** | Analog/digital clock, stopwatch, and alarms |
 | **Calendar** | Month view, event creation, and agenda list |
 | **Calculator** | Standard four-function calculator |
-| **Notes** | Rich-text editor for notestaking|
+| **Notes** | Rich-text editor for notetaking |
 | **Terminal** | Simple terminal with command execution and file system navigation |
-| **Files** | File system with navigation and preview. Can be used to download and edit .txt files |
+| **Files** | File system with navigation and preview |
 | **Settings** | Appearance, display, notifications, security, and about panels |
 | **Widgets** | Manage desktop-overlay widgets |
 | **Paint** | Drawing canvas with tools, colors, and shapes |
 | **Welcome** | Onboarding and getting started guide |
+
+### New Apps
+
+| App | Description |
+|---|---|
+| **Browser** | Integrated web browser using DuckDuckGo for search |
+| **Weather** | Real-time weather using OpenWeatherMap API |
 
 ## Demo
 Visit <[LumiOS](https://lxtimer.github.io/LumiOS/)> for live Demo
@@ -67,11 +75,17 @@ LumiOS/
 │   └── LumiOS-1.png, LumiOS-2.png
 ├── css/
 │   ├── apps/
+│   │   ├── browser.css      # Browser app
+│   │   ├── weather.css      # Weather app
+│   │   └── [other app styles]
 │   ├── theme/
 │   ├── ui/
 │   └── main.css
 ├── js/
-│   ├── apps/       # Clock, Calendar, Paint, Notes, etc.
+│   ├── apps/
+│   │   ├── browser.js       # Browser app
+│   │   ├── weather.js       # Weather app
+│   │   └── [other apps]
 │   ├── systems/    # Particles, theme handling
 │   ├── ui/         # Window management, taskbar
 │   ├── utils/      # Helper functions
@@ -87,4 +101,3 @@ LumiOS/
 
 ## Credits
 Inspired by Puter, Prozilla OS, and OS.js.
-

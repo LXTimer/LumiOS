@@ -14,6 +14,8 @@ const APPS = [
   { id:'settings',   name:'Settings',   ic:'ti-settings',   gr:'linear-gradient(135deg,#0ea5e9,#6366f1)', w:825, h:488 },
   { id:'paint',    name:'Paint',    ic:'ti-pencil',     gr:'linear-gradient(135deg,#ff6b6b,#ee5a24)', w:640, h:460 },
   { id:'widgets', name:'Widgets', ic:'ti-layout-dashboard', gr:'linear-gradient(135deg,#7c3aed,#0ea5e9)', w:460, h:400 },
+  { id:'browser', name:'Browser', ic:'ti-brand-google', gr:'linear-gradient(135deg,#4285f4,#34a853)', w:800, h:600 },
+  { id:'weather', name:'Weather', ic:'ti-thermometer', gr:'linear-gradient(135deg,#0ea5e9,#6366f1)', w:550, h:650 },
 ];
 
 // ─────────────────────────────────────────────

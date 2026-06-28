@@ -15,6 +15,8 @@ function buildAppContent(id) {
     case 'paint':      return buildPaint();
     case 'widgets':    return buildWidgets();
     case 'settings':   return buildSettings();
+    case 'browser':    return buildBrowser();
+    case 'weather':    return buildWeather();
     default: return '<div style="padding:20px;color:rgba(255,255,255,.5)">App not found.</div>';
   }
 }
@@ -30,6 +32,8 @@ function postInitApp(aid, wid) {
   if (aid === 'files')    filesInit(wid);
   if (aid === 'widgets')  refreshWidgetsApp();
   if (aid === 'paint')    paintInit(wid);
+  if (aid === 'browser')  browserInit(wid);
+  if (aid === 'weather')  weatherInit(wid);
 }
 
 // ─────────────────────────────────────────────

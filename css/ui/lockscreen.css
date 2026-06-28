@@ -11,7 +11,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  gap: var(--space-6);
   transition: opacity 500ms ease-out, visibility 500ms;
   opacity: 1;
   visibility: visible;
@@ -27,14 +27,15 @@
   width: 120px;
   height: 120px;
   object-fit: contain;
-  animation: bootLogoIn 800ms ease-out forwards;
+  animation: bootLogoIn 800ms cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+  filter: drop-shadow(0 0 40px rgba(99, 102, 241, 0.4));
 }
 
 #boot-splash .boot-text {
-  font-size: 14px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.7);
-  letter-spacing: 2px;
+  font-size: var(--font-sm);
+  font-weight: var(--weight-medium);
+  color: rgba(255,255,255,0.8);
+  letter-spacing: var(--tracking-widest);
   text-transform: uppercase;
   animation: bootFadeIn 600ms ease-out 300ms backwards;
 }
@@ -43,7 +44,7 @@
   width: 200px;
   height: 3px;
   background: rgba(255,255,255,0.1);
-  border-radius: 2px;
+  border-radius: var(--radius-full);
   overflow: hidden;
   animation: bootFadeIn 600ms ease-out 400ms backwards;
 }
@@ -53,10 +54,11 @@
   display: block;
   width: 100%;
   height: 100%;
-  background: var(--accent-color, #0ea5e9);
-  border-radius: 2px;
+  background: var(--accent-color);
+  border-radius: var(--radius-full);
   transform-origin: left;
-  animation: bootBar 1200ms ease-in-out 500ms forwards;
+  animation: bootBar 1200ms cubic-bezier(0.4, 0, 0.2, 1) 500ms forwards;
+  box-shadow: 0 0 20px var(--accent-glow);
 }
 
 @keyframes bootLogoIn {
@@ -85,11 +87,11 @@
   z-index: 99999;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 48px;
+  justify-content: space-between;
+  padding: var(--space-8) var(--space-4);
   overflow: hidden;
   background: transparent;
-  animation: lockFadeIn 320ms ease-out forwards;
+  animation: lockFadeIn 400ms ease-out forwards;
 }
 
 #lock-screen.visible {
@@ -100,67 +102,170 @@
   position: absolute;
   inset: -40px;
   z-index: 0;
-  filter: blur(40px) saturate(140%) brightness(0.8);
-  transform: scale(1.05);
+  filter: blur(50px) saturate(160%) brightness(0.7);
+  transform: scale(1.1);
 }
 
 #lock-bg::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.25);
+  background: rgba(0,0,0,0.35);
 }
 
-.lock-clock, .lock-btn { position: relative; z-index: 1; }
+.lock-clock {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 4px 30px rgba(0,0,0,0.7), 0 0 60px rgba(99, 102, 241, 0.3);
+  user-select: none;
+  margin-top: 15vh;
+}
+
+.lock-bottom {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  margin-bottom: 8vh;
+}
 
 @keyframes lockFadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from { opacity: 0; transform: scale(1.02); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes lockUnlock {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  30% {
+    opacity: 0.8;
+    transform: scale(1.01);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.05);
+    filter: blur(10px);
+  }
+}
+
+@keyframes lockUnlockBottom {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(8px);
+  }
+}
+
+@keyframes lockUnlockTime {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px);
+    filter: blur(8px);
+  }
 }
 
 .lock-clock {
   text-align: center;
   color: #fff;
-  text-shadow: 0 2px 20px rgba(0,0,0,0.6);
+  text-shadow: 0 4px 30px rgba(0,0,0,0.7), 0 0 60px rgba(99, 102, 241, 0.3);
   user-select: none;
 }
 
 .lock-time {
   font-size: 96px;
-  font-weight: 200;
-  letter-spacing: -2px;
+  font-weight: 100;
+  letter-spacing: var(--tracking-tight);
   line-height: 1;
+  color: #fff;
+  transition: all 0.3s ease;
 }
 
 .lock-date {
-  font-size: 18px;
-  font-weight: 300;
-  color: rgba(255,255,255,0.75);
-  margin-top: 6px;
+  font-size: var(--font-lg);
+  font-weight: var(--weight-normal);
+  color: rgba(255,255,255,0.8);
+  margin-top: var(--space-2);
+  letter-spacing: var(--tracking-wide);
+  transition: all 0.3s ease;
+}
+
+.lock-username {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-md);
+  font-weight: var(--weight-normal);
+  color: rgba(255,255,255,0.85);
+  letter-spacing: var(--tracking-wide);
+  padding: var(--space-3) var(--space-5);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  transition: all var(--transition-base);
+}
+
+.lock-username:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3), 0 0 30px rgba(99, 102, 241, 0.2);
+}
+
+.lock-username i {
+  font-size: var(--font-lg);
+  color: var(--accent-color);
 }
 
 .lock-btn {
-  padding: 14px 56px;
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  color: #fff;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.25);
-  border-radius: 999px;
-  cursor: pointer;
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--font-md);
+  font-weight: var(--weight-medium);
   font-family: inherit;
-  transition: background 0.18s, transform 0.12s, border-color 0.18s;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  letter-spacing: var(--tracking-wide);
+  color: #fff;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
 }
 
 .lock-btn:hover {
   background: rgba(255,255,255,0.18);
-  border-color: rgba(255,255,255,0.4);
-  transform: scale(1.04);
+  border-color: rgba(255,255,255,0.45);
+  transform: scale(1.05);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15), 0 0 40px rgba(99, 102, 241, 0.3);
 }
 
 .lock-btn:active {
   transform: scale(0.96);
+  transition: transform 0.1s ease-out;
+}
+
+.lock-unlocking-time {
+  animation: lockUnlockTime 350ms ease-out forwards;
+}
+
+.lock-unlocking-bottom {
+  animation: lockUnlockBottom 350ms ease-out forwards;
 }

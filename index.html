@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="css/apps/settings.css" />
   <link rel="stylesheet" href="css/apps/notes.css" />
   <link rel="stylesheet" href="css/apps/terminal.css" />
+  <link rel="stylesheet" href="css/apps/browser.css" />
+  <link rel="stylesheet" href="css/apps/weather.css" />
   <link rel="stylesheet" href="css/apps/widgets.css" />
   <link rel="stylesheet" href="css/ui/start-menu.css" />
   <link rel="stylesheet" href="css/ui/notifications.css" />
@@ -279,9 +281,15 @@
       <div class="lock-time">--:--</div>
       <div class="lock-date">Loading&hellip;</div>
     </div>
-    <button class="lock-btn" onclick="unlockOS()" aria-label="Unlock and enter desktop">
-      Unlock
-    </button>
+    <div class="lock-bottom">
+      <div class="lock-username">
+        <i class="ti ti-user" aria-hidden="true"></i>
+        <span>lumi-user</span>
+      </div>
+      <button class="lock-btn" onclick="unlockOS()" aria-label="Unlock and enter desktop">
+        Unlock
+      </button>
+    </div>
   </div>
 
 <!-- ── Context Menu ── -->
@@ -330,6 +338,8 @@
 <script src="js/apps/files.js"></script>
 <script src="js/apps/settings.js"></script>
 <script src="js/apps/widgets.js"></script>
+<script src="js/apps/browser.js"></script>
+<script src="js/apps/weather.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
