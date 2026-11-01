@@ -58,7 +58,7 @@ LumiOS delivers a fully interactive web‑based operating system, complete with 
 
 | App | Description |
 |---|---|
-| **Browser** | Integrated web browser using DuckDuckGo for search |
+| **Browser** | Integrated web browser with Bing search and URL navigation |
 | **Weather** | Real-time weather using OpenWeatherMap API |
 
 ## Demo
