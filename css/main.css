@@ -5,27 +5,27 @@
 /* ── CSS Custom Properties (theme engine) ── */
 :root {
   /* ── Color System ── */
-  --accent-color:  #6366f1;
-  --accent-rgb:    99, 102, 241;
-  --accent-glow:   rgba(99, 102, 241, 0.4);
+  --accent-color:  #e8795a;
+  --accent-rgb:    232, 121, 90;
+  --accent-glow:   rgba(232, 121, 90, 0.35);
   
   /* ── Window System ── */
-  --win-blur:      blur(30px) saturate(180%);
-  --win-bg:        rgba(14, 14, 32, 0.48);
-  --win-border:    rgba(255, 255, 255, 0.16);
+  --win-blur:      blur(24px) saturate(150%);
+  --win-bg:        rgba(14, 14, 32, 0.52);
+  --win-border:    rgba(255, 255, 255, 0.14);
 
   /* ── Taskbar System ── */
   --tbar-bg-rgb:   8, 8, 22;
-  --tbar-opacity:  0.85;
+  --tbar-opacity:  0.82;
 
   /* ── Glass Morphism System ── */
-  --glass-blur-heavy:  blur(32px) saturate(160%);
-  --glass-blur-medium: blur(24px) saturate(150%);
-  --glass-blur-light:  blur(18px) saturate(140%);
-  --glass-bg:          rgba(14, 14, 32, 0.92);
-  --glass-bg-trans:    rgba(14, 14, 32, 0.56);
-  --glass-border:      rgba(255, 255, 255, 0.12);
-  --glass-border-light: rgba(255, 255, 255, 0.08);
+  --glass-blur-heavy:  blur(28px) saturate(140%);
+  --glass-blur-medium: blur(20px) saturate(140%);
+  --glass-blur-light:  blur(16px) saturate(130%);
+  --glass-bg:          rgba(10, 10, 26, 0.94);
+  --glass-bg-trans:    rgba(10, 10, 26, 0.6);
+  --glass-border:      rgba(255, 255, 255, 0.1);
+  --glass-border-light: rgba(255, 255, 255, 0.06);
 
   /* ── Spacing Scale (4px base) ── */
   --space-1: 4px;
@@ -66,9 +66,9 @@
   --tracking-widest: 0.7px;
 
   /* ── Transitions ── */
-  --transition-fast: 0.15s;
-  --transition-base: 0.2s;
-  --transition-slow: 0.3s;
+  --transition-fast: 0.12s;
+  --transition-base: 0.18s;
+  --transition-slow: 0.25s;
   --transition-dur: var(--transition-fast);
   
   /* ── Shadow System ── */
@@ -96,6 +96,21 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
 }
 
+/* ── Film Grain / Noise Texture Overlay ── */
+#os::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 99995;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
 #os {
   position: relative;
   width: 100vw;
@@ -113,11 +128,20 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 55% 55% at 18% 22%, rgba(90, 18, 200, 0.45), transparent),
-    radial-gradient(ellipse 45% 45% at 82% 78%, rgba(18, 60, 200, 0.35), transparent),
-    radial-gradient(ellipse 38% 38% at 62% 16%, rgba(200, 18, 85, 0.2),  transparent),
-    linear-gradient(148deg, #050510, #0a0520 45%, #040919);
+    radial-gradient(ellipse 60% 50% at 15% 25%, rgba(232, 121, 90, 0.25), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 78% 80%, rgba(90, 60, 200, 0.3), transparent 70%),
+    radial-gradient(ellipse 35% 30% at 65% 15%, rgba(200, 50, 80, 0.18), transparent 60%),
+    linear-gradient(145deg, #060612, #0a0620 50%, #04081a);
   transition: background var(--transition-dur);
+}
+
+/* ── Vignette Effect ── */
+#osbg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 120% 120% at 50% 50%, transparent 50%, rgba(0, 0, 0, 0.45) 100%);
 }
 
 /* ── Brightness overlay ── */
@@ -146,7 +170,7 @@ body {
   font-weight: 100;
   letter-spacing: var(--tracking-tight);
   opacity: 0.5;
-  text-shadow: 0 0 80px rgba(140, 80, 255, 0.4);
+  text-shadow: 0 0 80px rgba(232, 121, 90, 0.3);
   color: #fff;
   line-height: 1;
 }
@@ -181,19 +205,18 @@ body {
   cursor: grab;
   width: 72px;
   text-align: center;
-  transition: background var(--transition-base), transform var(--transition-base);
+  transition: background var(--transition-base);
   pointer-events: auto;
   user-select: none;
   -webkit-user-select: none;
 }
 
 .dki:hover { 
-  background: rgba(255, 255, 255, 0.15); 
-  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.12); 
 }
 .dki:active { 
-  transform: scale(0.92); 
-  transition: transform 0.1s ease-out;
+  transform: scale(0.95); 
+  transition: transform 0.08s ease-out;
 }
 
 .dki-icon {
@@ -206,18 +229,17 @@ body {
   font-size: 20px;
   color: white;
   box-shadow: var(--shadow-md);
-  transition: transform 0.32s cubic-bezier(0.34, 2.56, 0.64, 1),
-              box-shadow 0.32s cubic-bezier(0.34, 2.56, 0.64, 1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .dki:hover .dki-icon {
-  transform: scale(1.1) translateY(-2px);
-  box-shadow: var(--shadow-lg), 0 0 20px rgba(99, 102, 241, 0.3);
+  transform: scale(1.08);
+  box-shadow: var(--shadow-lg), 0 0 18px rgba(232, 121, 90, 0.25);
 }
 
 .dki:active .dki-icon {
-  transition: transform 0.1s ease-out;
-  transform: scale(0.92);
+  transition: transform 0.08s ease-out;
+  transform: scale(0.95);
 }
 
 .dki-label {
@@ -226,11 +248,6 @@ body {
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
   line-height: 1.2;
-  transition: color var(--transition-base);
-}
-
-.dki:hover .dki-label {
-  color: #fff;
 }
 
 /* ── Windows Layer ── */
@@ -247,18 +264,17 @@ body {
   border-radius: var(--radius-lg);
   overflow: hidden;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
     var(--win-bg);
   border: 1px solid var(--win-border);
   box-shadow: var(--shadow-xl),
-              inset 0 0 0 0.5px rgba(255, 255, 255, 0.08);
+              inset 0 0 0 0.5px rgba(255, 255, 255, 0.06);
   min-width: 200px;
   min-height: 130px;
   backdrop-filter: var(--win-blur);
   -webkit-backdrop-filter: var(--win-blur);
   transition: box-shadow var(--transition-base),
-              border-color var(--transition-base),
-              opacity var(--transition-base);
+              border-color var(--transition-base);
   opacity: 0.92;
   transform-origin: center center;
   pointer-events: auto;
@@ -266,13 +282,13 @@ body {
 
 
 .win.foc {
-  border-color: rgba(var(--accent-rgb), 0.5);
+  border-color: rgba(var(--accent-rgb), 0.45);
   opacity: 1;
   box-shadow:
     var(--shadow-xl),
-    inset 0 0 0 0.5px rgba(255, 255, 255, 0.12),
-    0 0 0 1px rgba(var(--accent-rgb), 0.15),
-    0 0 40px rgba(var(--accent-rgb), 0.35);
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(var(--accent-rgb), 0.12),
+    0 0 32px rgba(var(--accent-rgb), 0.25);
 }
 
 /* ── Title Bar ── */
@@ -281,13 +297,13 @@ body {
   display: flex;
   align-items: center;
   padding: 0 var(--space-3);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   gap: var(--space-2);
   cursor: grab;
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .wtb::before {
@@ -295,7 +311,7 @@ body {
   position: absolute;
   inset: 0;
   background: var(--app-gr, transparent);
-  opacity: 0.15;
+  opacity: 0.12;
   pointer-events: none;
   transition: opacity var(--transition-base);
 }
@@ -349,9 +365,9 @@ body {
   cursor: pointer;
   padding: 0;
   flex-shrink: 0;
-  transition: filter 0.15s, transform 0.15s;
+  transition: filter 0.12s;
 }
-.wb:hover  { filter: brightness(1.3); transform: scale(1.15); }
+.wb:hover  { filter: brightness(1.25); }
 .wb.wbc    { background: #FF5F57; }
 .wb.wbm    { background: #FFBD2E; }
 .wb.wbx    { background: #28C840; }
@@ -375,9 +391,9 @@ body {
   bottom: 0; left: 0; right: 0;
   height: 48px;
   background: rgba(var(--tbar-bg-rgb), var(--tbar-opacity));
-  backdrop-filter: blur(24px) saturate(150%);
-  -webkit-backdrop-filter: blur(24px) saturate(150%);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
   display: flex;
   align-items: center;
   padding: 0 var(--space-2);
@@ -412,18 +428,17 @@ body {
   align-items: center;
   justify-content: center;
   padding: 0;
-  transition: all var(--transition-base);
+  transition: background var(--transition-base);
   position: relative;
 }
 
 .tb-dock-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px) scale(1.05);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .tb-dock-btn:active { 
-  transform: translateY(0) scale(0.9); 
-  transition: transform 0.1s ease-out;
+  transform: scale(0.92); 
+  transition: transform 0.08s ease-out;
 }
 
 .tb-dock-icon {
@@ -435,11 +450,6 @@ body {
   justify-content: center;
   font-size: 12px;
   color: white;
-  transition: transform var(--transition-base);
-}
-
-.tb-dock-btn:hover .tb-dock-icon {
-  transform: scale(1.1);
 }
 
 /* ── Running Apps ── */
@@ -531,7 +541,7 @@ body {
   cursor: pointer;
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-sm);
-  transition: background var(--transition-base), color var(--transition-base);
+  transition: background var(--transition-base);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -539,8 +549,8 @@ body {
 }
 
 .tray-btn i { font-size: 15px; }
-.tray-btn:hover  { background: rgba(255, 255, 255, 0.12); }
-.tray-btn.tray-active { background: rgba(var(--accent-rgb), 0.25); color: #fff; }
+.tray-btn:hover  { background: rgba(255, 255, 255, 0.1); }
+.tray-btn.tray-active { background: rgba(var(--accent-rgb), 0.2); color: #fff; }
 
 .tray-clock-btn {
   flex-direction: column;
@@ -592,7 +602,7 @@ body {
   font-size: var(--font-sm);
   font-family: inherit;
   font-weight: var(--weight-normal);
-  transition: all var(--transition-base);
+  transition: background var(--transition-base), border-color var(--transition-base);
   position: relative;
   overflow: hidden;
 }
@@ -609,7 +619,6 @@ body {
 .app-btn:hover { 
   background: rgba(var(--accent-rgb), 0.3);
   border-color: rgba(var(--accent-rgb), 0.5);
-  transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
@@ -618,8 +627,8 @@ body {
 }
 
 .app-btn:active { 
-  transform: translateY(0) scale(0.95);
-  transition: transform 0.1s ease-out;
+  transform: scale(0.96);
+  transition: transform 0.08s ease-out;
 }
 
 .app-toolbar-sep { 
@@ -645,14 +654,14 @@ body {
   border-radius: 8px;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: border-color 0.15s, transform 0.12s;
+  transition: border-color 0.15s;
   overflow: hidden;
   display: flex;
   align-items: flex-end;
   justify-content: center;
 }
 
-.wp-swatch:hover { transform: scale(1.04); border-color: rgba(255,255,255,0.3); }
+.wp-swatch:hover { border-color: rgba(255,255,255,0.3); }
 .wp-active       { border-color: white !important; }
 
 .wp-label {
@@ -687,9 +696,7 @@ body {
   height: 4px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.7);
-  transition: transform 0.2s cubic-bezier(0.34, 1.3, 0.64, 1),
-              background 0.2s,
-              width 0.2s cubic-bezier(0.34, 1.3, 0.64, 1);
+  transition: transform 0.18s ease, background 0.18s, width 0.18s ease;
   box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
 }
 
@@ -710,9 +717,7 @@ body {
   height: 3px;
   border-radius: 2px;
   background: rgba(255, 255, 255, 0.6);
-  transition: transform 0.2s cubic-bezier(0.34, 1.3, 0.64, 1),
-              background 0.2s,
-              width 0.2s cubic-bezier(0.34, 1.3, 0.64, 1);
+  transition: transform 0.18s ease, background 0.18s, width 0.18s ease;
 }
 
 .tbb.tba::after { transform: translateX(-50%) scaleX(1); }
@@ -724,12 +729,12 @@ body {
 
 /* ── Window animations ── */
 @keyframes win-open {
-  from { opacity: 0; transform: scale(0.92); }
+  from { opacity: 0; transform: scale(0.94); }
   to   { opacity: 1; transform: scale(1); }
 }
 @keyframes win-close {
   from { opacity: 1; transform: scale(1); }
-  to   { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 0; transform: scale(0.94); }
 }
 @keyframes win-minimize {
   from { opacity: 1; transform: scale(1) translateY(0); }
@@ -744,10 +749,10 @@ body {
   to   { opacity: 1; transform: translateY(0)  scale(1);     }
 }
 
-.win-entering  { animation: win-open      180ms cubic-bezier(0.34, 1.2, 0.64, 1) forwards; }
-.win-closing   { animation: win-close     140ms cubic-bezier(0.4, 0, 1, 1)        forwards; }
-.win-minimizing { animation: win-minimize 160ms cubic-bezier(0.4, 0, 1, 1)        forwards; }
-.win-restoring  { animation: win-unminimize 180ms cubic-bezier(0.34, 1.2, 0.64, 1) forwards; }
+.win-entering  { animation: win-open      160ms ease-out forwards; }
+.win-closing   { animation: win-close     120ms ease-in  forwards; }
+.win-minimizing { animation: win-minimize 140ms ease-in  forwards; }
+.win-restoring  { animation: win-unminimize 160ms ease-out forwards; }
 
 /* ── Maximize / Unmaximize animations (transform-based) ──
    Uses CSS vars set by JS:
@@ -764,8 +769,8 @@ body {
   to   { opacity: 0.92; transform: translate(var(--mx), var(--my)) scale(var(--ms)); }
 }
 
-.win-maximizing  { animation: win-maximizing 190ms cubic-bezier(0.18, 0.9, 0.2, 1) forwards; }
-.win-unmaximizing{ animation: win-unmaximizing 170ms cubic-bezier(0.2, 0, 0.2, 1) forwards; }
+.win-maximizing  { animation: win-maximizing 170ms ease-out forwards; }
+.win-unmaximizing{ animation: win-unmaximizing 150ms ease-in forwards; }
 
 @media (prefers-reduced-motion: reduce) {
   .win-maximizing, .win-unmaximizing,
@@ -794,3 +799,5 @@ body {
   -webkit-backdrop-filter: none !important;
   background: rgba(12, 12, 30, 0.99) !important;
 }
+
+

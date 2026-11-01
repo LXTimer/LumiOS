@@ -21,19 +21,21 @@ function buildAppContent(id) {
   }
 }
   
+const APP_INIT = {
+  terminal:  (wid) => { const inp = document.querySelector('#' + wid + ' .tin'); if (inp) inp.focus(); },
+  settings:  () => startUptimeTicker(),
+  clock:     (wid) => startClockApp(wid),
+  calendar:  (wid) => initCalendarApp(wid),
+  files:     (wid) => filesInit(wid),
+  widgets:   () => refreshWidgetsApp(),
+  paint:     (wid) => paintInit(wid),
+  browser:   (wid) => browserInit(wid),
+  weather:   (wid) => weatherInit(wid),
+};
+
 function postInitApp(aid, wid) {
-  if (aid === 'terminal') {
-    const inp = document.querySelector('#' + wid + ' .tin');
-    if (inp) inp.focus();
-  }
-  if (aid === 'settings') startUptimeTicker();
-  if (aid === 'clock')    startClockApp(wid);
-  if (aid === 'calendar') initCalendarApp(wid);
-  if (aid === 'files')    filesInit(wid);
-  if (aid === 'widgets')  refreshWidgetsApp();
-  if (aid === 'paint')    paintInit(wid);
-  if (aid === 'browser')  browserInit(wid);
-  if (aid === 'weather')  weatherInit(wid);
+  const fn = APP_INIT[aid];
+  if (fn) fn(wid);
 }
 
 // ─────────────────────────────────────────────

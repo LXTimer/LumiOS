@@ -7,7 +7,6 @@
 const PAINT_COLORS = [
   '#000000','#ffffff','#ff0000','#ff6600','#ffcc00','#00ff00','#00ccff','#0033ff',
   '#6600ff','#ff00ff','#808080','#800000',
-  
 ];
 
 const PAINT_TOOLS = ['brush','eraser','fill','line','rect','circle'];

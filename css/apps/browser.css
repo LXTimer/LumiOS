@@ -37,20 +37,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--transition-base);
+  transition: background var(--transition-base), border-color var(--transition-base);
   font-family: inherit;
 }
 
 .browser-btn:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .browser-btn:active {
-  transform: translateY(0) scale(0.95);
-  transition: transform 0.1s ease-out;
+  transform: scale(0.95);
+  transition: transform 0.08s ease-out;
 }
 
 .browser-btn i {
@@ -66,13 +64,13 @@
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-full);
-  transition: all var(--transition-base);
+  transition: background var(--transition-base), border-color var(--transition-base);
 }
 
 .browser-search-wrap:focus-within {
   background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(99, 102, 241, 0.5);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  border-color: rgba(var(--accent-rgb), 0.5);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1);
 }
 
 .browser-search-wrap i {
@@ -106,20 +104,19 @@
   font-weight: var(--weight-medium);
   cursor: pointer;
   font-family: inherit;
-  transition: all var(--transition-base);
+  transition: background var(--transition-base), border-color var(--transition-base);
   white-space: nowrap;
 }
 
 .browser-go-btn:hover {
-  background: rgba(99, 102, 241, 0.3);
-  border-color: rgba(99, 102, 241, 0.5);
+  background: rgba(var(--accent-rgb), 0.3);
+  border-color: rgba(var(--accent-rgb), 0.5);
   color: #fff;
-  transform: translateY(-1px);
 }
 
 .browser-go-btn:active {
-  transform: translateY(0) scale(0.95);
-  transition: transform 0.1s ease-out;
+  transform: scale(0.95);
+  transition: transform 0.08s ease-out;
 }
 
 .browser-logo {

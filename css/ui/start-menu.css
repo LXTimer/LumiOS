@@ -20,8 +20,8 @@
 #srch:focus { border-color: rgba(var(--accent-rgb), 0.5); }
 .smenu-section-label { font-size: 10px; color: rgba(255, 255, 255, 0.26); letter-spacing: 0.7px; margin-bottom: 6px; }
 #smgrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; max-height: 420px; overflow-y: auto; }
-.sm-app { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 8px 2px; border-radius: 9px; cursor: pointer; transition: background var(--transition-dur), transform var(--transition-dur); }
-.sm-app:hover { background: rgba(255, 255, 255, 0.09); transform: scale(1.04); }
+.sm-app { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 8px 2px; border-radius: 9px; cursor: pointer; transition: background var(--transition-dur); }
+.sm-app:hover { background: rgba(255, 255, 255, 0.09); }
 .sm-app:active { transform: scale(0.96); }
 .sm-app-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: white; box-shadow: 0 3px 10px rgba(0,0,0,0.25); }
 .sm-app span { font-size: 11px; color: rgba(255,255,255,0.7); text-align: center; line-height: 1.2; }
@@ -49,8 +49,7 @@
 .vol-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; font-size: 13px; font-weight: 500; }
 .vol-header i { font-size: 16px; color: rgba(var(--accent-rgb), 0.9); }
 .vol-slider { width: 100%; -webkit-appearance: none; appearance: none; height: 5px; border-radius: 3px; background: rgba(255, 255, 255, 0.12); outline: none; cursor: pointer; margin-bottom: 8px; }
-.vol-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--accent-color); cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3); transition: transform 0.1s; }
-.vol-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.vol-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--accent-color); cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
 .vol-slider::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--accent-color); cursor: pointer; border: none; }
 .vol-footer { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; font-size: 11px; color: rgba(255, 255, 255, 0.4); }
 #vol-pct { font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, 0.85); }

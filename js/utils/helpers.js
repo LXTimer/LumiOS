@@ -18,17 +18,18 @@ function notify(msg) {
 // ─────────────────────────────────────────────
 //  Clock update
 // ─────────────────────────────────────────────
+function $(id) { return document.getElementById(id); }
+
 function updateClock() {
   const now = new Date();
   const time = now.toLocaleTimeString('en-CA', { hour: '2-digit', minute: '2-digit' });
   const trayDate = now.toLocaleDateString('en-CA', { month: 'short', day: 'numeric', year: 'numeric' });
-  const bigDate = now.toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  const bigDateStr = now.toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 
-  const el = id => document.getElementById(id);
-  if (el('tclk'))     el('tclk').textContent = time;
-  if (el('tdate'))    el('tdate').textContent = trayDate;
-  if (el('big-time')) el('big-time').textContent = time;
-  if (el('big-date')) el('big-date').textContent = bigDate;
+  const tclk = $('tclk');       if (tclk) tclk.textContent = time;
+  const tdate = $('tdate');     if (tdate) tdate.textContent = trayDate;
+  const bigTime = $('big-time'); if (bigTime) bigTime.textContent = time;
+  const bigDateEl = $('big-date'); if (bigDateEl) bigDateEl.textContent = bigDateStr;
 }
 
 // ─────────────────────────────────────────────

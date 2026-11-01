@@ -51,9 +51,8 @@ function makeParticle(randomY = false) {
 }
 
 function tickParticles() {
-  if (document.getElementById('os').classList.contains('no-animations')) {
+  if (animationsOff()) {
     if (particleCanvas) particleCanvas.style.opacity = '0';
-    particleRaf = requestAnimationFrame(tickParticles);
     return;
   }
 

@@ -5,6 +5,10 @@
 // ─────────────────────────────────────────────
 let wins = {}, zz = 100, aw = null, drag = null;
 
+function animationsOff() {
+  return document.getElementById('os').classList.contains('no-animations');
+}
+
 // ─────────────────────────────────────────────
 //  Window Management
 // ─────────────────────────────────────────────
@@ -52,8 +56,7 @@ function closeWindow(wid) {
   const btn = document.getElementById('tba-' + wid);
   if (btn) btn.remove();
 
-  const animationsOff = document.getElementById('os').classList.contains('no-animations');
-  if (animationsOff) {
+  if (animationsOff()) {
     w.el.remove();
     return;
   }
@@ -69,8 +72,7 @@ function minimizeWindow(wid) {
   if (btn) btn.classList.remove('act');
   if (aw === wid) aw = null;
 
-  const animationsOff = document.getElementById('os').classList.contains('no-animations');
-  if (animationsOff) {
+  if (animationsOff()) {
     w.el.style.display = 'none';
     return;
   }
@@ -93,8 +95,6 @@ function maximizeWindow(wid) {
   const lyr = document.getElementById('wlayer');
   if (!lyr) return;
 
-  const animationsOff = document.getElementById('os').classList.contains('no-animations');
-
   // Capture current and target rects in layer coordinates
   const layerRect = lyr.getBoundingClientRect();
   const curRect = w.el.getBoundingClientRect();
@@ -110,7 +110,7 @@ function maximizeWindow(wid) {
     const s = w.sv || { l: cur.l, t: cur.t, w: cur.w, h: cur.h };
     const to = s;
 
-    if (animationsOff) {
+    if (animationsOff()) {
       w.el.style.left = to.l + 'px'; w.el.style.top = to.t + 'px';
       w.el.style.width = to.w + 'px'; w.el.style.height = to.h + 'px';
       w.max = false;
@@ -160,7 +160,7 @@ function maximizeWindow(wid) {
 
   // Save current bounds for unmaximize
   w.sv = { l: cur.l, t: cur.t, w: cur.w, h: cur.h };
-  if (animationsOff) {
+  if (animationsOff()) {
     w.el.style.left = '0px'; w.el.style.top = '0px';
     w.el.style.width = lyr.clientWidth + 'px'; w.el.style.height = lyr.clientHeight + 'px';
     w.max = true;
